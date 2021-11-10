@@ -18,7 +18,7 @@ while WebCam.isOpened():
         # Convert the webcam image from BGR to HSV color space
         Image_GRAY = cv.cvtColor(Image, cv.COLOR_BGR2GRAY)
 
-        # Show the contents of image
+        # Show the contents of BUBATZ image
         cv.imshow('WebCam', Image)
         cv.imshow('B', ChangedImage[:, :, 0])
         cv.imshow('G', ChangedImage[:, :, 1])
@@ -28,3 +28,5 @@ while WebCam.isOpened():
 
 # Close all windows
 cv.destroyAllWindows()
+
+# Hier weitere kommentare um etwas auszuprobieren 
