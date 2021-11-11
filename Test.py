@@ -29,4 +29,5 @@ while WebCam.isOpened():
 # Close all windows
 cv.destroyAllWindows()
 
+# Test commit
 # Hier weitere kommentare um etwas auszuprobieren 
