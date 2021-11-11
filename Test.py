@@ -19,7 +19,8 @@ while WebCam.isOpened():
         Image_GRAY = cv.cvtColor(Image, cv.COLOR_BGR2GRAY)
 
         # Show the contents of BUBATZ image
-        cv.imshow("TEST",Image)
+        cv.imshow("Hallo Marcel du Maschine",Image)
+        # Test
         cv.imshow('WebCam', Image)
         cv.imshow('B', ChangedImage[:, :, 0])
         cv.imshow('G', ChangedImage[:, :, 1])
