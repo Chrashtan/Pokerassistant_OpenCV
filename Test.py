@@ -19,7 +19,8 @@ while WebCam.isOpened():
         Image_GRAY = cv.cvtColor(Image, cv.COLOR_BGR2GRAY)
 
         # Show the contents of BUBATZ image
-        cv.imshow("TEST",Image)
+        cv.imshow("TEST",Image) #test von ma-du
+        #das war von version 1.
         cv.imshow('WebCam', Image)
         cv.imshow('B', ChangedImage[:, :, 0])
         cv.imshow('G', ChangedImage[:, :, 1])
@@ -34,3 +35,4 @@ cv.destroyAllWindows()
 # Hier weitere kommentare um etwas auszuprobieren
 
 # vbabsabbsdoas merge test
+# 2. kommentar
