@@ -35,4 +35,3 @@ cv.destroyAllWindows()
 # Hier weitere kommentare um etwas auszuprobieren
 
 # vbabsabbsdoas merge test
-# 2. kommentar
