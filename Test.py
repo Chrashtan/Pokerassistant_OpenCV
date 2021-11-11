@@ -28,8 +28,8 @@ while WebCam.isOpened():
 
 # Close all windows
 cv.destroyAllWindows()
-
+# Merge
 # Test commit
 # Hier weitere kommentare um etwas auszuprobieren
 
-# test von ma-du
+# vbabsabbsdoasboafjola test von ma-du
