@@ -32,4 +32,4 @@ cv.destroyAllWindows()
 # Test commit
 # Hier weitere kommentare um etwas auszuprobieren
 
-# vbabsabbsdoasboafjola test von ma-du
+# vbabsabbsdoas merge test
