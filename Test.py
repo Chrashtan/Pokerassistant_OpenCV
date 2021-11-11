@@ -30,4 +30,6 @@ while WebCam.isOpened():
 cv.destroyAllWindows()
 
 # Test commit
-# Hier weitere kommentare um etwas auszuprobieren 
+# Hier weitere kommentare um etwas auszuprobieren
+
+# test von ma-du
