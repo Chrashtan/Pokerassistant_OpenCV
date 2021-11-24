@@ -1,7 +1,7 @@
 # Import OpenCV Library
 import cv2 as cv
 # Generation of an captured object
-WebCam = cv.VideoCapture(1)
+WebCam = cv.VideoCapture(0)
 
 # repeat the following lines as long as the Webcam is accessible
 while WebCam.isOpened():
