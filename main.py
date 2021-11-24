@@ -16,7 +16,7 @@ ImageGrayscale = cv.imread("PicturesOfCards/Aces_4.jpg", cv.IMREAD_GRAYSCALE)
 ImageGrayscaleResized = cv.resize(ImageGrayscale, dsize=(0, 0), fy=0.5, fx=0.5)
 
 # Preprocess image
-ImgGauß = cv.GaussianBlur(ImageGrayscaleResized, (21,21), 7)
+ImgGauß = cv.GaussianBlur(ImageGrayscaleResized, (21, 21), 7)
 ImgSmooth = cv.medianBlur(ImgGauß, 9)
 ret, ImageBinarised = cv.threshold(ImageGrayscaleResized, 0, 255, cv.THRESH_OTSU)
 
