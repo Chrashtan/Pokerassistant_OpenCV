@@ -22,28 +22,28 @@ class CardProperties:
         self.height = 0  # height of card
         self.rank_img = []  # Image of card's rank
         self.suit_img = []  # Image of card's suit
-        CardRanks.rank_name = 0  # Name of the rank of the card. Has to be determined
-        CardSuits.suit_name = 0  # Name of the suit of the card. Has to be determined
+        CardRanks.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
+        CardSuits.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
 
 
 class CardRanks(Enum):
-    ACE = 1
-    TWO = 2
-    THREE = 3
-    FOUR = 4
-    FIVE = 5
-    SIX = 6
-    SEVEN = 7
-    EIGHT = 8
-    NINE = 9
-    TEN = 10
-    JACK = 11
-    QUEEN = 12
-    KING = 13
+    ACE = "ace"
+    TWO = "two"
+    THREE = "three"
+    FOUR = "four"
+    FIVE = "five"
+    SIX = "six"
+    SEVEN = "seven"
+    EIGHT = "eight"
+    NINE = "nine"
+    TEN = "ten"
+    JACK = "jack"
+    QUEEN = "queen"
+    KING = "king"
 
 
 class CardSuits(Enum):
-    DIAMONDS = 1
-    CLUBS = 2
-    HEARTS = 3
-    SPADES = 4
+    DIAMONDS = "diamonds"
+    CLUBS = "clubs"
+    HEARTS = "hearts"
+    SPADES = "spades"
