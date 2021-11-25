@@ -18,7 +18,7 @@ ImageGrayscale = cv.cvtColor(ImageOriginalResized, cv.COLOR_BGR2GRAY)
 
 
 # Using GaussianBlur to delete structures in the Background
-ImgGauß = cv.GaussianBlur(ImageGrayscale, (11, 11), 0)
+ImgGauß = cv.GaussianBlur(ImageGrayscale, (11, 11), 2)
 # Smooth out the Blurred image
 ImgSmooth = cv.medianBlur(ImgGauß, 9)
 # Binarise the Image
@@ -39,18 +39,43 @@ ImgEdged = cv.Canny(ImgGauß, 30, 150)
 
 # Find Contours
 CardContours, hierachyf = cv.findContours(ImgEdged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+EdgedContours, hierachyf = cv.findContours(ImgEdged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+
+
+# Find centre of Contours
+
+# Remove small fragment contours
+BigContours = []
+for i in range(0, len(EdgedContours)):
+    if cv.contourArea(EdgedContours[i]) > 100000:
+        BigContours.append(EdgedContours[i])
+
+# Find Moments and compute Centrepoints
+for cont in BigContours:
+    print(cv.contourArea(cont))
+    ContMoments = cv.moments(cont).copy()
+    cv.contourArea(cont)
+    if ContMoments["m00"] != 0:
+        ContCentreX = int(ContMoments["m10"]/ContMoments["m00"])
+        ContCentreY = int(ContMoments["m01"]/ContMoments["m00"])
+        cv.drawMarker(ImageOriginalResized, (ContCentreX, ContCentreY), (69, 200, 43))
+
 
 # draw contour to image
-cv.drawContours(ImageOriginalResized, CardContours, -1, (69, 200, 43), 3)
+#cv.drawContours(ImageOriginalResized, CardContours, -1, (0, 255, 0), 3)
+cv.drawContours(ImageOriginalResized, BigContours, -1, (69, 200, 43), 3)
+
 
 # Show Image on Display
 # cv.imshow('Smooth', ImgSmooth)
 # cv.imshow('Binary', ImageBinarised)
 # cv.imshow('Canny', ImgCanny)
 cv.imshow('Canny blurred', ImgEdged)
+
+
 # Print Number of Contours found in the image
 print(len(CardContours))
-
+print(len(EdgedContours[1]))
 cv.imshow('Original Picture', ImageOriginalResized)
 cv.waitKey(0)
 cv.destroyAllWindows()
