@@ -38,12 +38,14 @@ class CardSuits(Enum):
 class CardProperties:
     """Structure to store information about the cards of the camera image."""
 
+    # Constructor of CardProperties
     def __init__(self):
         self.frame = []  # Frame of card
         self.corner = []  # Corner of card
         self.centerpoint = []   # Centerpoint of Card
         self.width = 0  # Width of card
         self.height = 0  # height of card
+        self.img = []   # Image of the full card
         self.rank_img = []  # Image of card's rank
         self.suit_img = []  # Image of card's suit
         CardRanks.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined

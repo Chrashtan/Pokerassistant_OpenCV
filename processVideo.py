@@ -5,13 +5,15 @@ from matplotlib import pyplot as plt
 import cards
 
 
-def drawContours(image):
+def drawBigContours(image):
     """Process Image to grayscale and use the canny algorithm to draw contours into picture"""
     # Process Image
     image_grayscale = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 
     # Using GaussianBlur to delete structures in the Background
     img_gauss = cv.GaussianBlur(image_grayscale, (11, 11), 2)
+
+    # TODO: Wenn wir den Canny filter benutzen kann man die beiden Zeilen oben weg lassen?
 
     # Process Image using Canny
     # How Canny works

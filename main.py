@@ -17,7 +17,7 @@ ImageOriginal = cv.imread("PicturesOfCards/Aces_4.jpg")     # Works best for a d
 ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=0.50, fx=0.50)
 ImageGrayscale = cv.cvtColor(ImageOriginalResized, cv.COLOR_BGR2GRAY)
 
-pV.drawContours(ImageOriginalResized)
+pV.drawBigContours(ImageOriginalResized)
 
 
 
