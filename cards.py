@@ -41,6 +41,7 @@ class CardProperties:
     def __init__(self):
         self.frame = []  # Frame of card
         self.corner = []  # Corner of card
+        self.centerpoint = []   # Centerpoint of Card
         self.width = 0  # Width of card
         self.height = 0  # height of card
         self.rank_img = []  # Image of card's rank
