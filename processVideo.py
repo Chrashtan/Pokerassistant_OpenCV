@@ -25,15 +25,23 @@ def drawBigContours(image):
     # 5. Track edge by hysteresis: Finalize the detection of edges by suppressing
     #    all the other edges that are weak and not connected to strong edges.
     img_edged = cv.Canny(img_gauss, 30, 150)
-    edged_contours, hierachyf = cv.findContours(img_edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    contours, hierachyf = cv.findContours(img_edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+
+    # Sort contours by size -> biggest contour ist at the beginn of the array
+    contours = sorted(contours, key=cv.contourArea, reverse=True)
+
+    # If no contours are found print an error
+    if len(contours) == 0:
+        print("No contours found!")
+        quit()
 
     # Find centre of Contours
 
     # Remove small fragment contours
     big_contours = []
-    for i in range(0, len(edged_contours)):
-        if cv.contourArea(edged_contours[i]) > 100000:
-            big_contours.append(edged_contours[i])
+    for i in range(0, len(contours)):
+        if cv.contourArea(contours[i]) > 100000:
+            big_contours.append(contours[i])
 
     # Find Moments and compute centerpoints
     for cont in big_contours:
