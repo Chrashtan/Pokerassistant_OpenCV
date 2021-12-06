@@ -8,12 +8,10 @@ import cards
 def drawBigContours(image):
     """Process Image to grayscale and use the canny algorithm to draw contours into picture"""
     # Process Image
-    image_grayscale = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+    gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 
     # Using GaussianBlur to delete structures in the Background
-    img_gauss = cv.GaussianBlur(image_grayscale, (11, 11), 2)
-
-    # TODO: Wenn wir den Canny filter benutzen kann man die beiden Zeilen oben weg lassen?
+    blurred = cv.GaussianBlur(gray, (11, 11), 2)
 
     # Process Image using Canny
     # How Canny works
@@ -24,8 +22,8 @@ def drawBigContours(image):
     # 4. Apply double threshold to determine potential edges
     # 5. Track edge by hysteresis: Finalize the detection of edges by suppressing
     #    all the other edges that are weak and not connected to strong edges.
-    img_edged = cv.Canny(img_gauss, 30, 150)
-    contours, hierachyf = cv.findContours(img_edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    edged = cv.Canny(blurred, 30, 150)
+    contours, hierachyf = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
     # Sort contours by size -> biggest contour ist at the beginn of the array
     contours = sorted(contours, key=cv.contourArea, reverse=True)
@@ -53,10 +51,33 @@ def drawBigContours(image):
             cont_centre_y = int(cont_moments["m01"] / cont_moments["m00"])
             cv.drawMarker(image, (cont_centre_x, cont_centre_y), (69, 200, 43))
 
+    # Example for only one card
+    ace_left = big_contours[0]
+
+    # Approximate the corner points of the card
+    peri = cv.arcLength(ace_left, True)
+    approx = cv.approxPolyDP(ace_left, 0.01*peri, True)
+    pts = np.float32(approx)
+    x, y, w, h = cv.boundingRect(ace_left) # Draw a rectangle around card.
+    # Cut out everything exept the card
+    imageCard = image[y:y + h, x:x + w]
+
+    # Isolate suit and rank
+    imageCardGray = cv.cvtColor(imageCard, cv.COLOR_BGR2GRAY)
+    imageCardEdged = cv.Canny(imageCardGray, 30, 150)
+
+    cv.imshow("Card", imageCardEdged)
+
+
+
+
+
     # draw contour to image
-    # cv.drawContours(ImageOriginalResized, CardContours, -1, (0, 255, 0), 3)
     cv.drawContours(image, big_contours, -1, (69, 200, 43), 3)
 
-    # TODO: returnvalue of found contours
+
+
+
+
 
 

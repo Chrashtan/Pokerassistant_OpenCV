@@ -19,13 +19,7 @@ ImageGrayscale = cv.cvtColor(ImageOriginalResized, cv.COLOR_BGR2GRAY)
 
 pV.drawBigContours(ImageOriginalResized)
 
-
-
 # Show Image on Display
-
-# Print Number of Contours found in the image
-# print(len(CardContours))
-# print(len(EdgedContours[1]))
 cv.imshow('Original Picture', ImageOriginalResized)
 cv.waitKey(0)
 cv.destroyAllWindows()
