@@ -2,7 +2,6 @@
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
-import cards
 
 
 def drawBigContours(image):
@@ -36,13 +35,13 @@ def drawBigContours(image):
     # Find centre of Contours
 
     # Remove small fragment contours
-    big_contours = []
+    cards = []   # Big countours = cards
     for i in range(0, len(contours)):
         if cv.contourArea(contours[i]) > 100000:
-            big_contours.append(contours[i])
+            cards.append(contours[i])
 
     # Find Moments and compute centerpoints
-    for cont in big_contours:
+    for cont in cards:
         print(cv.contourArea(cont))
         cont_moments = cv.moments(cont).copy()
         cv.contourArea(cont)
@@ -51,29 +50,21 @@ def drawBigContours(image):
             cont_centre_y = int(cont_moments["m01"] / cont_moments["m00"])
             cv.drawMarker(image, (cont_centre_x, cont_centre_y), (69, 200, 43))
 
-    # Example for only one card
-    ace_left = big_contours[0]
-
-    # Approximate the corner points of the card
-    peri = cv.arcLength(ace_left, True)
-    approx = cv.approxPolyDP(ace_left, 0.01*peri, True)
-    pts = np.float32(approx)
-    x, y, w, h = cv.boundingRect(ace_left) # Draw a rectangle around card.
-    # Cut out everything exept the card
-    imageCard = image[y:y + h, x:x + w]
-
-    # Isolate suit and rank
-    imageCardGray = cv.cvtColor(imageCard, cv.COLOR_BGR2GRAY)
-    imageCardEdged = cv.Canny(imageCardGray, 30, 150)
-
-    cv.imshow("Card", imageCardEdged)
-
-
+    # Momentan werden 8 "Karten" erkannt.
+    for i in range(0, len(cards)):
+        # Approximate the corner points of the card
+        peri = cv.arcLength(cards[i], True)                     # Find angle of tilted card
+        approx = cv.approxPolyDP(cards[i], 0.01*peri, True)     # Adjust picture so it fits into a rectangle
+        pts = np.float32(approx)
+        x, y, w, h = cv.boundingRect(cards[i]) # Draw a rectangle around card.
+        # Cut out everything exept the card
+        imageCards = image[y:y + h, x:x + w]
+        cv.imshow("T", imageCards)
 
 
 
     # draw contour to image
-    cv.drawContours(image, big_contours, -1, (69, 200, 43), 3)
+    cv.drawContours(image, cards, -1, (69, 200, 43), 3)
 
 
 
