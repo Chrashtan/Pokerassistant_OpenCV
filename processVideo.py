@@ -53,8 +53,8 @@ def drawBigContours(image):
     # Momentan werden 8 "Karten" erkannt.
     for i in range(0, len(cards)):
         # Approximate the corner points of the card
-        peri = cv.arcLength(cards[i], True)                     # Find angle of tilted card
-        approx = cv.approxPolyDP(cards[i], 0.01*peri, True)     # Adjust picture so it fits into a rectangle
+        peri = cv.arcLength(cards[i], True)                     # maximum distance from contour to approximated contour
+        approx = cv.approxPolyDP(cards[i], 0.01*peri, True)     # Create contour around object
         pts = np.float32(approx)
         x, y, w, h = cv.boundingRect(cards[i]) # Draw a rectangle around card.
         # Cut out everything exept the card
