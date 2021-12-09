@@ -13,7 +13,7 @@ import processVideo as pV
 
 # TODO: Read from Camera -> Test with pictures loaded from Computer
 # Read in Image resize it and convert to grayscale
-ImageOriginal = cv.imread("PicturesOfCards/Card_tildet.jpg")     # Works best for a darker background
+ImageOriginal = cv.imread("PicturesOfCards/Aces_4.jpg")     # Works best for a darker background
 ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=0.50, fx=0.50)
 ImageGrayscale = cv.cvtColor(ImageOriginalResized, cv.COLOR_BGR2GRAY)
 
