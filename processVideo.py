@@ -60,7 +60,7 @@ def drawBigContours(image):
         x, y, w, h = cv.boundingRect(cards[i]) # Draw a rectangle around card.
         # Cut out everything exept the card
         imageCards = image[y:y + h, x:x + w]
-        cv.imshow("T", imageCards)
+        cv.imshow("T %i" %i, imageCards)
 
         # code for transformation:
         rect = cv.minAreaRect(pts)  # capture smallest possible rectangle (as group of pixels(?))
@@ -85,7 +85,17 @@ def drawBigContours(image):
         imgList.append(cv.warpPerspective(image, TransformMatrix, (boxWidth, boxHeight)))
 
     for i in range(0, len(imgList)):
-        cv.imshow('cropped images:', imgList[i])
+        cv.imshow("cropped image %i:" %i, imgList[i])
+
+    # take important parts out of the transformed image:
+    imgColourList = []
+    imgFaceList = []
+    for i in range(0, len(imgList)):
+        imgColourList.append(imgList[i][15:70, 5:40])
+        imgFaceList.append(imgList[i][70:115, 5:40])
+    for i in range(0, len(imgFaceList)):
+        cv.imshow('colour %i' %i, imgColourList[i])
+        cv.imshow('face %i' %i, imgFaceList[i])
 
     # draw contour to image
     cv.drawContours(image, cards, -1, (69, 200, 43), 3)
