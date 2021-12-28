@@ -45,6 +45,8 @@ class CardProperties:
         self.rank_match = []    # Image of  best match
         self.suit_img = []  # Image of card's suit
         self.suit_match = []    # Image of best match
+        self.centerpoint_X = 0
+        self.centerpoint_Y = 0
         CardRanks.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
         CardSuits.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
 
@@ -55,6 +57,8 @@ class CardProperties:
         self.rank_match = []    # Image of  best match
         self.suit_img = suit  # Image of card's suit
         self.suit_match = []    # Image of best match
+        self.centerpoint_X = 0
+        self.centerpoint_Y = 0
         CardRanks.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
         CardSuits.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
 
