@@ -48,3 +48,13 @@ class CardProperties:
         CardRanks.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
         CardSuits.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
 
+    # Constructor of CardProperties
+    def __init__(self, img, rank, suit):
+        self.img = img   # Image of the full card
+        self.rank_img = rank     # Image of card's rank
+        self.rank_match = []    # Image of  best match
+        self.suit_img = suit  # Image of card's suit
+        self.suit_match = []    # Image of best match
+        CardRanks.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
+        CardSuits.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
+
