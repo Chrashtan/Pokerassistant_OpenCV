@@ -19,15 +19,17 @@ ImageGrayscale = cv.cvtColor(ImageOriginalResized, cv.COLOR_BGR2GRAY)
 
 imgList, imgRanksList, imgSuitsList = pV.searchRanksSuits(ImageOriginalResized)
 
-# to Show that the functions works
-# Show all cropped cards
-for i in range(0, len(imgList)):
-    cv.imshow("cropped image %i:" % i, imgList[i])
+ListOfCards = []
 
-# Show all the Ranks/Suits
-for i in range(0, len(imgRanksList)):
-    cv.imshow('colour %i' %i, imgSuitsList[i])
-    cv.imshow('face %i' % i, imgRanksList[i])
+for i in range(len(imgList)):
+    ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i]))
+
+# Show all the cards
+for i in range(len(ListOfCards)):
+    cv.imshow("Card %i" %i, ListOfCards[i].img)
+    cv.imshow("Suit %i" %i, ListOfCards[i].suit_img)
+    cv.imshow("Rank %i" %i, ListOfCards[i].rank_img)
+
 
 
 
