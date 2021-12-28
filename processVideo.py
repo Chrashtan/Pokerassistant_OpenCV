@@ -4,8 +4,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def drawBigContours(image):
-    """Process Image to grayscale and use the canny algorithm to draw contours into picture"""
+def searchRanksSuits(image):
+    """Process Image to grayscale and use the canny algorithm to draw contours into picture and returns a List of all Cards (cropped)
+       and a List of the suits and ranks of all cards"""
     # Process Image
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 
@@ -13,14 +14,6 @@ def drawBigContours(image):
     blurred = cv.GaussianBlur(gray, (11, 11), 2)
 
     # Process Image using Canny
-    # How Canny works
-    # 1. Apply Gaussian filter to smooth the image in order to remove the noise
-    # 2. Find the intensity gradients of the image
-    # 3. Apply gradient magnitude thresholding or lower bound cut-off suppression
-    #    to get rid of spurious response to edge detection
-    # 4. Apply double threshold to determine potential edges
-    # 5. Track edge by hysteresis: Finalize the detection of edges by suppressing
-    #    all the other edges that are weak and not connected to strong edges.
     edged = cv.Canny(blurred, 30, 150)
     contours, hierachyf = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
 
@@ -49,8 +42,10 @@ def drawBigContours(image):
             cont_centre_x = int(cont_moments["m10"] / cont_moments["m00"])
             cont_centre_y = int(cont_moments["m01"] / cont_moments["m00"])
             cv.drawMarker(image, (cont_centre_x, cont_centre_y), (69, 200, 43))
+
+
     imgList = []
-    # Momentan werden 8 "Karten" erkannt.
+
     for i in range(0, len(cards)):
         # Approximate the corner points of the card
         peri = cv.arcLength(cards[i], True)                     # maximum distance from contour to approximated contour
@@ -60,7 +55,7 @@ def drawBigContours(image):
         x, y, w, h = cv.boundingRect(cards[i]) # Draw a rectangle around card.
         # Cut out everything exept the card
         imageCards = image[y:y + h, x:x + w]
-        cv.imshow("T %i" %i, imageCards)
+        # cv.imshow("T %i" %i, imageCards) # Show transformed Cards
 
         # code for transformation:
         rect = cv.minAreaRect(pts)  # capture smallest possible rectangle (as group of pixels(?))
@@ -84,25 +79,15 @@ def drawBigContours(image):
         # cut and rotate the bounding box to get the upright rectangle
         imgList.append(cv.warpPerspective(image, TransformMatrix, (boxWidth, boxHeight)))
 
-    for i in range(0, len(imgList)):
-        cv.imshow("cropped image %i:" %i, imgList[i])
-
     # take important parts out of the transformed image:
-    imgColourList = []
-    imgFaceList = []
+    imgSuitsList = []
+    imgRanksList = []
     for i in range(0, len(imgList)):
-        imgColourList.append(imgList[i][15:70, 5:40])
-        imgFaceList.append(imgList[i][70:115, 5:40])
-    for i in range(0, len(imgFaceList)):
-        cv.imshow('colour %i' %i, imgColourList[i])
-        cv.imshow('face %i' %i, imgFaceList[i])
+        imgSuitsList.append(imgList[i][15:70, 5:40])
+        imgRanksList.append(imgList[i][70:115, 5:40])
 
     # draw contour to image
     cv.drawContours(image, cards, -1, (69, 200, 43), 3)
 
-
-
-
-
-
+    return imgList, imgRanksList, imgSuitsList
 

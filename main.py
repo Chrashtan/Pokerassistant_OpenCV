@@ -17,7 +17,20 @@ ImageOriginal = cv.imread("PicturesOfCards/Aces_4.jpg")     # Works best for a d
 ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=0.50, fx=0.50)
 ImageGrayscale = cv.cvtColor(ImageOriginalResized, cv.COLOR_BGR2GRAY)
 
-pV.drawBigContours(ImageOriginalResized)
+imgList, imgRanksList, imgSuitsList = pV.searchRanksSuits(ImageOriginalResized)
+
+# to Show that the functions works
+# Show all cropped cards
+for i in range(0, len(imgList)):
+    cv.imshow("cropped image %i:" % i, imgList[i])
+
+# Show all the Ranks/Suits
+for i in range(0, len(imgRanksList)):
+    cv.imshow('colour %i' %i, imgSuitsList[i])
+    cv.imshow('face %i' % i, imgRanksList[i])
+
+
+
 
 # Show Image on Display
 cv.imshow('Original Picture', ImageOriginalResized)
