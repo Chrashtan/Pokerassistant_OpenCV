@@ -52,6 +52,7 @@ for i in range(len(ListOfCards)):
     cv.imshow("Suit %i" %i, ListOfCards[i].suit_img)
     cv.imshow("Rank %i" %i, ListOfCards[i].rank_img)
 
+pV.identifyCard(imgSuitsList[0])
 
 
 # Show Image on Display

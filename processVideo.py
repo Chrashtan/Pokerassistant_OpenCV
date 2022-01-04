@@ -11,9 +11,9 @@ def preProcessPicture(image):
     return blurred
 
 def findContours(image):
-    """Finds in a picture all contours and returns them into a list"""
+    """Finds all contours in a picture and returns them into a list"""
     # Process Image using Canny
-    edged = cv.Canny(image, 30, 150)
+    edged = cv.Canny(image, 20, 150)
     contours, hierachyf = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     # Sort contours by size -> biggest contour is at the beginn of the array
     contours = sorted(contours, key=cv.contourArea, reverse=True)
@@ -48,7 +48,7 @@ def searchRanksSuits(image, CardContours):
     """Search Ranks and Suits in the Orginal image. Needs Orginal image and Contours of the Cards, returns
     image of the card, image of the rank and image of the suit"""
 
-    imgList = []
+    imgList = []        # warum sind die hier als matrix definiert, wird nicht nur ein card image verarbeitet?
     imgSuitsList = []
     imgRanksList = []
 
@@ -92,4 +92,41 @@ def searchRanksSuits(image, CardContours):
 
     return imgList, imgRanksList, imgSuitsList
 
+def identifyCard(img):
+    """Identifies the card rank or suit, needs image of rank or image of suit, returns best match"""
 
+    imgGray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+    imgPre = preProcessPicture(img)
+    array_cont = findContours(imgPre)
+    print(type(array_cont[1]))
+
+    x, y, w, h = cv.boundingRect(array_cont[0])  # Draw a rectangle around card.
+    # Cut out everything exept the card
+    imgCut = img[y:y + h, x:x + w]
+    cv.drawContours(img, array_cont, -1, (69, 200, 43), 1)
+    cv.rectangle(img,  (x, y),(x+w,y+h), (69, 200, 43), 2)
+    img = cv.resize(img,dsize=(0,0),dst=0,fx = 4, fy = 4)
+    cv.imshow("original", img)
+    cv.imshow("cut",imgCut)
+
+# def manualBox(points):
+#
+#     minY = int
+#     minX = int
+#     maxY = int
+#     maxX = int
+#     minY = points[0,0,1]
+#     minX = points[0,0,0]
+#     maxY = points[0,0,1]
+#     maxX = points[0,0,0]
+#     for i in range(1, len(points)):
+#         if points[i,0,1] > maxY:
+#             maxY = points[i,0,1]
+#         if points[i,0,0] > maxX:
+#             maxX = points[i,0,0]
+#         if points[i,0,1] < minY:
+#             minY = points[i,0,1]
+#         if points[i,0,0] < minX:
+#             minX = points[i,0,0]
+#
+#     return minX, minY, maxX, maxY
