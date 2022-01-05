@@ -27,7 +27,6 @@ def findContours(image):
     contours, hierachyf = cv.findContours(image, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # Chain approx simple saves only 2 points of a contour
     # Sort contours by size -> biggest contour is at the beginn of the array
     contours = sorted(contours, key=cv.contourArea, reverse=True)
-
     # If no contours are found print an error
     if len(contours) == 0:
         print("No contours found!")
@@ -35,37 +34,40 @@ def findContours(image):
     else:
         return contours
 
+
 def findCards(image, min_area, max_area):
-    """Gets a picture and min and max area for one Card. Returns a List of card contours"""
+    """Gets a picture and min and max area for one Card. Returns a List of card contours.
+    Also Returns a Flag -> CardFound"""
     ListOfCardContours = []  # Big countours = cards
+    CardFound = True
 
     contours, hierachyf = cv.findContours(image, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     # Sort contours by size -> biggest contour is at the beginn of the array
     contours = sorted(contours, key=cv.contourArea, reverse=True)
 
-    # If no contour, do nothing
+    # If no contour is found, do nothing
     if len(contours) == 0:
-        return []
+        print("No contours found!")
+        CardFound = False
+        return [], CardFound
+    else:
+        for i in range(len(contours)):
+            size = cv.contourArea(contours[i])
+            peri = cv.arcLength(contours[i], True)
+            approx = cv.approxPolyDP(contours[i], 0.01*peri, True)
 
-    for i in range(len(contours)):
-        size = cv.contourArea(contours[i])
-        peri = cv.arcLength(contours[i], True)
-        approx = cv.approxPolyDP(contours[i], 0.01*peri, True)
+            # contour is card if:
+            # - contour is smaller than max area
+            # - contour area is greater than min are
+            # - have 4 corners
+            if((size < max_area) and (size > min_area) and (len(approx) == 4)):
+                ListOfCardContours.append(contours[i])
 
-        # contour is card if:
-        # - contour is smaller than max area
-        # - contour area is greater than min are
-        # - have 4 corners
-        if((size < max_area) and (size > min_area) and (len(approx) == 4)):
-            ListOfCardContours.append(contours[i])
-
-    return ListOfCardContours
-
+        return ListOfCardContours, CardFound
 
 
 def findCenterpoints(card):
     """Returns centerpoint of one card"""
-    print(cv.contourArea(card))
     cont_moments = cv.moments(card).copy()
     cv.contourArea(card)
     if cont_moments["m00"] != 0:
@@ -125,7 +127,6 @@ def searchRanksSuits(image, CardContours):
 
 imgRefs = ["Ace","Clubs","Diamonds","Eight","Five","Four","Hearts","Jack","King","Nine","Queen","Seven","Six","Spades","Ten","Three","Two"]
 
-
 def identifyCard(imgSuit, imgRank):
     rank = cards.CardRanks
     suit = cards.CardSuits
@@ -164,6 +165,6 @@ def identifyImage(img):
     imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
     imgSolved = cv.resize(imgSolved, (width, height))
     cv.imshow("Best Fit", imgSolved)
-
     return result
+
 
