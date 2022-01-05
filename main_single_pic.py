@@ -9,6 +9,7 @@ import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
 import cards
+import processVideo
 import processVideo as pV
 
 
@@ -47,13 +48,12 @@ cv.drawContours(ImageOriginalResized, ListOfCardContours, -1, (69, 200, 43), 3)
 
 
 # Show all the cards
-for i in range(len(ListOfCards)):
-    cv.imshow("Card %i" %i, ListOfCards[i].img)
-    cv.imshow("Suit %i" %i, ListOfCards[i].suit_img)
-    cv.imshow("Rank %i" %i, ListOfCards[i].rank_img)
+#for i in range(len(ListOfCards)):
+    #cv.imshow("Card %i" %i, ListOfCards[i].img)
+    #cv.imshow("Suit %i" %i, ListOfCards[i].suit_img)
+    #cv.imshow("Rank %i" %i, ListOfCards[i].rank_img)
 
-pV.identifyCard(imgSuitsList[0])
-
+testSuit, testRank = pV.identifyCard(imgSuitsList[0], imgRanksList[0])
 
 # Show Image on Display
 cv.imshow('Original Picture', ImageOriginalResized)

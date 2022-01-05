@@ -13,26 +13,26 @@ from enum import Enum
 # Properties of the card
 
 class CardRanks(Enum):
-    ACE = "ace"
-    TWO = "two"
-    THREE = "three"
-    FOUR = "four"
-    FIVE = "five"
-    SIX = "six"
-    SEVEN = "seven"
-    EIGHT = "eight"
-    NINE = "nine"
-    TEN = "ten"
-    JACK = "jack"
-    QUEEN = "queen"
-    KING = "king"
+    ACE = "Ace"
+    TWO = "Two"
+    THREE = "Three"
+    FOUR = "Four"
+    FIVE = "Five"
+    SIX = "Six"
+    SEVEN = "Seven"
+    EIGHT = "Eight"
+    NINE = "Nine"
+    TEN = "Ten"
+    JACK = "Jack"
+    QUEEN = "Queen"
+    KING = "King"
 
 
 class CardSuits(Enum):
-    DIAMONDS = "diamonds"
-    CLUBS = "clubs"
-    HEARTS = "hearts"
-    SPADES = "spades"
+    DIAMONDS = "Diamonds"
+    CLUBS = "Clubs"
+    HEARTS = "Hearts"
+    SPADES = "Spades"
 
 
 class CardProperties:

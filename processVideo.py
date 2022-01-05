@@ -2,6 +2,7 @@
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
+import cards
 
 def preProcessPicture(image):
     # Process Image
@@ -92,41 +93,48 @@ def searchRanksSuits(image, CardContours):
 
     return imgList, imgRanksList, imgSuitsList
 
-def identifyCard(img):
+
+imgRefs = ["Ace","Clubs","Diamonds","Eight","Five","Four","Hearts","Jack","King","Nine","Queen","Seven","Six","Spades","Ten","Three","Two"]
+
+
+def identifyCard(imgSuit, imgRank):
+    rank = cards.CardRanks
+    suit = cards.CardSuits
+    rank = identifyImage(imgRank)
+    suit = identifyImage(imgSuit)
+
+    return suit, rank
+
+
+def identifyImage(img):
     """Identifies the card rank or suit, needs image of rank or image of suit, returns best match"""
-
-    imgGray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     imgPre = preProcessPicture(img)
-    array_cont = findContours(imgPre)
-    print(type(array_cont[1]))
-
+    thresh, imgPre = cv.threshold(imgPre, 0, 255, cv.THRESH_BINARY_INV +cv.THRESH_OTSU)
+    array_cont,x = cv.findContours(imgPre, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
     x, y, w, h = cv.boundingRect(array_cont[0])  # Draw a rectangle around card.
     # Cut out everything exept the card
-    imgCut = img[y:y + h, x:x + w]
-    cv.drawContours(img, array_cont, -1, (69, 200, 43), 1)
-    cv.rectangle(img,  (x, y),(x+w,y+h), (69, 200, 43), 2)
-    img = cv.resize(img,dsize=(0,0),dst=0,fx = 4, fy = 4)
-    cv.imshow("original", img)
-    cv.imshow("cut",imgCut)
+    imgCut = imgPre[y:y + h, x:x + w]
+    cv.imshow("cut", imgCut)
+    height = imgCut.shape[0]
+    width = imgCut.shape[1]
+    bestFit = 1000
+    for ref in imgRefs:
+        imgSample = cv.imread("Card_Imgs/"+ref+".jpg")
+        imgSample = imgSample[:,:,0]
+        imgSample = cv.resize(imgSample, (width, height))
 
-# def manualBox(points):
-#
-#     minY = int
-#     minX = int
-#     maxY = int
-#     maxX = int
-#     minY = points[0,0,1]
-#     minX = points[0,0,0]
-#     maxY = points[0,0,1]
-#     maxX = points[0,0,0]
-#     for i in range(1, len(points)):
-#         if points[i,0,1] > maxY:
-#             maxY = points[i,0,1]
-#         if points[i,0,0] > maxX:
-#             maxX = points[i,0,0]
-#         if points[i,0,1] < minY:
-#             minY = points[i,0,1]
-#         if points[i,0,0] < minX:
-#             minX = points[i,0,0]
-#
-#     return minX, minY, maxX, maxY
+        imgDiff = cv.subtract(imgCut, imgSample)  # The difference has to be taken twice, once for pixels
+        currentFit = np.sum(imgDiff == 255)  # that are missing in the sample, once for those that
+        imgDiff = cv.subtract(imgSample, imgCut)  # are not supposed to be there
+        currentFit = currentFit + np.sum(imgDiff == 255)
+
+        if currentFit<bestFit:
+            bestFit = currentFit
+            result = ref
+    # just for checking the result
+    imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
+    imgSolved = cv.resize(imgSolved, (width, height))
+    cv.imshow("Best Fit", imgSolved)
+
+    return result
+
