@@ -9,15 +9,26 @@ def preProcessPicture(image):
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     # Using GaussianBlur to delete structures in the Background
     blurred = cv.GaussianBlur(gray, (11, 11), 2)
-    return blurred
+
+    # The following code is there to adapt the threshold to the lighting
+    # A background pixel in the center top of the video is used to determinde the intensity
+    # This allows the threshhold to adapt to the lighting conditions
+    #TODO: USE IT
+    img_w, img_h = np.shape(image)[:2]
+    bkg_level = gray[int(img_h / 100)][int(img_w / 2)]
+    thresh_level = bkg_level + 50
+
+    retval, thresh = cv.threshold(blurred, thresh_level, 255, cv.THRESH_BINARY)
+    return thresh
 
 def findContours(image):
     """Finds all contours in a picture and returns them into a list"""
     # Process Image using Canny
-    edged = cv.Canny(image, 20, 150)
-    contours, hierachyf = cv.findContours(edged, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    #edged = cv.Canny(image, 50, 150)
+    contours, hierachyf = cv.findContours(image, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # Chain approx simple saves only 2 points of a contour
     # Sort contours by size -> biggest contour is at the beginn of the array
     contours = sorted(contours, key=cv.contourArea, reverse=True)
+
     # If no contours are found print an error
     if len(contours) == 0:
         print("No contours found!")
@@ -25,14 +36,33 @@ def findContours(image):
     else:
         return contours
 
-def findCards(contours):
-    """Gets a list of contours and filters all small contours"""
-    # Remove small fragment contours
-    ListofCardContours = []   # Big countours = cards
-    for i in range(0, len(contours)):
-        if cv.contourArea(contours[i]) > 100000:
-            ListofCardContours.append(contours[i])
-    return ListofCardContours
+def findCards(image, min_area, max_area):
+    """Gets a picture and min and max area for one Card. Returns a List of card contours"""
+    ListOfCardContours = []  # Big countours = cards
+
+    contours, hierachyf = cv.findContours(image, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    # Sort contours by size -> biggest contour is at the beginn of the array
+    contours = sorted(contours, key=cv.contourArea, reverse=True)
+
+    # If no contour, do nothing
+    if len(contours) == 0:
+        return []
+
+    for i in range(len(contours)):
+        size = cv.contourArea(contours[i])
+        peri = cv.arcLength(contours[i], True)
+        approx = cv.approxPolyDP(contours[i], 0.01*peri, True)
+
+        # contour is card if:
+        # - contour is smaller than max area
+        # - contour area is greater than min are
+        # - have 4 corners
+        if((size < max_area) and (size > min_area) and (len(approx) == 4)):
+            ListOfCardContours.append(contours[i])
+
+    return ListOfCardContours
+
+
 
 def findCenterpoints(card):
     """Returns centerpoint of one card"""

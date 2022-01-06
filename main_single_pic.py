@@ -26,8 +26,8 @@ ListOfCardContours = []
 ListOfCards = []
 
 PreProcessedPicture = pV.preProcessPicture(ImageOriginalResized)
-ListOfContours = pV.findContours(PreProcessedPicture)
-ListOfCardContours = pV.findCards(ListOfContours)
+# ListOfContours = pV.findContours(PreProcessedPicture) # Just searched for contours is obsolet
+ListOfCardContours = pV.findCards(PreProcessedPicture, 100000, 200000) # Picture, min area / max area
 
 imgList, imgRanksList, imgSuitsList = pV.searchRanksSuits(ImageOriginalResized, ListOfCardContours)
 
