@@ -4,20 +4,19 @@ import numpy as np
 from matplotlib import pyplot as plt
 import cards
 
-def preProcessPicture(image):
+def preProcessPicture(image, backgroundThresh):
     # Process Image
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     # Using GaussianBlur to delete structures in the Background
-    blurred = cv.GaussianBlur(gray, (11, 11), 2)
-
+    blurred = cv.GaussianBlur(gray, (5, 5), 2)
     # The following code is there to adapt the threshold to the lighting
     # A background pixel in the center top of the video is used to determinde the intensity
     # This allows the threshhold to adapt to the lighting conditions
     img_w, img_h = np.shape(image)[:2]
     bkg_level = gray[int(img_h / 100)][int(img_w / 2)]
-    thresh_level = bkg_level + 50
-
+    thresh_level = bkg_level + backgroundThresh
     retval, thresh = cv.threshold(blurred, thresh_level, 255, cv.THRESH_BINARY)
+    #cv.imshow("Test", thresh)
     return thresh
 
 def findContours(image):
@@ -123,6 +122,9 @@ def searchRanksSuits(image, CardContours):
         imgRanksList.append(imgList[i][70:115, 5:40])
 
     return imgList, imgRanksList, imgSuitsList
+
+def drawBoxes(image, cardContours):
+    """Draws boxes around Cards"""
 
 
 imgRefs = ["Ace","Clubs","Diamonds","Eight","Five","Four","Hearts","Jack","King","Nine","Queen","Seven","Six","Spades","Ten","Three","Two"]
