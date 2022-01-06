@@ -49,7 +49,7 @@ def findCards(image, min_area, max_area):
     if len(contours) == 0:
         print("No contours found!")
         CardFound = False
-        return [], CardFound
+        return CardFound, []
     else:
         for i in range(len(contours)):
             size = cv.contourArea(contours[i])
@@ -63,7 +63,7 @@ def findCards(image, min_area, max_area):
             if((size < max_area) and (size > min_area) and (len(approx) == 4)):
                 ListOfCardContours.append(contours[i])
 
-        return ListOfCardContours, CardFound
+        return CardFound, ListOfCardContours
 
 
 def findCenterpoints(card):

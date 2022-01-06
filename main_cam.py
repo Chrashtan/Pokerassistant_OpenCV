@@ -30,13 +30,14 @@ while WebCam.isOpened():
 
         PreProcessedPicture = pV.preProcessPicture(Image)
         ListOfContours = pV.findContours(PreProcessedPicture)
-        ListOfCardContours = pV.findCards(PreProcessedPicture, 100000, 200000)  # Picture, min area / max area
+        CardFound, ListOfCardContours = pV.findCards(PreProcessedPicture, 100000, 200000)  # Picture, min area / max area
 
-        cv.drawContours(Image, ListOfContours, -1, (69, 200, 43), 3)
-        cv.drawContours(PreProcessedPicture, ListOfContours, -1, (69, 200, 43), 3)
+        if CardFound:
+            cv.drawContours(Image, ListOfContours, -1, (69, 200, 43), 3)
+            cv.drawContours(PreProcessedPicture, ListOfContours, -1, (69, 200, 43), 3)
 
-        cv.imshow("My Video", Image)
-        cv.imshow("PreProcessedPicture", PreProcessedPicture)
+            cv.imshow("My Video", Image)
+            cv.imshow("PreProcessedPicture", PreProcessedPicture)
 
 
 
