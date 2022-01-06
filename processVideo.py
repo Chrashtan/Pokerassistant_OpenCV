@@ -130,6 +130,7 @@ def drawBoxes(image, cardContours):
 imgRefs = ["Ace","Clubs","Diamonds","Eight","Five","Four","Hearts","Jack","King","Nine","Queen","Seven","Six","Spades","Ten","Three","Two"]
 
 def identifyCard(imgSuit, imgRank):
+    """Identifies Rank and suit of a card, requires cut images of rank and suit, returns rank and suit as string"""
     rank = cards.CardRanks
     suit = cards.CardSuits
     rank = identifyImage(imgRank)
@@ -152,7 +153,7 @@ def identifyImage(img):
     bestFit = 1000
     for ref in imgRefs:
         imgSample = cv.imread("Card_Imgs/"+ref+".jpg")
-        imgSample = imgSample[:,:,0]
+        imgSample = imgSample[:, :, 0]
         imgSample = cv.resize(imgSample, (width, height))
 
         imgDiff = cv.subtract(imgCut, imgSample)  # The difference has to be taken twice, once for pixels
@@ -160,7 +161,7 @@ def identifyImage(img):
         imgDiff = cv.subtract(imgSample, imgCut)  # are not supposed to be there
         currentFit = currentFit + np.sum(imgDiff == 255)
 
-        if currentFit<bestFit:
+        if currentFit < bestFit:
             bestFit = currentFit
             result = ref
     # just for checking the result
