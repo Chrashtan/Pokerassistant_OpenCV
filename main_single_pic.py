@@ -29,7 +29,7 @@ ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=RESIZE_FACTOR, 
 ListOfCardContours = []
 ListOfCards = []
 
-PreProcessedPicture = pV.preProcessPicture(ImageOriginalResized)
+PreProcessedPicture = pV.preProcessPicture(ImageOriginalResized, 20) # Second value -> BackgroundThreshold
 #ListOfContours = pV.findContours(PreProcessedPicture) # Just searched for contours is obsolet
 CardFound, ListOfCardContours = pV.findCards(PreProcessedPicture, CARD_MIN_AREA, CARD_MAX_AREA) # Picture, min area / max area
 
@@ -52,13 +52,13 @@ if CardFound:
     cv.drawContours(ImageOriginalResized, ListOfCardContours, -1, COLOR_GREEN, 3)
 
     # Show all the cards
-    #for i in range(len(ListOfCards)):
-        #cv.imshow("Card %i" %i, ListOfCards[i].img)
-        #cv.imshow("Suit %i" %i, ListOfCards[i].suit_img)
-        #cv.imshow("Rank %i" %i, ListOfCards[i].rank_img)
+    for i in range(len(ListOfCards)):
+        cv.imshow("Card %i" %i, ListOfCards[i].img)
+        cv.imshow("Suit %i" %i, ListOfCards[i].suit_img)
+        cv.imshow("Rank %i" %i, ListOfCards[i].rank_img)
 
-    if (len(imgSuitsList) > 1) and (len(imgRanksList) > 1):
-        testSuit, testRank = pV.identifyCard(imgSuitsList[0], imgRanksList[0])
+
+    testSuit, testRank = pV.identifyCard(imgSuitsList[0], imgRanksList[0])
 
 # Show Image on Display
 cv.imshow('Original Picture', ImageOriginalResized)
