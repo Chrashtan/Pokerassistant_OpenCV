@@ -16,6 +16,11 @@ import processVideo as pV
 # Generation of an captured object
 WebCam = cv.VideoCapture(2) # 2 because of logitech capture
 
+# Set resolution
+cam.set(cv.CAP_PROP_FRAME_WIDTH, 1080)
+cam.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
+
+
 # repeat the following lines as long as the Webcam is accessible
 while WebCam.isOpened():
     # Reading a single image from the WebCam
