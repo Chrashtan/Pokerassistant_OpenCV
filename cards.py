@@ -62,3 +62,5 @@ class CardProperties:
         CardRanks.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
         CardSuits.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
 
+
+

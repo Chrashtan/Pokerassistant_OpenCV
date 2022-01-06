@@ -12,6 +12,8 @@ import cards
 import processVideo
 import processVideo as pV
 
+
+
 # Read in Image resize it and convert to grayscale
 ImageOriginal = cv.imread("PicturesOfCards/Aces_4.jpg")     # Works best for a darker background
 ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=0.5, fx=0.5)
