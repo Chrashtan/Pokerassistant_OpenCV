@@ -13,7 +13,6 @@ def preProcessPicture(image):
     # The following code is there to adapt the threshold to the lighting
     # A background pixel in the center top of the video is used to determinde the intensity
     # This allows the threshhold to adapt to the lighting conditions
-    #TODO: USE IT
     img_w, img_h = np.shape(image)[:2]
     bkg_level = gray[int(img_h / 100)][int(img_w / 2)]
     thresh_level = bkg_level + 50
