@@ -4,6 +4,9 @@ import numpy as np
 from matplotlib import pyplot as plt
 import cards
 
+# Constants
+BKG_THRESHOLD = 50
+
 def preProcessPicture(image):
     # Process Image
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
@@ -15,22 +18,20 @@ def preProcessPicture(image):
     # This allows the threshhold to adapt to the lighting conditions
     img_w, img_h = np.shape(image)[:2]
     bkg_level = gray[int(img_h / 100)][int(img_w / 2)]
-    thresh_level = bkg_level + 50
+    thresh_level = bkg_level + BKG_THRESHOLD# 50 = Background Threshold
 
     retval, thresh = cv.threshold(blurred, thresh_level, 255, cv.THRESH_BINARY)
     return thresh
 
 def findContours(image):
     """Finds all contours in a picture and returns them into a list"""
-    # Process Image using Canny
-    #edged = cv.Canny(image, 50, 150)
     contours, hierachyf = cv.findContours(image, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # Chain approx simple saves only 2 points of a contour
     # Sort contours by size -> biggest contour is at the beginn of the array
     contours = sorted(contours, key=cv.contourArea, reverse=True)
     # If no contours are found print an error
     if len(contours) == 0:
         print("No contours found!")
-        quit()
+        return []
     else:
         return contours
 
@@ -119,7 +120,7 @@ def searchRanksSuits(image, CardContours):
     # take important parts out of the transformed image:
 
     for i in range(0, len(imgList)):
-        imgSuitsList.append(imgList[i][15:70, 5:40])
+        imgSuitsList.append(imgList[i][15:70, 5:40]) # Das als Konstante? also SUITS_WIDTH = 15:70 ?
         imgRanksList.append(imgList[i][70:115, 5:40])
 
     return imgList, imgRanksList, imgSuitsList
@@ -166,5 +167,4 @@ def identifyImage(img):
     imgSolved = cv.resize(imgSolved, (width, height))
     cv.imshow("Best Fit", imgSolved)
     return result
-
 
