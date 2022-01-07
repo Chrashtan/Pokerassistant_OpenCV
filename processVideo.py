@@ -28,12 +28,13 @@ def findContours(image):
     contours, hierachyf = cv.findContours(image, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE) # Chain approx simple saves only 2 points of a contour
     # Sort contours by size -> biggest contour is at the beginn of the array
     contours = sorted(contours, key=cv.contourArea, reverse=True)
+    # print(cv.contourArea(contours[0])) just for debugging
     # If no contours are found print an error
     if len(contours) == 0:
         print("No contours found!")
         return []
     else:
-        return contours
+       return contours
 
 
 def findCards(image, min_area, max_area):
@@ -62,7 +63,8 @@ def findCards(image, min_area, max_area):
             # - contour area is greater than min are
             # - have 4 corners
             if((size < max_area) and (size > min_area) and (len(approx) == 4)):
-                ListOfCardContours.append(contours[i])
+                #ListOfCardContours.append(contours[i])
+                ListOfCardContours.append(approx)
 
         return CardFound, ListOfCardContours
 

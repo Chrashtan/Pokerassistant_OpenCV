@@ -1,9 +1,18 @@
 import cv2 as cv
+import processVideo as pV
 
-cam = cv.VideoCapture(2)
 
-cam.set(cv.CAP_PROP_FRAME_WIDTH, 1080)
-cam.set(cv.CAP_PROP_FRAME_HEIGHT, 720)
+
+# Constants
+FRAME_WIDTH = 1920
+FRAME_HEIGHT = 1080
+
+CAM_ID = 2
+
+cam = cv.VideoCapture(CAM_ID)
+
+cam.set(cv.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
+cam.set(cv.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
 
 cv.namedWindow("test")
 
@@ -14,6 +23,11 @@ while True:
     if not ret:
         print("failed to grab frame")
         break
+
+    # Find Contour
+    binFrame = pV.preProcessPicture(frame)
+    cnt = pV.findContours(binFrame)
+    cv.drawContours(frame, cnt, -1, (69, 200, 43), 3)
     cv.imshow("test", frame)
 
     k = cv.waitKey(1)
@@ -23,10 +37,16 @@ while True:
         break
     elif k%256 == 32:
         # SPACE pressed
-        img_name = "opencv_frame_{}.png".format(img_counter)
-        cv.imwrite(img_name, frame)
-        print("{} written!".format(img_name))
-        img_counter += 1
+        cardArea = round(cv.contourArea(cnt[0]))   # Card is biggest contour so at pos 0
+        minArea = round(cardArea - (0.1*cardArea))  # subract 10%
+        maxArea = round(cardArea + (0.1*cardArea))  # add 10%
+        print("Contour Area: ", cardArea)
+        print("Card min Area: ", minArea)
+        print("Card max Area: ", maxArea)
+        # ESC pressed
+        print("Escape hit, closing...")
+        break
+
 
 cam.release()
 

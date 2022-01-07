@@ -16,8 +16,8 @@ import processVideo as pV
 FRAME_WIDTH = 1920
 FRAME_HEIGHT = 1080
 
-CARD_MIN_AREA = 100000
-CARD_MAX_AREA = 200000
+CARD_MIN_AREA = 348232
+CARD_MAX_AREA = 425617
 
 COLOR_GREEN = (69, 200, 43)
 
@@ -44,16 +44,14 @@ while WebCam.isOpened():
         ListOfContours = pV.findContours(PreProcessedPicture)
         CardFound, ListOfCardContours = pV.findCards(PreProcessedPicture, CARD_MIN_AREA, CARD_MAX_AREA)  # Picture, min area / max area
 
-        cv.imshow("My Video", Image)
-        cv.imshow("PreProcessedPicture", PreProcessedPicture)
+        cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 3)
+
 
         if CardFound:
-            cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 3)
-            cv.drawContours(PreProcessedPicture, ListOfContours, -1, COLOR_GREEN, 3)
+            cv.drawContours(Image, ListOfCardContours, -1, (255,0,0), 3)
 
 
-
-
+        cv.imshow("My Video", Image)
 
 
 
