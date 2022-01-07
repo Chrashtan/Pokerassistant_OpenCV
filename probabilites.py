@@ -97,12 +97,12 @@ odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
 
 print("Determine the winner (aus meiner Sicht):")
 print(odds[0])
+print("Poker hands:")
+print(odds[1])
 print("")
-print("After River (odds[1]:", odds[1])
-
-if(percentages[1]==1):
-    print("Player 1 has won")
-else:
-    print("Player 2 has won")
+#if(percentages[1]==1):
+#    print("Player 1 has won")
+#else:
+#    print("Player 2 has won")
 
 
