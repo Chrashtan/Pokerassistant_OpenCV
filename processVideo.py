@@ -31,7 +31,7 @@ def findContours(image):
     # print(cv.contourArea(contours[0])) just for debugging
     # If no contours are found print an error
     if len(contours) == 0:
-        print("No contours found!")
+        # print("No contours found!")
         return []
     else:
        return contours
@@ -49,7 +49,7 @@ def findCards(image, min_area, max_area):
 
     # If no contour is found, do nothing
     if len(contours) == 0:
-        print("No contours found!")
+        # print("No contours found!")
         CardFound = False
         return CardFound, []
     else:

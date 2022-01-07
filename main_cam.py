@@ -20,6 +20,7 @@ CARD_MIN_AREA = 348232
 CARD_MAX_AREA = 425617
 
 COLOR_GREEN = (69, 200, 43)
+COLOR_BLUE = (255, 0, 0)
 
 CAM_ID = 2
 
@@ -37,20 +38,54 @@ WebCam.set(cv.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
 while WebCam.isOpened():
     # Reading a single image from the WebCam
     Return, Image = WebCam.read()
+
+
+
     # Check whether image was captured
     if Return:
-
+        # Use Filter on Image
         PreProcessedPicture = pV.preProcessPicture(Image)
+        # Find all contures in the Picture and draw them into the picture
         ListOfContours = pV.findContours(PreProcessedPicture)
+
+        # Find cards
         CardFound, ListOfCardContours = pV.findCards(PreProcessedPicture, CARD_MIN_AREA, CARD_MAX_AREA)  # Picture, min area / max area
 
-        cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 3)
-
-
+        # When Card is found draw box around Cards
         if CardFound:
-            cv.drawContours(Image, ListOfCardContours, -1, (255,0,0), 3)
+            # Create empty list
+            ListOfCards = []
+
+            imgList, imgRanksList, imgSuitsList = pV.searchRanksSuits(Image, ListOfCardContours)
+
+            # Write Values to instances of Cards
+            for i in range(len(ListOfCardContours)):
+                ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i]))
+                cX, cY = pV.findCenterpoints(ListOfCardContours[i])
+                ListOfCards[i].centerpoint_X = cX
+                ListOfCards[i].centerpoint_Y = cY
+                cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
+
+            cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
+
+            # Show SUIT and RANK in the same Window
+            # Hori = np.concatenate((ListOfCards[0].suit_img, ListOfCards[0].rank_img), axis=1) # they dont have the same dimensions
+            # cv.imshow("RANK / SUIT", Hori)
+
+            # Works only if Card is in there
+            if len(ListOfCards) > 0:
+                cv.imshow("Card?", ListOfCards[0].img)
+                cv.imshow("Suit?", ListOfCards[0].suit_img)
+                cv.imshow("Rank?", ListOfCards[0].rank_img)
+            else:
+                cv.destroyWindow("Card?")
+                cv.destroyWindow("Suit?")
+                cv.destroyWindow("Rank?")
 
 
+        # Draw box on Live video
+        cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 3)
+        # Show live Video
         cv.imshow("My Video", Image)
 
 
