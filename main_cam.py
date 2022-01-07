@@ -74,13 +74,16 @@ while WebCam.isOpened():
 
             # Works only if Card is in there
             if len(ListOfCards) > 0:
-                cv.imshow("Card?", ListOfCards[0].img)
-                cv.imshow("Suit?", ListOfCards[0].suit_img)
-                cv.imshow("Rank?", ListOfCards[0].rank_img)
+                # Show all the cards
+                for i in range(len(ListOfCards)):
+                    cv.imshow("Card %i" % i, ListOfCards[i].img)
+                    cv.imshow("Suit %i" % i, ListOfCards[i].suit_img)
+                    cv.imshow("Rank %i" % i, ListOfCards[i].rank_img)
             else:
-                cv.destroyWindow("Card?")
-                cv.destroyWindow("Suit?")
-                cv.destroyWindow("Rank?")
+                for i in range(len(ListOfCards)):
+                    cv.destroyWindows("Card %i" % i)
+                    cv.destroyWindows("Suit %i" % i)
+                    cv.destroyWindows("Rank %i" % i)
 
 
         # Draw box on Live video
