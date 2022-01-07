@@ -100,9 +100,11 @@ print(odds[0])
 print("Poker hands:")
 print(odds[1])
 print("")
-#if(percentages[1]==1):
-#    print("Player 1 has won")
-#else:
-#    print("Player 2 has won")
+if(odds[0].win>50):
+    print("Player 1 has won")
+elif(odds[0].tie>50):
+    print("Pott teilen")
+else:
+    print("Player 2 has won")
 
 
