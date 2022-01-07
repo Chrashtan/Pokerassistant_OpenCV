@@ -29,7 +29,7 @@ ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=RESIZE_FACTOR, 
 ListOfCardContours = []
 ListOfCards = []
 
-PreProcessedPicture = pV.preProcessPicture(ImageOriginalResized) # Second value -> BackgroundThreshold
+PreProcessedPicture = pV.preProcessPicture(ImageOriginalResized)
 #ListOfContours = pV.findContours(PreProcessedPicture) # Just searched for contours is obsolet
 CardFound, ListOfCardContours = pV.findCards(PreProcessedPicture, CARD_MIN_AREA, CARD_MAX_AREA) # Picture, min area / max area
 
