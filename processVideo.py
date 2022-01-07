@@ -120,10 +120,18 @@ def searchRanksSuits(image, CardContours):
         imgList.append(cv.warpPerspective(image, TransformMatrix, (boxWidth, boxHeight)))
 
     # take important parts out of the transformed image:
+    height = imgList[0].shape[0]
+    width = imgList[0].shape[1]
 
     for i in range(0, len(imgList)):
-        imgSuitsList.append(imgList[i][15:70, 5:40]) # Das als Konstante? also SUITS_WIDTH = 15:70 ?
-        imgRanksList.append(imgList[i][70:115, 5:40])
+        YCut1 = int(15 / 446 * height) # recalculate the cut values for correct card size
+        YCut2 = int(70 / 446 * height) # könnte man auch teilweise auslagern bzw constant machen
+        YCut3 = int(115 / 446 * height)
+        XCut1 = int(5 / 320 * width)
+        XCut2 = int(40 / 320 * width)
+
+        imgSuitsList.append(imgList[i][YCut1:YCut2, XCut1:XCut2]) # Das als Konstante? also SUITS_WIDTH = 15:70 ?
+        imgRanksList.append(imgList[i][YCut2:YCut3, XCut1:XCut2])
 
     return imgList, imgRanksList, imgSuitsList
 

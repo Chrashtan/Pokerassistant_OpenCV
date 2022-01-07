@@ -12,7 +12,7 @@ import cards
 import processVideo
 import processVideo as pV
 
-# Constans
+# Constants
 CARD_MIN_AREA = 100000
 CARD_MAX_AREA = 200000
 
