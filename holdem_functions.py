@@ -1,5 +1,5 @@
 # Constants
-suit_index_dict = {"s": 0, "c": 1, "h": 2, "d": 3}
+suit_index_dict = {"c": 0, "s": 1, "h": 2, "d": 3}
 reverse_suit_index = ("c", "s", "h", "d") # Clubs=c, Spades=s, Heart=h, Diamonds=d
 val_string = "AKQJT98765432"
 hand_rankings = ("High Card", "Pair", "Two Pair", "Three of a Kind",
@@ -308,6 +308,9 @@ def find_winning_percentage(winner_list):
     return {'tie': round(percentages[0]*100,2),
             'win': round(percentages[1]*100,2),
             'lose': round(percentages[2]*100,2)}
+    #return {'tie': percentages[0],
+    #        'win': percentages[1],
+    #        'lose':percentages[2]}
 
 
 # Populate provided data structures with results from simulation

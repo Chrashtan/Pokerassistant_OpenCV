@@ -22,7 +22,7 @@ from poker.hand import Combo
 import holdem_calc
 import holdem_functions
 
-board = ["Qc", "Th", "9s"] # Flop: the first three cards on the board
+board = ["Qc", "Th", "8s"] # Flop: the first three cards on the board
 #board = ["Ac","Kc","Qc"]
 villan_hand = None #This is an object of the type Combo (part of Poker.Hand). None if no prior knowledge is known about the villan
 exact_calculation = True # True = exact calculation; False = Monte Carlo simulation
@@ -30,6 +30,7 @@ verbose = True #This is a boolean which is True if you want Holdem Calculator to
 num_sims = 1 #number of iterations run in the Monte Carlo simulation. Note that this parameter is ignored if Exact is set to True
 read_from_file = None
 
+# My hand
 hero_hand = Combo('KsJc') # our own hand
 #hero_hand = Combo('JcTc') # our own hand
 
@@ -41,13 +42,16 @@ odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
                         verbose, print_elapsed_time = False)
 
 hero_odds.append(odds[0]['win'])
-print("My probabilities after the flop")
+print("My probabilities after the FLOP:")
 print(odds[0])
+print("The probabilities of the poker hands:")
+print(odds[1])
 print("")
 
 # reveals turn
-turn = ["2d"]
+turn = ["9h"]
 board = flop + turn
+
 villan_hand = None
 
 odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
@@ -55,12 +59,14 @@ odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
                             hero_hand, villan_hand,
                             verbose, print_elapsed_time = False)
 hero_odds.append(odds[0]['win'])
-print("My probabilities after the turn")
+print("My probabilities after the TURN:")
 print(odds[0])
+print("The probabilities of the poker hands:")
+print(odds[1])
 print("")
 
 # reveals river
-river = ["Kc"]
+river = ["Kh"]
 board = flop + turn + river
 verbose = True
 
@@ -72,23 +78,31 @@ odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
                             verbose, print_elapsed_time = False)
 hero_odds.append(odds[0]['win'])
 
-print("My probabilities after the river")
+print("My probabilities after the RIVER:")
 print(odds[0])
+print("The probabilities of the poker hands:")
+print(odds[1])
 print("")
 
-# opponent
-opponent_hand = Combo('AcJd') # hand of the opponent
+
+# Determine Winner
 verbose = True
 
-villan_hand = None
+villan_hand = Combo('3h4h')
 
 odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
                             num_sims, read_from_file ,
-                            opponent_hand, villan_hand,
+                            hero_hand, villan_hand,
                             verbose, print_elapsed_time = False)
-hero_odds.append(odds[0]['win'])
 
-print("The probabilities from my opponent after the river")
+print("Determine the winner (aus meiner Sicht):")
 print(odds[0])
 print("")
+print("After River (odds[1]:", odds[1])
+
+if(percentages[1]==1):
+    print("Player 1 has won")
+else:
+    print("Player 2 has won")
+
 
