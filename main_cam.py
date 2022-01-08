@@ -22,7 +22,7 @@ CARD_MAX_AREA = 72200
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
 
-CAM_ID = 2
+CAM_ID = 1
 
 
 # ----- FOREVER LOOP -----

@@ -11,12 +11,12 @@ def preProcessPicture(image):
     # Process Image
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     # Using GaussianBlur to delete structures in the Background
-    blurred = cv.GaussianBlur(gray, (11, 11), 2)
+    blurred = cv.GaussianBlur(gray, (5, 5), 2)
 
     # The following code is there to adapt the threshold to the lighting
     # A background pixel in the center top of the video is used to determinde the intensity
     # This allows the threshhold to adapt to the lighting conditions
-    img_w, img_h = np.shape(image)[:2]
+    img_w, img_h = np.shape(image)[:2] # Maybe another pos?
     bkg_level = gray[int(img_h / 100)][int(img_w / 2)]
     thresh_level = bkg_level + BKG_THRESHOLD# 50 = Background Threshold
 
@@ -137,29 +137,37 @@ def searchRanksSuits(image, CardContours):
     return imgList, imgRanksList, imgSuitsList
 
 
-imgRefs = ["Ace","Clubs","Diamonds","Eight","Five","Four","Hearts","Jack","King","Nine","Queen","Seven","Six","Spades","Ten","Three","Two"]
+suitRefs = ["Ace","Eight","Five","Four","Jack","King","Nine","Queen","Seven","Six","Ten","Three","Two"]
+rankRefs = ["Clubs", "Diamonds", "Hearts", "Spades",]
 
 def identifyCard(imgSuit, imgRank):
     rank = cards.CardRanks
     suit = cards.CardSuits
-    rank = identifyImage(imgRank)
-    suit = identifyImage(imgSuit)
+    rank = identifyImage(imgRank, True)
+    suit = identifyImage(imgSuit, False)
 
     return suit, rank
 
 
-def identifyImage(img):
-    """Identifies the card rank or suit, needs image of rank or image of suit, returns best match"""
-    imgPre = preProcessPicture(img)
+def identifyImage(img, isRank):
+    """Identifies the card rank or suit, needs image of rank or image of suit, isRank = True if searching for rank, returns best match"""
+
+    imgPre = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     thresh, imgPre = cv.threshold(imgPre, 0, 255, cv.THRESH_BINARY_INV +cv.THRESH_OTSU)
     array_cont,x = cv.findContours(imgPre, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+    if len(array_cont) == 0:
+        return ""
     x, y, w, h = cv.boundingRect(array_cont[0])  # Draw a rectangle around card.
     # Cut out everything exept the card
     imgCut = imgPre[y:y + h, x:x + w]
-    cv.imshow("cut", imgCut)
     height = imgCut.shape[0]
     width = imgCut.shape[1]
     bestFit = 1000
+    if isRank:
+        imgRefs = rankRefs
+    else:
+        imgRefs = suitRefs
+
     for ref in imgRefs:
         imgSample = cv.imread("Card_Imgs/"+ref+".jpg")
         imgSample = imgSample[:,:,0]
@@ -174,21 +182,59 @@ def identifyImage(img):
             bestFit = currentFit
             result = ref
     # just for checking the result
+    cv.imshow("cut", imgCut)
+    cv.imshow("in", imgPre)
     imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
     imgSolved = cv.resize(imgSolved, (width, height))
     cv.imshow("Best Fit", imgSolved)
     return result
 
+def calibrateCam(frame):
+    """Gets a Frame from the Webcam and search for contour"""
+    # Find Contour
+    binFrame = pV.preProcessPicture(frame)
+    cnt = pV.findContours(binFrame)
+    cv.drawContours(frame, cnt, -1, (69, 200, 43), 3)
+    cv.imshow("Calibration", frame)
+    k = cv.waitKey(1)
+
+    if k % 256 == 27:
+        # ESC pressed
+        print("Escape hit, closing...")
+        return 0
+
+    elif k % 256 == 32:
+        # SPACE pressed
+        RoI = cv.selectROI('Please select ROI:', frame)
+        x = RoI[0]  # x coordinate of top-left corner point of ROI
+        y = RoI[1]  # y coordinate of top-left corner point of ROI
+        w = RoI[2]  # Width of RoI
+        h = RoI[3]  # Height of RoI
+        # 7. ------------- Create my RoI Image ------------------
+        RoIImage = frame[y:y + h, x:x + w]
+        RoIcnt = pV.findContours(RoIImage)
+
+        # Uses the Card Area to calculate min and max Area for a Card
+        cardArea = round(cv.contourArea(RoIcnt[0]))  # Card is biggest contour so at pos 0
+        minArea = round(cardArea - (0.1 * cardArea))  # subract 10%
+        maxArea = round(cardArea + (0.1 * cardArea))  # add 10%
+        print("Contour Area: ", cardArea)
+        print("Card min Area: ", minArea)
+        print("Card max Area: ", maxArea)
+        # ESC pressed
+        print("Escape hit, closing...")
+        return minArea, maxArea
+
 def commentImage(img, text, position):
     """"Draw a comment in a picture"""
     # Reading an image in default mode
     image = cv.imread(img)
-    window_name = text # Window name in which image is displayed
-    font = cv.FONT_HERSHEY_SIMPLEX # font
-    fontScale = 1 # fontScale
-    color = (255, 0, 0) # Blue color in BGR
-    thickness = 2 # Line thickness of 2 px
+    window_name = text  # Window name in which image is displayed
+    font = cv.FONT_HERSHEY_SIMPLEX  # font
+    fontScale = 1  # fontScale
+    color = (255, 0, 0)  # Blue color in BGR
+    thickness = 2  # Line thickness of 2 px
     # position = (50, 50) # position
     # Using cv2.putText() method
     image = cv.putText(image, text, position, font, fontScale, color, thickness, cv.LINE_AA)
-    cv.imshow(window_name, image) # Displaying the image
+    cv.imshow(window_name, image)  # Displaying the image

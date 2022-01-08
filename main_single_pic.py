@@ -24,7 +24,7 @@ COLOR_BLUE = (255, 0, 0)
 
 
 # Read in Image resize it and convert to grayscale
-ImageOriginal = cv.imread("PicturesOfCards/opencv_frame_0.png")     # Works best for a darker background
+ImageOriginal = cv.imread("PicturesOfCards/opencv_frame_2.png")     # Works best for a darker background
 ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=RESIZE_FACTOR, fx=RESIZE_FACTOR)
 
 ListOfCardContours = []
@@ -43,11 +43,7 @@ if CardFound:
         cX, cY = pV.findCenterpoints(ListOfCardContours[i])
         ListOfCards[i].centerpoint_X = cX
         ListOfCards[i].centerpoint_Y = cY
-
-
-    # Draw in contours and Centerpoint in Orginal picture
-    for i in range(len(ListOfCards)):
-        cv.drawMarker(ImageOriginalResized, (ListOfCards[i].centerpoint_X, ListOfCards[i].centerpoint_Y), COLOR_GREEN)
+        cv.drawMarker(ImageOriginalResized, (cX, cY), COLOR_GREEN)
 
     # draw contour to image
     cv.drawContours(ImageOriginalResized, ListOfCardContours, -1, COLOR_BLUE, 3)
@@ -60,6 +56,8 @@ if CardFound:
 
 
     testSuit, testRank = pV.identifyCard(imgSuitsList[0], imgRanksList[0])
+    print(testSuit)
+    print(testRank)
 
                                                                 #y-koordinate - bisschen mehr hälfte der Kartehöhe: ListOfCards[2].centerpoint_X,ListOfCards[2].centerpoint_Y-40)
 pV.commentImage("Card_Imgs/Ace.jpg","dfsfgsdg",(10,40))
