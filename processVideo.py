@@ -181,11 +181,12 @@ def identifyImage(img, isRank):
         if currentFit<bestFit:
             bestFit = currentFit
             result = ref
+
+    imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
+    imgSolved = cv.resize(imgSolved, (width, height))
     # just for checking the result
     # cv.imshow("cut", imgCut)
     # cv.imshow("in", imgPre)
-    imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
-    imgSolved = cv.resize(imgSolved, (width, height))
     #cv.imshow("Best Fit", imgSolved)
     return result
 
@@ -214,7 +215,7 @@ def calibrateCam(frame):
     cv.destroyWindow("Please select ROI:")
     return minArea, maxArea
 
-def commentImage(image, text, position):
+def commentImage(image, rankName, suitName, x, y):
     """"Draw a comment in a picture"""
     font = cv.FONT_HERSHEY_SIMPLEX  # font
     fontScale = 1  # fontScale
@@ -222,4 +223,9 @@ def commentImage(image, text, position):
     thickness = 2  # Line thickness of 2 px
     # position = (50, 50) # position
     # Using cv2.putText() method
-    cv.putText(image, text, position, font, fontScale, color, thickness, cv.LINE_AA)
+    # Draw card name twice, so letters have black outline
+    cv.putText(image,rankName,(x-60,y-10),font,fontScale,(0,0,0),3,cv.LINE_AA)
+    cv.putText(image,rankName,(x-60,y-10),font,fontScale,(50,200,200),2,cv.LINE_AA)
+
+    cv.putText(image,suitName,(x-60,y+25),font,fontScale,(0,0,0),3,cv.LINE_AA)
+    cv.putText(image,suitName,(x-60,y+25),font,fontScale,(50,200,200),2,cv.LINE_AA)

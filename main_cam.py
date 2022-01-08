@@ -16,8 +16,8 @@ import processVideo as pV
 FRAME_WIDTH = 1920
 FRAME_HEIGHT = 1080
 
-CARD_MIN_AREA = 42206
-CARD_MAX_AREA = 51584
+CARD_MIN_AREA = 0
+CARD_MAX_AREA = 0
 
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
@@ -38,8 +38,6 @@ WebCam.set(cv.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
 while WebCam.isOpened():
     # Reading a single image from the WebCam
     Return, Image = WebCam.read()
-
-
 
     # Check whether image was captured
     if Return:
@@ -69,16 +67,17 @@ while WebCam.isOpened():
                 ListOfCards[i].suit_name = suit
 
                 cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
-                pV.commentImage(Image, rank + " " + suit, (cX, cY))
+                pV.commentImage(Image, rank, suit, cX, cY)
 
         # Draw box on Live video
-        cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 3)
+        cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 1)
+        cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
         # Show live Video
         cv.imshow("My Video", Image)
 
         key = cv.waitKey(1)
         # First ask for calibration
-        if  key == ord('y'):
+        if  key == ord('c'):
             CARD_MIN_AREA, CARD_MAX_AREA = pV.calibrateCam(Image)
         elif key == ord('q'):
             break
