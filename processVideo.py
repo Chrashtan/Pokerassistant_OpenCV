@@ -193,6 +193,13 @@ def identifyImage(img, isRank):
 
 def calibrateCam(frame):
     """Gets a Frame from the Webcam and search for contour"""
+    # Draw Text to help the user to draw his RoI
+    HelpText = "Please mark ONE card and press the SPACEBAR or ENTER"
+    font = cv.FONT_HERSHEY_SIMPLEX
+    fontScale = 1
+    # Call putText 2 times to draw contour to text
+    cv.putText(frame,HelpText,(60,60),font,fontScale,(0,0,0),3,cv.LINE_AA)
+    cv.putText(frame,HelpText,(60,60),font,fontScale,(50,200,200),2,cv.LINE_AA)
     # Find Contour
     binFrame = preProcessPicture(frame)
     # SPACE pressed
@@ -230,3 +237,5 @@ def commentImage(image, rankName, suitName, x, y):
 
     cv.putText(image,suitName,(x-60,y+25),font,fontScale,(0,0,0),3,cv.LINE_AA)
     cv.putText(image,suitName,(x-60,y+25),font,fontScale,(50,200,200),2,cv.LINE_AA)
+
+
