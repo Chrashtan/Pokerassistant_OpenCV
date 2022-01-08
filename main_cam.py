@@ -75,8 +75,8 @@ while WebCam.isOpened():
 
             # Just temp
             if len(ListOfCards) > 0:
-                print(pV.identifyImage(ListOfCards[0].rank_img))
-                #print(pV.identifyImage(ListOfCards[0].suit_img))
+                print(pV.identifyImage(ListOfCards[0].rank_img, True))
+                print(pV.identifyImage(ListOfCards[0].suit_img, False))
 
                 cv.imshow("Card 0", ListOfCards[i].img)
                 cv.imshow("Suit 0", ListOfCards[i].suit_img)

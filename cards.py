@@ -47,8 +47,8 @@ class CardProperties:
         self.suit_match = []    # Image of best match
         self.centerpoint_X = 0
         self.centerpoint_Y = 0
-        CardRanks.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
-        CardSuits.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
+        self.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
+        self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
 
     # Constructor of CardProperties
     def __init__(self, img, rank, suit):
@@ -59,8 +59,8 @@ class CardProperties:
         self.suit_match = []    # Image of best match
         self.centerpoint_X = 0
         self.centerpoint_Y = 0
-        CardRanks.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
-        CardSuits.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
+        self.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
+        self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
 
 
 

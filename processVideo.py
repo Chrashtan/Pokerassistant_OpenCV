@@ -182,11 +182,11 @@ def identifyImage(img, isRank):
             bestFit = currentFit
             result = ref
     # just for checking the result
-    cv.imshow("cut", imgCut)
-    cv.imshow("in", imgPre)
+    # cv.imshow("cut", imgCut)
+    # cv.imshow("in", imgPre)
     imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
     imgSolved = cv.resize(imgSolved, (width, height))
-    cv.imshow("Best Fit", imgSolved)
+    #cv.imshow("Best Fit", imgSolved)
     return result
 
 def calibrateCam(frame):
@@ -225,16 +225,12 @@ def calibrateCam(frame):
         print("Escape hit, closing...")
         return minArea, maxArea
 
-def commentImage(img, text, position):
+def commentImage(image, text, position):
     """"Draw a comment in a picture"""
-    # Reading an image in default mode
-    image = cv.imread(img)
-    window_name = text  # Window name in which image is displayed
     font = cv.FONT_HERSHEY_SIMPLEX  # font
     fontScale = 1  # fontScale
     color = (255, 0, 0)  # Blue color in BGR
     thickness = 2  # Line thickness of 2 px
     # position = (50, 50) # position
     # Using cv2.putText() method
-    image = cv.putText(image, text, position, font, fontScale, color, thickness, cv.LINE_AA)
-    cv.imshow(window_name, image)  # Displaying the image
+    cv.putText(image, text, position, font, fontScale, color, thickness, cv.LINE_AA)
