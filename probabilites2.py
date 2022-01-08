@@ -23,7 +23,12 @@ from poker.hand import Combo
 import holdem_calc
 import holdem_functions
 
+def get_key(val):
+    for key, value in odds[1][0].items():
+        if val == value:
+            return key
 
+    return "There is no such Key"
 
 board = ["Qc", "Th", "8s"]  # Flop: the first three cards on the board
 #board = ["Ac","Kc","Qc"]
@@ -60,43 +65,31 @@ print("WERT", odds[1][0])
 first =[]
 first.extend(odds[1][0].values())
 print(first)
+
+print("")
 max_value2 = None
+max_value = None
+
 for num2 in odds[1][0].values():
     if (max_value2 is None or num2 > max_value2):
         max_value2 = num2
-for key, value in odds[1][0].items():
-    if max_value2 == value:
-        #handstring = "highest hand probability:"+ key + max_value2
-        #print(handstring)
-        print("highest hand probability:", key , max_value2)
+#for num in odds[1][0]:
+#    if (max_value is None or num > max_value):
+#        max_value = num
+
+print(get_key(max_value2), max_value2)
+
+print('Highest probability:',max_value, max_value2)
+print("")
 print("")
 
-# print("")
-# max_value2 = None
-#
-# for num2 in odds[1][0].values():
-#     if (max_value2 is None or num2 > max_value2):
-#         max_value2 = num2
-# for key, value in odds[1][0].items():
-#     if max_value2 == value:
-#         key=key
-#         print("hallo",key, max_value2)
-#
-# print("TEST", key,max_value2)
-#
-# #print(get_key(max_value2), max_value2)
-#
-# #print('Highest probability:',max_value, max_value2)
-# print("")
-# print("")
-#
-# #def get_key(val):
-# #    for key, value in odds[1][0].items():
-# #        if val == value:
-# #            return key
-#
-# #    return "There is no such Key"
-# #print(get_key(max_value2))
+def get_key(val):
+    for key, value in odds[1][0].items():
+        if val == value:
+            return key
+
+    return "There is no such Key"
+print(get_key(max_value2))
 
 
 
@@ -108,15 +101,7 @@ def probabilityFLOP(board, hero_hand, villan_hand, exact_calculation,num_sims, r
                         hero_hand, villan_hand,
                         verbose, print_elapsed_time = False)
     mystring = "Tie"+ odds[0]['tie'] + "Win" + odds[0]['win'] + "Lose" + odds[0]['lose']
-    max_value2 = None
-    for num2 in odds[1][0].values():
-        if (max_value2 is None or num2 > max_value2):
-            max_value2 = num2
-    for key, value in odds[1][0].items():
-        if max_value2 == value:
-            handstring = "highest hand probability:" + key + max_value2
-
-    return mystring, handstring
+    return  mystring
 
     hero_odds.append(odds[0]['win'])
     print("My probabilities after the FLOP:")
@@ -149,16 +134,28 @@ first =[]
 first.extend(odds[1][0].values())
 print(first)
 
+print("")
 max_value2 = None
+max_value = None
+
 for num2 in odds[1][0].values():
     if (max_value2 is None or num2 > max_value2):
         max_value2 = num2
-for key, value in odds[1][0].items():
-    if max_value2 == value:
-        #handstring = "highest hand probability:"+ key + max_value2
-        #print(handstring)
-        print("highest hand probability:", key , max_value2)
+#for num in odds[1][0]:
+#    if (max_value is None or num > max_value):
+#        max_value = num
+#print('Highest probability:',max_value, max_value2)
+
+for key, value in sorted(odds[1][0].items(), key=lambda item: item[1]):
+    ("%s: %s" % (key,value))
+print("Höhste Karte")
+print(get_key(max_value2), max_value2)
 print("")
+print("")
+print(get_key(max_value2), max_value2)
+
+
+
 
 
 
@@ -168,22 +165,14 @@ def probabilityTURN(board, hero_hand, villan_hand, exact_calculation,num_sims, r
                                  hero_hand, villan_hand,
                                  verbose, print_elapsed_time = False)
     mystring = "Tie" + odds[0]['tie'] + "Win" + odds[0]['win'] + "Lose" + odds[0]['lose']
-    max_value2 = None
-    for num2 in odds[1][0].values():
-        if (max_value2 is None or num2 > max_value2):
-            max_value2 = num2
-    for key, value in odds[1][0].items():
-        if max_value2 == value:
-            handstring = "highest hand probability:"+ key + max_value2
+    return mystring
 
-    return mystring, handstring
-
-hero_odds.append(odds[0]['win'])
-print("My probabilities after the TURN:")
-print(odds[0])
-print("The probabilities of the poker hands:")
-print(odds[1])
-print(odds[0]['win'])
+    hero_odds.append(odds[0]['win'])
+    print("My probabilities after the TURN:")
+    print(odds[0])
+    print("The probabilities of the poker hands:")
+    print(odds[1])
+    print(odds[0]['win'])
 
 
 
@@ -201,15 +190,7 @@ def probabilityRIVER(board, hero_hand, villan_hand, exact_calculation,num_sims, 
                                  verbose, print_elapsed_time = False)
     hero_odds.append(odds[0]['win'])
     mystring = "Tie" + odds[0]['tie'] + "Win" + odds[0]['win'] + "Lose" + odds[0]['lose']
-    max_value2 = None
-    for num2 in odds[1][0].values():
-        if (max_value2 is None or num2 > max_value2):
-            max_value2 = num2
-    for key, value in odds[1][0].items():
-        if max_value2 == value:
-            handstring = "highest hand probability:" + key + max_value2
-
-    return mystring, handstring
+    return mystring
 
     print("My probabilities after the RIVER:")
     print(odds[0])
@@ -236,21 +217,8 @@ def findWINNER(board, hero_hand, villan_hand, exact_calculation,num_sims, read_f
     else:
         return "You lose"
 
-#-----TEST--------
-odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
-                                 num_sims, read_from_file ,
-                                 hero_hand, villan_hand,
-                                 verbose, print_elapsed_time = False)
-hero_odds.append(odds[0]['win'])
-if(odds[0]['win']>99):
-    print("You win")
-elif(odds[0]["tie"]>49):
-    print("Splitt pot")
-else:
-    print("You lose")
 
 
-
-
+#holdem_functions.find_winner()
 
 

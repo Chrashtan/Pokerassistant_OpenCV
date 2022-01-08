@@ -1,6 +1,13 @@
 # Constants
-suit_index_dict = {"c": 0, "s": 1, "h": 2, "d": 3}
-reverse_suit_index = ("c", "s", "h", "d") # Clubs=c, Spades=s, Heart=h, Diamonds=d
+# suit_index_dict = {"Clubs": 0, "Spades": 1, "Hearts": 2, "Diamonds": 3}
+# reverse_suit_index = ("Clubs", "Spades", "Heart", "Diamonds") # Clubs=c, Spades=s, Heart=h, Diamonds=d
+# val_string = "AKQJT98765432"
+# hand_rankings = ("High Card", "Pair", "Two Pair", "Three of a Kind",
+#                  "Straight", "Flush", "Full House", "Four of a Kind",
+#                  "Straight Flush", "Royal Flush")
+# suit_value_dict = {"2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9, "T":10, "J":11, "Q":12, "King":13, "ACE":14}
+suit_index_dict = {"s": 0, "c": 1, "h": 2, "d": 3}
+reverse_suit_index = ("s", "c", "h", "d")
 val_string = "AKQJT98765432"
 hand_rankings = ("High Card", "Pair", "Two Pair", "Three of a Kind",
                  "Straight", "Flush", "Full House", "Four of a Kind",
@@ -297,6 +304,12 @@ def calc_histogram(result_histograms, winner_list):
         players_hist.append(hist)
     return (players_hist)
 
+def get_key(val):
+    for key, value in odds[1][0].items():
+        if val == value:
+            return key
+
+    return "There is no such Key"
 
 # Returns the winning percentages
 def find_winning_percentage(winner_list):
