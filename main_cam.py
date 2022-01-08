@@ -10,7 +10,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 import cards
 import processVideo as pV
-
+import time
 
 # Constants
 FRAME_WIDTH = 1920
@@ -32,7 +32,7 @@ WebCam = cv.VideoCapture(CAM_ID)
 # Set resolution
 WebCam.set(cv.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
 WebCam.set(cv.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
-WebCam.set(cv.CAP_PROP_FPS, 60)
+WebCam.set(cv.CAP_PROP_FPS,30)
 
 
 # repeat the following lines as long as the Webcam is accessibley
@@ -42,7 +42,8 @@ while WebCam.isOpened():
 
     # Check whether image was captured
     if Return:
-
+        # Start time for fps Counter
+        startTime = time.time()
 
         # Use Filter on Image
         PreProcessedPicture = pV.preProcessPicture(Image)
@@ -75,8 +76,12 @@ while WebCam.isOpened():
         cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 1)
         cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
 
+        # read out enttime
+        endtime = time.time()
+        timeDiff = endtime-startTime
+        framerate = 1.0 / timeDiff
 
-        cv.putText(Image, "FPS: " + str(int(WebCam.get(cv.CAP_PROP_FPS))), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_GREEN, 2,
+        cv.putText(Image, "FPS: " + str(int(framerate)), (100, 200), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_GREEN, 2,
                    cv.LINE_AA)
 
         # Show live Video
@@ -86,7 +91,7 @@ while WebCam.isOpened():
 
 
 
-        key = cv.waitKey(1)
+        key = cv.waitKey(50)
         # First ask for calibration
         if  key == ord('c'):
             CARD_MIN_AREA, CARD_MAX_AREA = pV.calibrateCam(Image)
