@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 import cards
 
 # Constants
-BKG_THRESHOLD = 50
+BKG_THRESHOLD = 60
 
 def preProcessPicture(image):
     # Process Image
@@ -140,6 +140,7 @@ def searchRanksSuits(image, CardContours):
 suitRefs = ["Ace","Eight","Five","Four","Jack","King","Nine","Queen","Seven","Six","Ten","Three","Two"]
 rankRefs = ["Clubs", "Diamonds", "Hearts", "Spades",]
 
+# Brauchen wir das?
 def identifyCard(imgSuit, imgRank):
     rank = cards.CardRanks
     suit = cards.CardSuits
@@ -181,51 +182,48 @@ def identifyImage(img, isRank):
         if currentFit<bestFit:
             bestFit = currentFit
             result = ref
-    # just for checking the result
-    # cv.imshow("cut", imgCut)
-    # cv.imshow("in", imgPre)
+
     imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
     imgSolved = cv.resize(imgSolved, (width, height))
-    #cv.imshow("Best Fit", imgSolved)
+    # just for checking the result
+    cv.imshow("cut", imgCut)
+    cv.imshow("in", imgPre)
+    cv.imshow("Best Fit", imgSolved)
     return result
 
 def calibrateCam(frame):
     """Gets a Frame from the Webcam and search for contour"""
+    # Draw Text to help the user to draw his RoI
+    HelpText = "Please mark ONE card and press the SPACEBAR or ENTER"
+    font = cv.FONT_HERSHEY_SIMPLEX
+    fontScale = 1
+    # Call putText 2 times to draw contour to text
+    cv.putText(frame,HelpText,(60,60),font,fontScale,(0,0,0),3,cv.LINE_AA)
+    cv.putText(frame,HelpText,(60,60),font,fontScale,(50,200,200),2,cv.LINE_AA)
     # Find Contour
-    binFrame = pV.preProcessPicture(frame)
-    cnt = pV.findContours(binFrame)
-    cv.drawContours(frame, cnt, -1, (69, 200, 43), 3)
-    cv.imshow("Calibration", frame)
-    k = cv.waitKey(1)
+    binFrame = preProcessPicture(frame)
+    # SPACE pressed
+    RoI = cv.selectROI('Please select ROI:', frame)
+    x = RoI[0]  # x coordinate of top-left corner point of ROI
+    y = RoI[1]  # y coordinate of top-left corner point of ROI
+    w = RoI[2]  # Width of RoI
+    h = RoI[3]  # Height of RoI
+    # 7. ------------- Create my RoI Image ------------------
+    RoIImage = frame[y:y + h, x:x + w]
+    RoIBin = preProcessPicture(RoIImage)
+    RoIcnt = findContours(RoIBin)
 
-    if k % 256 == 27:
-        # ESC pressed
-        print("Escape hit, closing...")
-        return 0
+    # Uses the Card Area to calculate min and max Area for a Card
+    cardArea = round(cv.contourArea(RoIcnt[0]))  # Card is biggest contour so at pos 0
+    minArea = round(cardArea - (0.1 * cardArea))  # subract 10%
+    maxArea = round(cardArea + (0.1 * cardArea))  # add 10%
+    print("Contour Area: ", cardArea)
+    print("Card min Area: ", minArea)
+    print("Card max Area: ", maxArea)
+    cv.destroyWindow("Please select ROI:")
+    return minArea, maxArea
 
-    elif k % 256 == 32:
-        # SPACE pressed
-        RoI = cv.selectROI('Please select ROI:', frame)
-        x = RoI[0]  # x coordinate of top-left corner point of ROI
-        y = RoI[1]  # y coordinate of top-left corner point of ROI
-        w = RoI[2]  # Width of RoI
-        h = RoI[3]  # Height of RoI
-        # 7. ------------- Create my RoI Image ------------------
-        RoIImage = frame[y:y + h, x:x + w]
-        RoIcnt = pV.findContours(RoIImage)
-
-        # Uses the Card Area to calculate min and max Area for a Card
-        cardArea = round(cv.contourArea(RoIcnt[0]))  # Card is biggest contour so at pos 0
-        minArea = round(cardArea - (0.1 * cardArea))  # subract 10%
-        maxArea = round(cardArea + (0.1 * cardArea))  # add 10%
-        print("Contour Area: ", cardArea)
-        print("Card min Area: ", minArea)
-        print("Card max Area: ", maxArea)
-        # ESC pressed
-        print("Escape hit, closing...")
-        return minArea, maxArea
-
-def commentImage(image, text, position):
+def commentImage(image, rankName, suitName, x, y):
     """"Draw a comment in a picture"""
     font = cv.FONT_HERSHEY_SIMPLEX  # font
     fontScale = 1  # fontScale
@@ -233,4 +231,11 @@ def commentImage(image, text, position):
     thickness = 2  # Line thickness of 2 px
     # position = (50, 50) # position
     # Using cv2.putText() method
-    cv.putText(image, text, position, font, fontScale, color, thickness, cv.LINE_AA)
+    # Draw card name twice, so letters have black outline
+    cv.putText(image,rankName,(x-60,y-10),font,fontScale,(0,0,0),3,cv.LINE_AA)
+    cv.putText(image,rankName,(x-60,y-10),font,fontScale,(50,200,200),2,cv.LINE_AA)
+
+    cv.putText(image,suitName,(x-60,y+25),font,fontScale,(0,0,0),3,cv.LINE_AA)
+    cv.putText(image,suitName,(x-60,y+25),font,fontScale,(50,200,200),2,cv.LINE_AA)
+
+
