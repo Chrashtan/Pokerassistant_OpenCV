@@ -13,17 +13,18 @@ import processVideo
 import processVideo as pV
 
 # Constants
-CARD_MIN_AREA = 100000
-CARD_MAX_AREA = 200000
+CARD_MIN_AREA = 59072
+CARD_MAX_AREA = 72200
 
-RESIZE_FACTOR = 0.5
+RESIZE_FACTOR = 1
 
 COLOR_GREEN = (69, 200, 43)
+COLOR_BLUE = (255, 0, 0)
 
 
 
 # Read in Image resize it and convert to grayscale
-ImageOriginal = cv.imread("PicturesOfCards/Aces_4.jpg")     # Works best for a darker background
+ImageOriginal = cv.imread("PicturesOfCards/opencv_frame_0.png")     # Works best for a darker background
 ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=RESIZE_FACTOR, fx=RESIZE_FACTOR)
 
 ListOfCardContours = []
@@ -49,7 +50,7 @@ if CardFound:
         cv.drawMarker(ImageOriginalResized, (ListOfCards[i].centerpoint_X, ListOfCards[i].centerpoint_Y), COLOR_GREEN)
 
     # draw contour to image
-    cv.drawContours(ImageOriginalResized, ListOfCardContours, -1, COLOR_GREEN, 3)
+    cv.drawContours(ImageOriginalResized, ListOfCardContours, -1, COLOR_BLUE, 3)
 
     # Show all the cards
     for i in range(len(ListOfCards)):
