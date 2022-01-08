@@ -119,11 +119,12 @@ def searchRanksSuits(image, CardContours):
         # cut and rotate the bounding box to get the upright rectangle
         imgList.append(cv.warpPerspective(image, TransformMatrix, (boxWidth, boxHeight)))
 
-    # take important parts out of the transformed image:
-    height = imgList[0].shape[0]
-    width = imgList[0].shape[1]
+
 
     for i in range(0, len(imgList)):
+        # take important parts out of the transformed image:
+        height = imgList[i].shape[0]
+        width = imgList[i].shape[1]
         YCut1 = int(15 / 446 * height) # recalculate the cut values for correct card size
         YCut2 = int(70 / 446 * height) # könnte man auch teilweise auslagern bzw constant machen
         YCut3 = int(115 / 446 * height)
