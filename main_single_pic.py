@@ -61,6 +61,9 @@ if CardFound:
 
     testSuit, testRank = pV.identifyCard(imgSuitsList[0], imgRanksList[0])
 
+                                                                #y-koordinate - bisschen mehr hälfte der Kartehöhe: ListOfCards[2].centerpoint_X,ListOfCards[2].centerpoint_Y-40)
+pV.commentImage("Card_Imgs/Ace.jpg","dfsfgsdg",(10,40))
+
 # Show Image on Display
 cv.imshow('Original Picture', ImageOriginalResized)
 cv.waitKey(0)

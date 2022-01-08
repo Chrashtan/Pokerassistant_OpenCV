@@ -179,3 +179,16 @@ def identifyImage(img):
     cv.imshow("Best Fit", imgSolved)
     return result
 
+def commentImage(img, text, position):
+    """"Draw a comment in a picture"""
+    # Reading an image in default mode
+    image = cv.imread(img)
+    window_name = text # Window name in which image is displayed
+    font = cv.FONT_HERSHEY_SIMPLEX # font
+    fontScale = 1 # fontScale
+    color = (255, 0, 0) # Blue color in BGR
+    thickness = 2 # Line thickness of 2 px
+    # position = (50, 50) # position
+    # Using cv2.putText() method
+    image = cv.putText(image, text, position, font, fontScale, color, thickness, cv.LINE_AA)
+    cv.imshow(window_name, image) # Displaying the image
