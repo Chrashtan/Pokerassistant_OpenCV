@@ -11,12 +11,12 @@ def preProcessPicture(image):
     # Process Image
     gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
     # Using GaussianBlur to delete structures in the Background
-    blurred = cv.GaussianBlur(gray, (11, 11), 2)
+    blurred = cv.GaussianBlur(gray, (5, 5), 2)
 
     # The following code is there to adapt the threshold to the lighting
     # A background pixel in the center top of the video is used to determinde the intensity
     # This allows the threshhold to adapt to the lighting conditions
-    img_w, img_h = np.shape(image)[:2]
+    img_w, img_h = np.shape(image)[:2] # Maybe another pos?
     bkg_level = gray[int(img_h / 100)][int(img_w / 2)]
     thresh_level = bkg_level + BKG_THRESHOLD# 50 = Background Threshold
 
@@ -189,3 +189,38 @@ def identifyImage(img, isRank):
     cv.imshow("Best Fit", imgSolved)
     return result
 
+def calibrateCam(frame):
+    """Gets a Frame from the Webcam and search for contour"""
+    # Find Contour
+    binFrame = pV.preProcessPicture(frame)
+    cnt = pV.findContours(binFrame)
+    cv.drawContours(frame, cnt, -1, (69, 200, 43), 3)
+    cv.imshow("Calibration", frame)
+    k = cv.waitKey(1)
+
+    if k % 256 == 27:
+        # ESC pressed
+        print("Escape hit, closing...")
+        return 0
+
+    elif k % 256 == 32:
+        # SPACE pressed
+        RoI = cv.selectROI('Please select ROI:', frame)
+        x = RoI[0]  # x coordinate of top-left corner point of ROI
+        y = RoI[1]  # y coordinate of top-left corner point of ROI
+        w = RoI[2]  # Width of RoI
+        h = RoI[3]  # Height of RoI
+        # 7. ------------- Create my RoI Image ------------------
+        RoIImage = frame[y:y + h, x:x + w]
+        RoIcnt = pV.findContours(RoIImage)
+
+        # Uses the Card Area to calculate min and max Area for a Card
+        cardArea = round(cv.contourArea(RoIcnt[0]))  # Card is biggest contour so at pos 0
+        minArea = round(cardArea - (0.1 * cardArea))  # subract 10%
+        maxArea = round(cardArea + (0.1 * cardArea))  # add 10%
+        print("Contour Area: ", cardArea)
+        print("Card min Area: ", minArea)
+        print("Card max Area: ", maxArea)
+        # ESC pressed
+        print("Escape hit, closing...")
+        return minArea, maxArea

@@ -43,11 +43,7 @@ if CardFound:
         cX, cY = pV.findCenterpoints(ListOfCardContours[i])
         ListOfCards[i].centerpoint_X = cX
         ListOfCards[i].centerpoint_Y = cY
-
-
-    # Draw in contours and Centerpoint in Orginal picture
-    for i in range(len(ListOfCards)):
-        cv.drawMarker(ImageOriginalResized, (ListOfCards[i].centerpoint_X, ListOfCards[i].centerpoint_Y), COLOR_GREEN)
+        cv.drawMarker(ImageOriginalResized, (cX, cY), COLOR_GREEN)
 
     # draw contour to image
     cv.drawContours(ImageOriginalResized, ListOfCardContours, -1, COLOR_BLUE, 3)
