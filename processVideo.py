@@ -152,16 +152,13 @@ def identifyImage(img):
     """Identifies the card rank or suit, needs image of rank or image of suit, returns best match"""
 
     imgPre = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-
     thresh, imgPre = cv.threshold(imgPre, 0, 255, cv.THRESH_BINARY_INV +cv.THRESH_OTSU)
     array_cont,x = cv.findContours(imgPre, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
-    cv.imshow("in", imgPre)
     if len(array_cont) == 0:
         return ""
     x, y, w, h = cv.boundingRect(array_cont[0])  # Draw a rectangle around card.
     # Cut out everything exept the card
     imgCut = imgPre[y:y + h, x:x + w]
-    cv.imshow("cut", imgCut)
     height = imgCut.shape[0]
     width = imgCut.shape[1]
     bestFit = 1000
@@ -179,6 +176,8 @@ def identifyImage(img):
             bestFit = currentFit
             result = ref
     # just for checking the result
+    cv.imshow("cut", imgCut)
+    cv.imshow("in", imgPre)
     imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
     imgSolved = cv.resize(imgSolved, (width, height))
     cv.imshow("Best Fit", imgSolved)

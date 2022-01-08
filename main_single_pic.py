@@ -53,13 +53,13 @@ if CardFound:
     cv.drawContours(ImageOriginalResized, ListOfCardContours, -1, COLOR_BLUE, 3)
 
     # Show all the cards
-    #for i in range(len(ListOfCards)):
-    #    cv.imshow("Card %i" %i, ListOfCards[i].img)
-    #    cv.imshow("Suit %i" %i, ListOfCards[i].suit_img)
-    #    cv.imshow("Rank %i" %i, ListOfCards[i].rank_img)
+    for i in range(len(ListOfCards)):
+        cv.imshow("Card %i" %i, ListOfCards[i].img)
+        cv.imshow("Suit %i" %i, ListOfCards[i].suit_img)
+        cv.imshow("Rank %i" %i, ListOfCards[i].rank_img)
 
 
-    testSuit, testRank = pV.identifyCard(imgSuitsList[2], imgRanksList[2])
+    testSuit, testRank = pV.identifyCard(imgSuitsList[0], imgRanksList[0])
     print(testSuit)
     print(testRank)
 
