@@ -137,19 +137,20 @@ def searchRanksSuits(image, CardContours):
     return imgList, imgRanksList, imgSuitsList
 
 
-imgRefs = ["Ace","Clubs","Diamonds","Eight","Five","Four","Hearts","Jack","King","Nine","Queen","Seven","Six","Spades","Ten","Three","Two"]
+suitRefs = ["Ace","Eight","Five","Four","Jack","King","Nine","Queen","Seven","Six","Ten","Three","Two"]
+rankRefs = ["Clubs", "Diamonds", "Hearts", "Spades",]
 
 def identifyCard(imgSuit, imgRank):
     rank = cards.CardRanks
     suit = cards.CardSuits
-    rank = identifyImage(imgRank)
-    suit = identifyImage(imgSuit)
+    rank = identifyImage(imgRank, True)
+    suit = identifyImage(imgSuit, False)
 
     return suit, rank
 
 
-def identifyImage(img):
-    """Identifies the card rank or suit, needs image of rank or image of suit, returns best match"""
+def identifyImage(img, isRank):
+    """Identifies the card rank or suit, needs image of rank or image of suit, isRank = True if searching for rank, returns best match"""
 
     imgPre = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     thresh, imgPre = cv.threshold(imgPre, 0, 255, cv.THRESH_BINARY_INV +cv.THRESH_OTSU)
@@ -162,6 +163,11 @@ def identifyImage(img):
     height = imgCut.shape[0]
     width = imgCut.shape[1]
     bestFit = 1000
+    if isRank:
+        imgRefs = rankRefs
+    else:
+        imgRefs = suitRefs
+
     for ref in imgRefs:
         imgSample = cv.imread("Card_Imgs/"+ref+".jpg")
         imgSample = imgSample[:,:,0]
