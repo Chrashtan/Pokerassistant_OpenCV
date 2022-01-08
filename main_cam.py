@@ -16,8 +16,8 @@ import processVideo as pV
 FRAME_WIDTH = 1920
 FRAME_HEIGHT = 1080
 
-CARD_MIN_AREA = 348232
-CARD_MAX_AREA = 425617
+CARD_MIN_AREA = 78433
+CARD_MAX_AREA = 95863
 
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
@@ -74,16 +74,13 @@ while WebCam.isOpened():
 
             # Works only if Card is in there
             if len(ListOfCards) > 0:
-                # Show all the cards
-                for i in range(len(ListOfCards)):
-                    cv.imshow("Card %i" % i, ListOfCards[i].img)
-                    cv.imshow("Suit %i" % i, ListOfCards[i].suit_img)
-                    cv.imshow("Rank %i" % i, ListOfCards[i].rank_img)
+                cv.imshow("Card 0", ListOfCards[0].img)
+                cv.imshow("Suit 0", ListOfCards[0].suit_img)
+                cv.imshow("Rank 0", ListOfCards[0].rank_img)
             else:
-                for i in range(len(ListOfCards)):
-                    cv.destroyWindows("Card %i" % i)
-                    cv.destroyWindows("Suit %i" % i)
-                    cv.destroyWindows("Rank %i" % i)
+                cv.destroyWindows("Card 0")
+                cv.destroyWindows("Suit 0")
+                cv.destroyWindows("Rank 0")
 
 
         # Draw box on Live video
