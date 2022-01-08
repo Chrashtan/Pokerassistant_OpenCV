@@ -5,7 +5,7 @@ from matplotlib import pyplot as plt
 import cards
 
 # Constants
-BKG_THRESHOLD = 50
+BKG_THRESHOLD = 60
 
 def preProcessPicture(image):
     # Process Image
@@ -140,6 +140,7 @@ def searchRanksSuits(image, CardContours):
 suitRefs = ["Ace","Eight","Five","Four","Jack","King","Nine","Queen","Seven","Six","Ten","Three","Two"]
 rankRefs = ["Clubs", "Diamonds", "Hearts", "Spades",]
 
+# Brauchen wir das?
 def identifyCard(imgSuit, imgRank):
     rank = cards.CardRanks
     suit = cards.CardSuits
@@ -185,9 +186,9 @@ def identifyImage(img, isRank):
     imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
     imgSolved = cv.resize(imgSolved, (width, height))
     # just for checking the result
-    # cv.imshow("cut", imgCut)
-    # cv.imshow("in", imgPre)
-    #cv.imshow("Best Fit", imgSolved)
+    cv.imshow("cut", imgCut)
+    cv.imshow("in", imgPre)
+    cv.imshow("Best Fit", imgSolved)
     return result
 
 def calibrateCam(frame):
