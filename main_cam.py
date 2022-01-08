@@ -32,6 +32,7 @@ WebCam = cv.VideoCapture(CAM_ID)
 # Set resolution
 WebCam.set(cv.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
 WebCam.set(cv.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
+WebCam.set(cv.CAP_PROP_FPS, 60)
 
 
 # repeat the following lines as long as the Webcam is accessibley
@@ -41,9 +42,7 @@ while WebCam.isOpened():
 
     # Check whether image was captured
     if Return:
-        # Safe Starttime for FPS counter
-        tick1 = cv.getTickCount()
-        freq = cv.getTickFrequency()
+
 
         # Use Filter on Image
         PreProcessedPicture = pV.preProcessPicture(Image)
@@ -76,12 +75,8 @@ while WebCam.isOpened():
         cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 1)
         cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
 
-        # Gets the time after all processing
-        tick2 = cv.getTickCount()
-        time = (tick2 - tick1) / freq
-        framerate = 1 / time
 
-        cv.putText(Image, "FPS: " + str(int(framerate)), (100, 200), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_GREEN, 2,
+        cv.putText(Image, "FPS: " + str(int(WebCam.get(cv.CAP_PROP_FPS))), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_GREEN, 2,
                    cv.LINE_AA)
 
         # Show live Video
