@@ -16,8 +16,8 @@ import processVideo as pV
 FRAME_WIDTH = 1920
 FRAME_HEIGHT = 1080
 
-CARD_MIN_AREA = 78433
-CARD_MAX_AREA = 95863
+CARD_MIN_AREA = 59072
+CARD_MAX_AREA = 72200
 
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
@@ -72,23 +72,20 @@ while WebCam.isOpened():
             # Hori = np.concatenate((ListOfCards[0].suit_img, ListOfCards[0].rank_img), axis=1) # they dont have the same dimensions
             # cv.imshow("RANK / SUIT", Hori)
 
-            # Works only if Card is in there
+            # Just temp
             if len(ListOfCards) > 0:
-                cv.imshow("Card 0", ListOfCards[0].img)
-                cv.imshow("Suit 0", ListOfCards[0].suit_img)
-                cv.imshow("Rank 0", ListOfCards[0].rank_img)
+                for i in range(len(ListOfCards)):
+                    cv.imshow("Card %i" % i, ListOfCards[i].img)
+                    cv.imshow("Suit %i" % i, ListOfCards[i].suit_img)
+                    cv.imshow("Rank %i" % i, ListOfCards[i].rank_img)
             else:
-                cv.destroyWindows("Card 0")
-                cv.destroyWindows("Suit 0")
-                cv.destroyWindows("Rank 0")
+                cv.destroyAllWindows()
 
 
         # Draw box on Live video
         cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 3)
         # Show live Video
         cv.imshow("My Video", Image)
-
-
 
         if cv.waitKey(1) == ord('q'):
             break

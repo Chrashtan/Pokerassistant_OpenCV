@@ -23,7 +23,7 @@ while True:
     binFrame = pV.preProcessPicture(frame)
     cnt = pV.findContours(binFrame)
     cv.drawContours(frame, cnt, -1, (69, 200, 43), 3)
-    cv.imshow("test", frame)
+    cv.imshow("Calibration", frame)
     k = cv.waitKey(1)
 
     if k % 256 == 27:
@@ -39,11 +39,11 @@ while True:
         h = RoI[3]  # Height of RoI
         # 7. ------------- Create my RoI Image ------------------
         RoIImage = frame[y:y + h, x:x + w]
-        RoIImageScaled = cv.resize(RoIImage, dsize=None, fx=3, fy=3)
-
+        RoIBin = pV.preProcessPicture(RoIImage)
+        RoIcnt = pV.findContours(RoIBin)
 
         # Uses the Card Area to calculate min and max Area for a Card
-        cardArea = round(cv.contourArea(cnt[0]))  # Card is biggest contour so at pos 0
+        cardArea = round(cv.contourArea(RoIcnt[0]))  # Card is biggest contour so at pos 0
         minArea = round(cardArea - (0.1 * cardArea))  # subract 10%
         maxArea = round(cardArea + (0.1 * cardArea))  # add 10%
         print("Contour Area: ", cardArea)
