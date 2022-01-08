@@ -138,7 +138,7 @@ def searchRanksSuits(image, CardContours):
 
 
 suitRefs = ["Ace","Eight","Five","Four","Jack","King","Nine","Queen","Seven","Six","Ten","Three","Two"]
-rankRefs = ["Clubs", "Diamonds", "Hearts", "Spades",]
+rankRefs = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
 # Brauchen wir das?
 def identifyCard(imgSuit, imgRank):
@@ -237,5 +237,14 @@ def commentImage(image, rankName, suitName, x, y):
 
     cv.putText(image,suitName,(x-60,y+25),font,fontScale,(0,0,0),3,cv.LINE_AA)
     cv.putText(image,suitName,(x-60,y+25),font,fontScale,(50,200,200),2,cv.LINE_AA)
+
+def segmentImage(image, img_width, img_height, size_board_RoI):
+    """Segments the image in 3 Images. Needs the image, the width, the height
+    and a size of the RoI (in percent). Returns 3 Images"""
+    RoI_Board_midline = img_height/2
+
+    
+
+
 
 

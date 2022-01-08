@@ -6,6 +6,8 @@
 #                  "Straight", "Flush", "Full House", "Four of a Kind",
 #                  "Straight Flush", "Royal Flush")
 # suit_value_dict = {"2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9, "T":10, "J":11, "Q":12, "King":13, "ACE":14}
+
+
 suit_index_dict = {"s": 0, "c": 1, "h": 2, "d": 3}
 reverse_suit_index = ("s", "c", "h", "d")
 val_string = "AKQJT98765432"

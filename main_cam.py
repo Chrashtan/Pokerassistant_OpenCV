@@ -72,8 +72,12 @@ while WebCam.isOpened():
                 cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
                 pV.commentImage(Image, rank, suit, cX, cY)
 
+            # Segment image
+            # Board RoI
+
+
         # Draw box on Live video
-        cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 1)
+        #cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 1)
         cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
 
         # read out enttime
@@ -86,7 +90,7 @@ while WebCam.isOpened():
 
         # Show live Video
         cv.imshow("My Video", Image)
-        cv.imshow("Pre", PreProcessedPicture)
+        #cv.imshow("Pre", PreProcessedPicture)
 
 
 

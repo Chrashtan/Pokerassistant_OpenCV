@@ -9,8 +9,9 @@ import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
 import cards
-import processVideo
+from poker.hand import Combo
 import processVideo as pV
+import probabilites as odd
 
 # Constants
 CARD_MIN_AREA = 59072
@@ -21,10 +22,45 @@ RESIZE_FACTOR = 1
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
 
+# Constans for playing cards
+BOARD = []
+VILLAN_HAND = Combo('9c8s')
+HERO_HAND = Combo('KcKh')
+
+FLOPP = ["Jd", "Td", "Qd"]
+TURN = ["Qc"]
+RIVER = ["Ac"]
+
+BOARD = FLOPP
+
+strOdds, strHand = odd.probabilityFLOP(BOARD, HERO_HAND, None)
+
+print(strOdds)
+print(strHand)
+
+BOARD = BOARD + TURN
+
+strOdds, strHand = odd.probabilityTURN(BOARD, HERO_HAND, None)
+
+print(strOdds)
+print(strHand)
+
+BOARD = BOARD + RIVER
+
+strOdds, strHand = odd.probabilityRIVER(BOARD, HERO_HAND, None)
+
+print(strOdds)
+print(strHand)
+
+strWinner = odd.findWINNER(BOARD, HERO_HAND, VILLAN_HAND)
+print(strWinner)
+
+
+
 
 
 # Read in Image resize it and convert to grayscale
-ImageOriginal = cv.imread("PicturesOfCards/opencv_frame_1.png")     # Works best for a darker background
+ImageOriginal = cv.imread("PicturesOfCards/opencv_frame_2.png")     # Works best for a darker background
 ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=RESIZE_FACTOR, fx=RESIZE_FACTOR)
 
 ListOfCardContours = []
@@ -46,9 +82,9 @@ if CardFound:
         suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
         ListOfCards[i].rank_name = rank
         ListOfCards[i].suit_name = suit
+        cv.drawMarker(ImageOriginalResized, (cX, cY), COLOR_BLUE)
+        pV.commentImage(ImageOriginalResized, rank, suit, cX, cY)
 
-        cv.drawMarker(ImageOriginalResized, (cX, cY), COLOR_GREEN)
-        pV.commentImage(ImageOriginalResized, rank+" "+suit, (cX, cY))
 
     # draw contour to image
     cv.drawContours(ImageOriginalResized, ListOfCardContours, -1, COLOR_BLUE, 3)
