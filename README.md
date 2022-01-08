@@ -15,4 +15,4 @@ $ pip install poker
 
 $ conda install pandas
 
-$ pip install Ipyhton 
+$ pip install ipython

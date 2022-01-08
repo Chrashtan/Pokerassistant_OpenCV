@@ -72,14 +72,20 @@ while WebCam.isOpened():
             # Hori = np.concatenate((ListOfCards[0].suit_img, ListOfCards[0].rank_img), axis=1) # they dont have the same dimensions
             # cv.imshow("RANK / SUIT", Hori)
 
+
             # Just temp
             if len(ListOfCards) > 0:
-                for i in range(len(ListOfCards)):
-                    cv.imshow("Card %i" % i, ListOfCards[i].img)
-                    cv.imshow("Suit %i" % i, ListOfCards[i].suit_img)
-                    cv.imshow("Rank %i" % i, ListOfCards[i].rank_img)
+                print(pV.identifyImage(ListOfCards[0].rank_img))
+                #print(pV.identifyImage(ListOfCards[0].suit_img))
+
+                cv.imshow("Card 0", ListOfCards[i].img)
+                cv.imshow("Suit 0", ListOfCards[i].suit_img)
+                cv.imshow("Rank 0", ListOfCards[i].rank_img)
             else:
-                cv.destroyAllWindows()
+                cv.destroyWindow("Card 0")
+                cv.destroyWindow("Suit 0")
+                cv.destroyWindow("Rank 0")
+
 
 
         # Draw box on Live video
