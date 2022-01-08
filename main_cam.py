@@ -16,8 +16,8 @@ import processVideo as pV
 FRAME_WIDTH = 1920
 FRAME_HEIGHT = 1080
 
-CARD_MIN_AREA = 59072
-CARD_MAX_AREA = 72200
+CARD_MIN_AREA = 42206
+CARD_MAX_AREA = 51584
 
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
@@ -34,7 +34,7 @@ WebCam.set(cv.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
 WebCam.set(cv.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
 
 
-# repeat the following lines as long as the Webcam is accessible
+# repeat the following lines as long as the Webcam is accessibley
 while WebCam.isOpened():
     # Reading a single image from the WebCam
     Return, Image = WebCam.read()
@@ -64,37 +64,25 @@ while WebCam.isOpened():
                 cX, cY = pV.findCenterpoints(ListOfCardContours[i])
                 ListOfCards[i].centerpoint_X = cX
                 ListOfCards[i].centerpoint_Y = cY
+                suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
+                ListOfCards[i].rank_name = rank
+                ListOfCards[i].suit_name = suit
+
                 cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
-
-            cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
-
-            # Show SUIT and RANK in the same Window
-            # Hori = np.concatenate((ListOfCards[0].suit_img, ListOfCards[0].rank_img), axis=1) # they dont have the same dimensions
-            # cv.imshow("RANK / SUIT", Hori)
-
-
-            # Just temp
-            if len(ListOfCards) > 0:
-                print(pV.identifyImage(ListOfCards[0].rank_img, True))
-                print(pV.identifyImage(ListOfCards[0].suit_img, False))
-
-                cv.imshow("Card 0", ListOfCards[i].img)
-                cv.imshow("Suit 0", ListOfCards[i].suit_img)
-                cv.imshow("Rank 0", ListOfCards[i].rank_img)
-            else:
-                cv.destroyWindow("Card 0")
-                cv.destroyWindow("Suit 0")
-                cv.destroyWindow("Rank 0")
-
-
+                pV.commentImage(Image, rank + " " + suit, (cX, cY))
 
         # Draw box on Live video
         cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 3)
         # Show live Video
         cv.imshow("My Video", Image)
 
-        if cv.waitKey(1) == ord('q'):
+        key = cv.waitKey(1)
+        # First ask for calibration
+        if  key == ord('y'):
+            CARD_MIN_AREA, CARD_MAX_AREA = pV.calibrateCam(Image)
+        elif key == ord('q'):
             break
+
 
 # Close all windows
 cv.destroyAllWindows()

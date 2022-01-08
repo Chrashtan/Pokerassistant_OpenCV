@@ -5,7 +5,7 @@ import processVideo as pV
 FRAME_WIDTH = 1920
 FRAME_HEIGHT = 1080
 
-CAM_ID = 2
+CAM_ID = 1
 
 cam = cv.VideoCapture(CAM_ID)
 
