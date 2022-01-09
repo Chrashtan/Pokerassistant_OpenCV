@@ -27,9 +27,9 @@ BOARD = []
 VILLAN_HAND = Combo('9c8s')
 HERO_HAND = Combo('KcKh')
 
-FLOPP = ["Jd", "Td", "Qd"]
+FLOPP = ["Js", "Td", "Qd"]
 TURN = ["Qc"]
-RIVER = ["Ac"]
+RIVER = [cards.convertCardName("Ace","Clubs")]
 
 BOARD = FLOPP
 
@@ -82,6 +82,7 @@ if CardFound:
         suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
         ListOfCards[i].rank_name = rank
         ListOfCards[i].suit_name = suit
+        ListOfCards[i].card_name = cards.convertCardName(rank, suit)
         cv.drawMarker(ImageOriginalResized, (cX, cY), COLOR_BLUE)
         pV.commentImage(ImageOriginalResized, rank, suit, cX, cY)
 

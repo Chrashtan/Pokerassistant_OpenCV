@@ -7,32 +7,16 @@
 # Import libraries
 import cv2 as cv
 import numpy as np
-from enum import Enum
 
+# List for Ranks and Suits to get the Cards
+RANK_REFS = ["Ace", "King", "Queen", "Jack", "Ten", "Nine", "Eight", "Seven", "Six", "Five", "Four", "Three", "Two"]
+SUIT_REFS = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
-# Properties of the card
+# Dictionary to convert the values for the odd calculation
+RANK_VAL_DIC = {"Two": "2", "Three": "3", "Four": "4", "Five": "5", "Six": "6", "Seven": "7", "Eight": "8",
+                "Nine": "9", "Ten": "T", "Jack": "J", "Queen": "Q", "King": "K", "Ace": "A"}
 
-class CardRanks(Enum):
-    ACE = "Ace"
-    TWO = "Two"
-    THREE = "Three"
-    FOUR = "Four"
-    FIVE = "Five"
-    SIX = "Six"
-    SEVEN = "Seven"
-    EIGHT = "Eight"
-    NINE = "Nine"
-    TEN = "Ten"
-    JACK = "Jack"
-    QUEEN = "Queen"
-    KING = "King"
-
-
-class CardSuits(Enum):
-    DIAMONDS = "Diamonds"
-    CLUBS = "Clubs"
-    HEARTS = "Hearts"
-    SPADES = "Spades"
+SUIT_VAL_DIC = {"Spades": "s", "Clubs": "c", "Hearts": "h", "Diamonds": "d"}
 
 
 class CardProperties:
@@ -49,6 +33,8 @@ class CardProperties:
         self.centerpoint_Y = 0
         self.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
         self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
+        self.card_name = " "    # Value of the Card for Odds
+
 
         self.cycle_age = 0  # cycles since the card has been last recognized
 
@@ -63,6 +49,15 @@ class CardProperties:
         self.centerpoint_Y = 0
         self.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
         self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
+        self.card_name = " "  # Value of the Card for Odds
+
+
+def convertCardName(rank, suit):
+    """Gets the Rank and the suit of one card and merge them together"""
+    return RANK_VAL_DIC[rank] + SUIT_VAL_DIC[suit]
+
+
+
 
         self.cycle_age = 0      # cycles since the card has been last recognized
 

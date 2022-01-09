@@ -119,8 +119,6 @@ def searchRanksSuits(image, CardContours):
         # cut and rotate the bounding box to get the upright rectangle
         imgList.append(cv.warpPerspective(image, TransformMatrix, (boxWidth, boxHeight)))
 
-
-
     for i in range(0, len(imgList)):
         # take important parts out of the transformed image:
         height = imgList[i].shape[0]
@@ -137,13 +135,8 @@ def searchRanksSuits(image, CardContours):
     return imgList, imgRanksList, imgSuitsList
 
 
-suitRefs = ["Ace","Eight","Five","Four","Jack","King","Nine","Queen","Seven","Six","Ten","Three","Two"]
-rankRefs = ["Spades", "Clubs", "Hearts", "Diamonds"]
-
 # Brauchen wir das?
 def identifyCard(imgSuit, imgRank):
-    rank = cards.CardRanks
-    suit = cards.CardSuits
     rank = identifyImage(imgRank, True)
     suit = identifyImage(imgSuit, False)
 
@@ -157,7 +150,7 @@ def identifyImage(img, isRank):
     thresh, imgPre = cv.threshold(imgPre, 0, 255, cv.THRESH_BINARY_INV +cv.THRESH_OTSU)
     array_cont,x = cv.findContours(imgPre, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
     if len(array_cont) == 0:
-        return ""
+        return " "
     x, y, w, h = cv.boundingRect(array_cont[0])  # Draw a rectangle around card.
     # Cut out everything exept the card
     imgCut = imgPre[y:y + h, x:x + w]
@@ -165,9 +158,9 @@ def identifyImage(img, isRank):
     width = imgCut.shape[1]
     bestFit = 1000
     if isRank:
-        imgRefs = rankRefs
+        imgRefs = cards.RANK_REFS
     else:
-        imgRefs = suitRefs
+        imgRefs = cards.SUIT_REFS
 
     for ref in imgRefs:
         imgSample = cv.imread("Card_Imgs/"+ref+".jpg")
@@ -198,8 +191,8 @@ def calibrateCam(frame):
     font = cv.FONT_HERSHEY_SIMPLEX
     fontScale = 1
     # Call putText 2 times to draw contour to text
-    cv.putText(frame,HelpText,(60,60),font,fontScale,(0,0,0),3,cv.LINE_AA)
-    cv.putText(frame,HelpText,(60,60),font,fontScale,(50,200,200),2,cv.LINE_AA)
+    cv.putText(frame, HelpText, (60,60), font, fontScale, (0,0,0), 3, cv.LINE_AA)
+    cv.putText(frame, HelpText, (60,60), font, fontScale, (50,200,200), 2, cv.LINE_AA)
     # Find Contour
     binFrame = preProcessPicture(frame)
     # SPACE pressed
@@ -208,7 +201,7 @@ def calibrateCam(frame):
     y = RoI[1]  # y coordinate of top-left corner point of ROI
     w = RoI[2]  # Width of RoI
     h = RoI[3]  # Height of RoI
-    # 7. ------------- Create my RoI Image ------------------
+    # ------------- Create my RoI Image ------------------
     RoIImage = frame[y:y + h, x:x + w]
     RoIBin = preProcessPicture(RoIImage)
     RoIcnt = findContours(RoIBin)
@@ -232,11 +225,11 @@ def commentImage(image, rankName, suitName, x, y):
     # position = (50, 50) # position
     # Using cv2.putText() method
     # Draw card name twice, so letters have black outline
-    cv.putText(image,rankName,(x-60,y-10),font,fontScale,(0,0,0),3,cv.LINE_AA)
-    cv.putText(image,rankName,(x-60,y-10),font,fontScale,(50,200,200),2,cv.LINE_AA)
+    cv.putText(image, rankName,(x-60,y-10), font, fontScale,(0,0,0), 3, cv.LINE_AA)
+    cv.putText(image, rankName,(x-60,y-10), font, fontScale,(50,200,200), 2, cv.LINE_AA)
 
-    cv.putText(image,suitName,(x-60,y+25),font,fontScale,(0,0,0),3,cv.LINE_AA)
-    cv.putText(image,suitName,(x-60,y+25),font,fontScale,(50,200,200),2,cv.LINE_AA)
+    cv.putText(image, suitName,(x-60,y+25), font, fontScale,(0,0,0), 3, cv.LINE_AA)
+    cv.putText(image, suitName,(x-60,y+25), font, fontScale,(50,200,200), 2, cv.LINE_AA)
 
 def segmentImage(image, img_width, img_height, size_board_RoI):
     """Segments the image in 3 Images. Needs the image, the width, the height
