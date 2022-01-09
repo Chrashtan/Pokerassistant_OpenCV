@@ -69,6 +69,7 @@ while WebCam.isOpened():
                 suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
                 ListOfCards[i].rank_name = rank
                 ListOfCards[i].suit_name = suit
+                ListOfCards[i].card_name = cards.convertCardName(rank, suit)
                 cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
                 pV.commentImage(Image, rank, suit, cX, cY)
 

@@ -82,6 +82,7 @@ if CardFound:
         suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
         ListOfCards[i].rank_name = rank
         ListOfCards[i].suit_name = suit
+        ListOfCards[i].card_name = cards.convertCardName(rank, suit)
         cv.drawMarker(ImageOriginalResized, (cX, cY), COLOR_BLUE)
         pV.commentImage(ImageOriginalResized, rank, suit, cX, cY)
 
