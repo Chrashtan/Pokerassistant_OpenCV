@@ -9,7 +9,7 @@ import cv2 as cv
 import numpy as np
 
 # List for Ranks and Suits to get the Cards
-RANK_REF = ["Ace", "King", "Queen", "Jack", "Ten", "Nine", "Eight", "Seven", "Six", "Five", "Four", "Three", "Two"]
+RANK_REFS = ["Ace", "King", "Queen", "Jack", "Ten", "Nine", "Eight", "Seven", "Six", "Five", "Four", "Three", "Two"]
 SUIT_REFS = ["Spades", "Clubs", "Hearts", "Diamonds"]
 
 # Dictionary to convert the values for the odd calculation

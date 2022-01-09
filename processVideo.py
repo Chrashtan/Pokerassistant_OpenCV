@@ -119,8 +119,6 @@ def searchRanksSuits(image, CardContours):
         # cut and rotate the bounding box to get the upright rectangle
         imgList.append(cv.warpPerspective(image, TransformMatrix, (boxWidth, boxHeight)))
 
-
-
     for i in range(0, len(imgList)):
         # take important parts out of the transformed image:
         height = imgList[i].shape[0]
@@ -139,8 +137,6 @@ def searchRanksSuits(image, CardContours):
 
 # Brauchen wir das?
 def identifyCard(imgSuit, imgRank):
-    rank = cards.CardRanks
-    suit = cards.CardSuits
     rank = identifyImage(imgRank, True)
     suit = identifyImage(imgSuit, False)
 
