@@ -27,9 +27,9 @@ BOARD = []
 VILLAN_HAND = Combo('9c8s')
 HERO_HAND = Combo('KcKh')
 
-FLOPP = ["Jd", "Td", "Qd"]
+FLOPP = ["Js", "Td", "Qd"]
 TURN = ["Qc"]
-RIVER = ["Ac"]
+RIVER = [cards.convertCardName("Ace","Clubs")]
 
 BOARD = FLOPP
 
