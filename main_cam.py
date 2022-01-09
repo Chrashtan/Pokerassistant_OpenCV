@@ -70,16 +70,13 @@ while WebCam.isOpened():
 
             # Write Values to instances of Cards
             for i in range(len(ListOfCardContours)):
-                ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i]))
                 cX, cY = pV.findCenterpoints(ListOfCardContours[i])
-                ListOfCards[i].centerpoint_X = cX
-                ListOfCards[i].centerpoint_Y = cY
                 suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
-                ListOfCards[i].rank_name = rank
-                ListOfCards[i].suit_name = suit
-                ListOfCards[i].card_name = cards.convertCardName(rank, suit)
+                ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i],
+                                                        cX, cY, rank, suit))
+
                 cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
-                pV.commentImage(Image, rank, suit, cX, cY)
+                pV.commentImage(Image, rank, suit, cX, cY) # TODO: Reinschreiben nach der Auswertung
 
             # Segment image
             # Board RoI
@@ -92,7 +89,7 @@ while WebCam.isOpened():
                 flagIsInCircle = False
                 for j in range(0,len(recognizedCards)):
                     # is the centrepoint of any of the found cards close to the centrepoint of one of the old ones?
-                    if (pointInCircle((listOfCards[i].centrePoint_X,listOfCards[i].centrePoint_Y),SAME_CARD_RADIUS,(recognizedCards[j].centrePoint_X,recognizedCards[j].centrePoint_Y))):
+                    if (pV.pointInCircle((ListOfCards[i].centerpoint_X,ListOfCards[i].centerpoint_Y),SAME_CARD_RADIUS,(recognizedCards[j].centerpoint_X,recognizedCards[j].centerpoint_Y))):
                         flagIsInCircle = True
                         recognizedCards[j]= ListOfCards[i] # then replace that card with the newly found one
                         # which is hopefully the same card but slightly moved
@@ -101,7 +98,7 @@ while WebCam.isOpened():
                     readRanks.append([])
                     readSuits.append([])
 
-            for i in range(0, len(ListOfCard)):
+            for i in range(0, len(ListOfCards)):
                 if ListOfCards[i].cycle_age > MAX_AGE: # card has not been found in a while so it will be removed
                     ListOfCards.remove(ListOfCards[i])
                     readRanks.remove(readRanks[i])
@@ -113,18 +110,18 @@ while WebCam.isOpened():
                                                                   # so that the result can be averaged out
 
 
-            # Just temp
-            if len(ListOfCards) > 0:
-                print(pV.identifyImage(ListOfCards[0].rank_img, True))
-                # print(pV.identifyImage(ListOfCards[0].suit_img, False))
-
-                cv.imshow("Card 0", ListOfCards[i].img)
-                cv.imshow("Suit 0", ListOfCards[i].suit_img)
-                cv.imshow("Rank 0", ListOfCards[i].rank_img)
-            else:
-                cv.destroyWindow("Card 0")
-                cv.destroyWindow("Suit 0")
-                cv.destroyWindow("Rank 0")
+            # # Just temp
+            # if len(ListOfCards) > 0:
+            #     print(pV.identifyImage(ListOfCards[0].rank_img, True))
+            #     # print(pV.identifyImage(ListOfCards[0].suit_img, False))
+            #
+            #     cv.imshow("Card 0", ListOfCards[i].img)
+            #     cv.imshow("Suit 0", ListOfCards[i].suit_img)
+            #     cv.imshow("Rank 0", ListOfCards[i].rank_img)
+            # else:
+            #     cv.destroyWindow("Card 0")
+            #     cv.destroyWindow("Suit 0")
+            #     cv.destroyWindow("Rank 0")
 
 
 
@@ -145,8 +142,6 @@ while WebCam.isOpened():
         #cv.imshow("Pre", PreProcessedPicture)
 
 
-
-
         key = cv.waitKey(50)
         # First ask for calibration
         if  key == ord('c'):
@@ -159,49 +154,3 @@ while WebCam.isOpened():
 
 # Close all windows
 cv.destroyAllWindows()
-
-
-# find if a point is inside a a given circle
-def pointInCircle(centre, radius, point):
-
-    if ((centre[0]-point[0])^2+(centre[1]-point[1])^2) < ((centre[0]-radius)^2+(centre[1]-radius)^2):
-        return True
-    else:
-        return False
-
-suitRefs = ["Ace","Eight","Five","Four","Jack","King","Nine","Queen","Seven","Six","Ten","Three","Two"]
-rankRefs = ["Spades", "Clubs", "Hearts", "Diamonds"]
-
-def averageValuesforCard(index):
-    #uniqueSuits=[[]]
-    #uniqueRanks=[[]]
-    while len(readRanks) > NUMBER_TO_AVERAGE:
-        readRanks.remove(readRanks[0])
-
-    while len(readSuits) > NUMBER_TO_AVERAGE:
-        readSuits.remove(readSuits[0])
-    rankFit = rankRefs[0]
-    rankCount = 0
-    rankMax = readRanks.count(rankRefs[0])
-    suitFit = suitRefs[0]
-    suitCount = 0;
-    suitMax = readSuits.count(suitRefs[0])
-
-    for i in range(1,len(rankRefs)):
-        rankCount = readRanks.count(rankRefs[i])
-        if rankCount > rankMax:
-            rankMax = rankCount
-            rankFit = i
-    for i in range(1,len(suitRefs)):
-        suitCount = readSuits.count(suitRefs[i])
-        if suitCount > suitMax:
-            suitMax = suitCount
-            suitFit = i
-
-    if suitMax < (NUMBER_TO_AVERAGE * 0.7):
-        suitFit = "UNKNOWN"
-
-    if rankMax < (NUMBER_TO_AVERAGE * 0.7):
-        rankFit = "UNKNOWN"
-
-    return suitFit, rankFit
