@@ -134,8 +134,8 @@ while WebCam.isOpened():
         timeDiff = endtime-startTime
         framerate = 1.0 / timeDiff
 
-        cv.putText(Image, "FPS: " + str(int(framerate)), (100, 200), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_GREEN, 2,
-                   cv.LINE_AA)
+        cv.putText(Image, "FPS: " + str(int(framerate)), (100, 200), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
+        cv.putText(Image, "FPS: " + str(int(framerate)), (100, 200), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_GREEN, 2, cv.LINE_AA)
 
         # Show live Video
         cv.imshow("My Video", Image)
