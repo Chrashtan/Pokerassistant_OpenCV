@@ -50,6 +50,8 @@ class CardProperties:
         self.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
         self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
 
+        self.cycle_age = 0  # cycles since the card has been last recognized
+
     # Constructor of CardProperties
     def __init__(self, img, rank, suit):
         self.img = img   # Image of the full card
@@ -62,5 +64,5 @@ class CardProperties:
         self.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
         self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
 
-
+        self.cycle_age = 0      # cycles since the card has been last recognized
 
