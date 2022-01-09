@@ -21,7 +21,6 @@ SUIT_VAL_DIC = {"Spades": "s", "Clubs": "c", "Hearts": "h", "Diamonds": "d"}
 
 class CardProperties:
     """Structure to store information about the cards of the camera image."""
-
     # Constructor of CardProperties
     def __init__(self):
         self.img = []   # Image of the full card
@@ -36,7 +35,6 @@ class CardProperties:
         self.card_name = " "    # Value of the Card for Odds
         self.cycle_age = 0  # cycles since the card has been last recognized
 
-    # Constructor of CardProperties
     def __init__(self, img, img_rank, img_suit):
         self.img = img   # Image of the full card
         self.rank_img = img_rank     # Image of card's rank
@@ -50,7 +48,6 @@ class CardProperties:
         self.card_name = " "  # Value of the Card for Odds
         self.cycle_age = 0  # cycles since the card has been last recognized
 
-    # Constructor of CardProperties
     def __init__(self, img, img_rank, img_suit, cX, cY):
         self.img = img   # Image of the full card
         self.rank_img = img_rank     # Image of card's rank
@@ -64,7 +61,6 @@ class CardProperties:
         self.card_name = " "  # Value of the Card for Odds
         self.cycle_age = 0  # cycles since the card has been last recognized
 
-    # Constructor of CardProperties
     def __init__(self, img, img_rank, img_suit, cX, cY, rank, suit):
         self.img = img   # Image of the full card
         self.rank_img = img_rank     # Image of card's rank
