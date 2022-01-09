@@ -98,6 +98,8 @@ while WebCam.isOpened():
                         # which is hopefully the same card but slightly moved
                 if flagIsInCircle == False:
                     recognizedCards.append(ListOfCards[i]) # otherwise add a new cardspot for it
+                    readRanks.append([])
+                    readSuits.append([])
 
             for i in range(0, len(ListOfCard)):
                 if ListOfCards[i].cycle_age > MAX_AGE: # card has not been found in a while so it will be removed
@@ -178,19 +180,6 @@ def averageValuesforCard(index):
 
     while len(readSuits) > NUMBER_TO_AVERAGE:
         readSuits.remove(readSuits[0])
-    # add each unique value in the read Lists to the unique list, also count each type
-    # for i in range(len(readRanks)):  # readRanks and readSuits are always the same length
-    #     flagContainsRank = False
-    #     flagContainsSuit = False
-    #     for j in range(len(uniqueRanks)):
-    #         if uniqueRanks[j,0] == readRanks[i]:
-    #             flagContainsRank = True
-    #     for j in range(len(uniqueSuits)):
-    #         if uniqueSuits[j,0] == readSuits[i]:
-    #             flagContainsSuit = True
-    #     if flagContainsRank == False:
-    #         uniqueRanks.append([])
-    #         uniqueRanks.count()
     rankFit = rankRefs[0]
     rankCount = 0
     rankMax = readRanks.count(rankRefs[0])
@@ -208,6 +197,7 @@ def averageValuesforCard(index):
         if suitCount > suitMax:
             suitMax = suitCount
             suitFit = i
+
     if suitMax < (NUMBER_TO_AVERAGE * 0.7):
         suitFit = "UNKNOWN"
 

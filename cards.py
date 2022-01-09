@@ -51,6 +51,7 @@ class CardProperties:
         self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
         self.card_name = " "  # Value of the Card for Odds
 
+        self.cycle_age = 0  # cycles since the card has been last recognized
 
 def convertCardName(rank, suit):
     """Gets the Rank and the suit of one card and merge them together"""
@@ -59,5 +60,5 @@ def convertCardName(rank, suit):
 
 
 
-        self.cycle_age = 0      # cycles since the card has been last recognized
+
 
