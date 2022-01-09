@@ -37,17 +37,45 @@ class CardProperties:
         self.cycle_age = 0  # cycles since the card has been last recognized
 
     # Constructor of CardProperties
-    def __init__(self, img, rank, suit):
+    def __init__(self, img, img_rank, img_suit):
         self.img = img   # Image of the full card
-        self.rank_img = rank     # Image of card's rank
+        self.rank_img = img_rank     # Image of card's rank
         self.rank_match = []    # Image of  best match
-        self.suit_img = suit  # Image of card's suit
+        self.suit_img = img_suit  # Image of card's suit
         self.suit_match = []    # Image of best match
         self.centerpoint_X = 0
         self.centerpoint_Y = 0
         self.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
         self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
         self.card_name = " "  # Value of the Card for Odds
+        self.cycle_age = 0  # cycles since the card has been last recognized
+
+    # Constructor of CardProperties
+    def __init__(self, img, img_rank, img_suit, cX, cY):
+        self.img = img   # Image of the full card
+        self.rank_img = img_rank     # Image of card's rank
+        self.rank_match = []    # Image of  best match
+        self.suit_img = img_suit  # Image of card's suit
+        self.suit_match = []    # Image of best match
+        self.centerpoint_X = cX
+        self.centerpoint_Y = cY
+        self.rank_name = "Unknown"  # Name of the rank of the card. Has to be determined
+        self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
+        self.card_name = " "  # Value of the Card for Odds
+        self.cycle_age = 0  # cycles since the card has been last recognized
+
+    # Constructor of CardProperties
+    def __init__(self, img, img_rank, img_suit, cX, cY, rank, suit):
+        self.img = img   # Image of the full card
+        self.rank_img = img_rank     # Image of card's rank
+        self.rank_match = []    # Image of  best match
+        self.suit_img = img_suit  # Image of card's suit
+        self.suit_match = []    # Image of best match
+        self.centerpoint_X = cX
+        self.centerpoint_Y = cY
+        self.rank_name = rank  # Name of the rank of the card. Has to be determined
+        self.suit_name = suit  # Name of the suit of the card. Has to be determined
+        self.card_name = convertCardName(rank, suit)  # Value of the Card for Odds
         self.cycle_age = 0  # cycles since the card has been last recognized
 
 

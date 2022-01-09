@@ -70,14 +70,11 @@ while WebCam.isOpened():
 
             # Write Values to instances of Cards
             for i in range(len(ListOfCardContours)):
-                ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i]))
                 cX, cY = pV.findCenterpoints(ListOfCardContours[i])
-                ListOfCards[i].centerpoint_X = cX
-                ListOfCards[i].centerpoint_Y = cY
                 suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
-                ListOfCards[i].rank_name = rank
-                ListOfCards[i].suit_name = suit
-                ListOfCards[i].card_name = cards.convertCardName(rank, suit)
+                ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i],
+                                                        cX, cY, rank, suit))
+
                 cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
                 pV.commentImage(Image, rank, suit, cX, cY) # TODO: Reinschreiben nach der Auswertung
 
