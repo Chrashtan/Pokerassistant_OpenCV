@@ -78,6 +78,7 @@ if CardFound:
         cX, cY = pV.findCenterpoints(ListOfCardContours[i])
         suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
         ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i], cX, cY, rank, suit))
+
         cv.drawMarker(ImageOriginalResized, (cX, cY), COLOR_BLUE)
         pV.commentImage(ImageOriginalResized, rank, suit, cX, cY)
 

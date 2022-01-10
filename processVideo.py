@@ -236,59 +236,6 @@ def segmentImage(image, img_width, img_height, size_board_RoI):
     and a size of the RoI (in percent). Returns 3 Images"""
     RoI_Board_midline = img_height/2
 
-# find if a point is inside a a given circle
-def pointInCircle(center, radius, point):
-    if ((center[0] - point[0]) ^ 2 + (center[1] - point[1]) ^ 2) < ((center[0] - radius) ^ 2 + (center[1] - radius) ^ 2):
-        return True
-    else:
-        return False
-
-
-def averageValuesforCard(index):
-    #uniqueSuits=[[]]
-    #uniqueRanks=[[]]
-    while len(readRanks) > NUMBER_TO_AVERAGE:
-        readRanks.remove(readRanks[0])
-
-    while len(readSuits) > NUMBER_TO_AVERAGE:
-        readSuits.remove(readSuits[0])
-    # add each unique value in the read Lists to the unique list, also count each type
-    # for i in range(len(readRanks)):  # readRanks and readSuits are always the same length
-    #     flagContainsRank = False
-    #     flagContainsSuit = False
-    #     for j in range(len(uniqueRanks)):
-    #         if uniqueRanks[j,0] == readRanks[i]:
-    #             flagContainsRank = True
-    #     for j in range(len(uniqueSuits)):
-    #         if uniqueSuits[j,0] == readSuits[i]:
-    #             flagContainsSuit = True
-    #     if flagContainsRank == False:
-    #         uniqueRanks.append([])
-    #         uniqueRanks.count()
-    rankFit = cards.RANK_REFSs[0]
-    rankCount = 0
-    rankMax = readRanks.count(cards.RANK_REFSs[0][0])
-    suitFit = cards.SUIT_REFS[0]
-    suitCount = 0;
-    suitMax = readSuits.count(cards.SUIT_REFS[0])
-
-    for i in range(1,len(rankRefs)):
-        rankCount = readRanks.count(rankRefs[i])
-        if rankCount > rankMax:
-            rankMax = rankCount
-            rankFit = i
-    for i in range(1,len(suitRefs)):
-        suitCount = readSuits.count(suitRefs[i])
-        if suitCount > suitMax:
-            suitMax = suitCount
-            suitFit = i
-    if suitMax < (NUMBER_TO_AVERAGE * 0.7):
-        suitFit = "UNKNOWN"
-
-    if rankMax < (NUMBER_TO_AVERAGE * 0.7):
-        rankFit = "UNKNOWN"
-
-    return suitFit, rankFit
 
     
 

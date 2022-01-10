@@ -27,7 +27,64 @@ CAM_ID = 2
 
 MAX_AGE = 20
 SAME_CARD_RADIUS = 60
-NUMBER_TO_AVERAGE = 10
+NUMBER_TO_AVERAGE = 40
+
+
+# find if a point is inside a a given circle
+def pointInCircle(center, radius, point):
+    if ((center[0] - point[0]) ^ 2 + (center[1] - point[1]) ^ 2) < ((center[0] - radius) ^ 2 + (center[1] - radius) ^ 2):
+        return True
+    else:
+        return False
+
+def averageValuesforCard(index):
+    #uniqueSuits=[[]]
+    #uniqueRanks=[[]]
+    while len(readRanks) > NUMBER_TO_AVERAGE:
+        readRanks.remove(readRanks[0])
+
+    while len(readSuits) > NUMBER_TO_AVERAGE:
+        readSuits.remove(readSuits[0])
+    # add each unique value in the read Lists to the unique list, also count each type
+    # for i in range(len(readRanks)):  # readRanks and readSuits are always the same length
+    #     flagContainsRank = False
+    #     flagContainsSuit = False
+    #     for j in range(len(uniqueRanks)):
+    #         if uniqueRanks[j,0] == readRanks[i]:
+    #             flagContainsRank = True
+    #     for j in range(len(uniqueSuits)):
+    #         if uniqueSuits[j,0] == readSuits[i]:
+    #             flagContainsSuit = True
+    #     if flagContainsRank == False:
+    #         uniqueRanks.append([])
+    #         uniqueRanks.count()
+    rankFit = cards.RANK_REFSs[0]
+    rankCount = 0
+    rankMax = readRanks.count(cards.RANK_REFSs[0][0])
+    suitFit = cards.SUIT_REFS[0]
+    suitCount = 0;
+    suitMax = readSuits.count(cards.SUIT_REFS[0])
+
+    for i in range(1,len(rankRefs)):
+        rankCount = readRanks.count(rankRefs[i])
+        if rankCount > rankMax:
+            rankMax = rankCount
+            rankFit = i
+    for i in range(1,len(suitRefs)):
+        suitCount = readSuits.count(suitRefs[i])
+        if suitCount > suitMax:
+            suitMax = suitCount
+            suitFit = i
+    if suitMax < (NUMBER_TO_AVERAGE * 0.7):
+        suitFit = "UNKNOWN"
+
+    if rankMax < (NUMBER_TO_AVERAGE * 0.7):
+        rankFit = "UNKNOWN"
+
+    return suitFit, rankFit
+
+
+
 
 # ----- FOREVER LOOP -----
 # Generation of an captured object
@@ -89,7 +146,7 @@ while WebCam.isOpened():
                 flagIsInCircle = False
                 for j in range(0,len(recognizedCards)):
                     # is the centrepoint of any of the found cards close to the centrepoint of one of the old ones?
-                    if (pV.pointInCircle((ListOfCards[i].centerpoint_X,ListOfCards[i].centerpoint_Y),SAME_CARD_RADIUS,(recognizedCards[j].centerpoint_X,recognizedCards[j].centerpoint_Y))):
+                    if (pointInCircle((ListOfCards[i].centerpoint_X,ListOfCards[i].centerpoint_Y),SAME_CARD_RADIUS,(recognizedCards[j].centerpoint_X,recognizedCards[j].centerpoint_Y))):
                         flagIsInCircle = True
                         recognizedCards[j]= ListOfCards[i] # then replace that card with the newly found one
                         # which is hopefully the same card but slightly moved
@@ -105,8 +162,8 @@ while WebCam.isOpened():
                     readSuits.remove(readSuits[i])
                 else:
                     ListOfCards[i].cycle_age = ListOfCards[i].cycle_age + 1
-                    readRanks[i].append(ListOfCards[i].rank_name) # the ranks and suits are stored with the values
-                    readRanks[i].append(ListOfCards[i].suit_name) # that have been found on previous iterations
+                    readRanks.append(ListOfCards[i].rank_name) # the ranks and suits are stored with the values
+                    readRanks.append(ListOfCards[i].suit_name) # that have been found on previous iterations
                                                                   # so that the result can be averaged out
 
 
@@ -154,3 +211,4 @@ while WebCam.isOpened():
 
 # Close all windows
 cv.destroyAllWindows()
+
