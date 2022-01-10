@@ -27,13 +27,13 @@ CAM_ID = 2
 
 
 MAX_AGE = 20
-SAME_CARD_RADIUS = 60
+SAME_CARD_RADIUS = 10
 NUMBER_TO_AVERAGE = 40
 
 
 # find if a point is inside a a given circle
-def pointInCircle(center, radius, point):
-    if ((center[0] - point[0]) ^ 2 + (center[1] - point[1]) ^ 2) < ((center[0] - radius) ^ 2 + (center[1] - radius) ^ 2):
+def pointInCircle(centerX, centerY, radius, pointX, pointY):
+    if (((pointX - centerX) * (pointX - centerX)) + ((pointY - centerY) * (pointY - centerY))) < (radius * radius):
         return True
     else:
         return False
@@ -151,7 +151,7 @@ while WebCam.isOpened():
                 flagIsInCircle = False
                 for j in range(0,len(recognizedCards)):
                     # is the centrepoint of any of the found cards close to the centrepoint of one of the old ones?
-                    if (pointInCircle((ListOfCards[i].centerpoint_X,ListOfCards[i].centerpoint_Y),SAME_CARD_RADIUS,(recognizedCards[j].centerpoint_X,recognizedCards[j].centerpoint_Y))):
+                    if (pointInCircle(ListOfCards[i].centerpoint_X, ListOfCards[i].centerpoint_Y,SAME_CARD_RADIUS, recognizedCards[j].centerpoint_X, recognizedCards[j].centerpoint_Y)):
                         flagIsInCircle = True
                         recognizedCards[j]= ListOfCards[i] # then replace that card with the newly found one
                         # which is hopefully the same card but slightly moved
@@ -167,8 +167,8 @@ while WebCam.isOpened():
                     readSuits.remove(readSuits[i])
                 else:
                     ListOfCards[i].cycle_age = ListOfCards[i].cycle_age + 1
-                    readRanks.append(ListOfCards[i].rank_name) # the ranks and suits are stored with the values
-                    readRanks.append(ListOfCards[i].suit_name) # that have been found on previous iterations
+                    readRanks[i].append(ListOfCards[i].rank_name) # the ranks and suits are stored with the values
+                    readSuits[i].append(ListOfCards[i].suit_name) # that have been found on previous iterations
                                                                   # so that the result can be averaged out
 
 
@@ -184,6 +184,8 @@ while WebCam.isOpened():
             #     cv.destroyWindow("Card 0")
             #     cv.destroyWindow("Suit 0")
             #     cv.destroyWindow("Rank 0")
+
+            #
 
 
 

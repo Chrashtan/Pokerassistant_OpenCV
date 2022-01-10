@@ -41,7 +41,7 @@ def findCards(image, min_area, max_area):
     """Gets a picture and min and max area for one Card. Returns a List of card contours.
     Also Returns a Flag -> CardFound"""
     ListOfCardContours = []  # Big countours = cards
-    CardFound = True
+    CardFound = False
 
     contours, hierachyf = cv.findContours(image, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
     # Sort contours by size -> biggest contour is at the beginn of the array
@@ -65,6 +65,7 @@ def findCards(image, min_area, max_area):
             if((size < max_area) and (size > min_area) and (len(approx) == 4)):
                 #ListOfCardContours.append(contours[i])
                 ListOfCardContours.append(approx)
+                CardFound = True
 
         return CardFound, ListOfCardContours
 
