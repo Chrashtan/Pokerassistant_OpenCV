@@ -118,6 +118,7 @@ while WebCam.isOpened():
 
         # Find cards
         CardFound, ListOfCardContours = pV.findCards(PreProcessedPicture, CARD_MIN_AREA, CARD_MAX_AREA)  # Picture, min area / max area
+        # Commit
 
         # When Card is found draw box around Cards
         if CardFound:
