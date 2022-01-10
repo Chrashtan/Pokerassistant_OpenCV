@@ -18,8 +18,8 @@ def preProcessPicture(image):
     # This allows the threshhold to adapt to the lighting conditions
     img_w, img_h = np.shape(image)[:2] # Maybe another pos?
     bkg_level = gray[int(img_h / 100)][int(img_w / 2)]
-    thresh_level = bkg_level + BKG_THRESHOLD# 50 = Background Threshold
-
+    thresh_level = bkg_level + BKG_THRESHOLD # 50 = Background Threshold
+    # TODO Background Threshold RoI
     retval, thresh = cv.threshold(blurred, thresh_level, 255, cv.THRESH_BINARY)
     return thresh
 
@@ -129,8 +129,8 @@ def searchRanksSuits(image, CardContours):
         XCut1 = int(5 / 320 * width)
         XCut2 = int(40 / 320 * width)
 
-        imgSuitsList.append(imgList[i][YCut1:YCut2, XCut1:XCut2]) # Das als Konstante? also SUITS_WIDTH = 15:70 ?
-        imgRanksList.append(imgList[i][YCut2:YCut3, XCut1:XCut2])
+        imgRanksList.append(imgList[i][YCut1:YCut2, XCut1:XCut2]) # Das als Konstante? also SUITS_WIDTH = 15:70 ?
+        imgSuitsList.append(imgList[i][YCut2:YCut3, XCut1:XCut2])
 
     return imgList, imgRanksList, imgSuitsList
 
@@ -157,6 +157,7 @@ def identifyImage(img, isRank):
     height = imgCut.shape[0]
     width = imgCut.shape[1]
     bestFit = 1000
+    # Define the image references depends on the flag
     if isRank:
         imgRefs = cards.RANK_REFS
     else:
@@ -179,9 +180,9 @@ def identifyImage(img, isRank):
     imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
     imgSolved = cv.resize(imgSolved, (width, height))
     # just for checking the result
-    #cv.imshow("cut", imgCut)
-    #cv.imshow("in", imgPre)
-    #cv.imshow("Best Fit", imgSolved)
+    cv.imshow("cut", imgCut)
+    cv.imshow("in", imgPre)
+    # cv.imshow("Best Fit", imgSolved)
     return result
 
 def calibrateCam(frame):

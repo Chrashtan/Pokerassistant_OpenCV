@@ -22,6 +22,7 @@ CARD_MAX_AREA = 0
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
 
+
 CAM_ID = 2
 
 
@@ -132,6 +133,10 @@ while WebCam.isOpened():
                 ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i],
                                                         cX, cY, rank, suit))
 
+                # Debugging
+                cv.imshow("Rank", imgRanksList[i])
+                cv.imshow("Suit", imgSuitsList[i])
+
                 cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
                 pV.commentImage(Image, rank, suit, cX, cY) # TODO: Reinschreiben nach der Auswertung
 
@@ -183,7 +188,7 @@ while WebCam.isOpened():
 
 
         # Draw box on Live video
-        #cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 1)
+        #cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 2)
         cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
 
         # read out enttime
@@ -196,7 +201,7 @@ while WebCam.isOpened():
 
         # Show live Video
         cv.imshow("My Video", Image)
-        #cv.imshow("Pre", PreProcessedPicture)
+        cv.imshow("Pre", PreProcessedPicture)
 
 
         key = cv.waitKey(50)
