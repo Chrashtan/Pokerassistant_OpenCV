@@ -26,53 +26,41 @@ COLOR_BLUE = (255, 0, 0)
 CAM_ID = 2
 
 
-MAX_AGE = 20
+MAX_AGE = 50
 SAME_CARD_RADIUS = 10
-NUMBER_TO_AVERAGE = 40
+NUMBER_TO_AVERAGE = 100
 
 
 # find if a point is inside a a given circle
 def pointInCircle(centerX, centerY, radius, pointX, pointY):
+    """finds if a point is inside a a given circle"""
     if (((pointX - centerX) * (pointX - centerX)) + ((pointY - centerY) * (pointY - centerY))) < (radius * radius):
         return True
     else:
         return False
 
 def averageValuesforCard(index):
-    #uniqueSuits=[[]]
-    #uniqueRanks=[[]]
-    while len(readRanks) > NUMBER_TO_AVERAGE:
-        readRanks.remove(readRanks[0])
+    """Takes the most recognized value from the values in readSuits and readRanks"""
+    while len(readRanks[index]) > NUMBER_TO_AVERAGE:
+        readRanks[index].remove(readRanks[index,0])
 
-    while len(readSuits) > NUMBER_TO_AVERAGE:
-        readSuits.remove(readSuits[0])
-    # add each unique value in the read Lists to the unique list, also count each type
-    # for i in range(len(readRanks)):  # readRanks and readSuits are always the same length
-    #     flagContainsRank = False
-    #     flagContainsSuit = False
-    #     for j in range(len(uniqueRanks)):
-    #         if uniqueRanks[j,0] == readRanks[i]:
-    #             flagContainsRank = True
-    #     for j in range(len(uniqueSuits)):
-    #         if uniqueSuits[j,0] == readSuits[i]:
-    #             flagContainsSuit = True
-    #     if flagContainsRank == False:
-    #         uniqueRanks.append([])
-    #         uniqueRanks.count()
-    rankFit = cards.RANK_REFSs[0]
+    while len(readSuits[index]) > NUMBER_TO_AVERAGE:
+        readSuits[index].remove(readSuits[index,0])
+
+    rankFit = cards.RANK_REFS[0]
     rankCount = 0
-    rankMax = readRanks.count(cards.RANK_REFSs[0][0])
+    rankMax = readRanks[index].count(cards.RANK_REFS[0])
     suitFit = cards.SUIT_REFS[0]
     suitCount = 0;
-    suitMax = readSuits.count(cards.SUIT_REFS[0])
+    suitMax = readSuits[index].count(cards.SUIT_REFS[0])
 
-    for i in range(1,len(rankRefs)):
-        rankCount = readRanks.count(rankRefs[i])
+    for i in range(1,len(cards.RANK_REFS)):
+        rankCount = readRanks[index].count(cards.RANK_REFS[i])
         if rankCount > rankMax:
             rankMax = rankCount
             rankFit = i
-    for i in range(1,len(suitRefs)):
-        suitCount = readSuits.count(suitRefs[i])
+    for i in range(1,len(cards.SUIT_REFS)):
+        suitCount = readSuits[index].count(cards.SUIT_REFS[i])
         if suitCount > suitMax:
             suitMax = suitCount
             suitFit = i
@@ -115,7 +103,6 @@ while WebCam.isOpened():
         PreProcessedPicture = pV.preProcessPicture(Image)
         # Find all contures in the Picture and draw them into the picture
         ListOfContours = pV.findContours(PreProcessedPicture)
-
         # Find cards
         CardFound, ListOfCardContours = pV.findCards(PreProcessedPicture, CARD_MIN_AREA, CARD_MAX_AREA)  # Picture, min area / max area
         # Commit
@@ -133,13 +120,25 @@ while WebCam.isOpened():
                 suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
                 ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i],
                                                         cX, cY, rank, suit))
-
+                flagIsInCircle = False
+                for j in range(0, len(recognizedCards)):
+                    # is the centrepoint of any of the found cards close to the centrepoint of one of the old ones?
+                    if (pointInCircle(ListOfCards[i].centerpoint_X, ListOfCards[i].centerpoint_Y, SAME_CARD_RADIUS,
+                                      recognizedCards[j].centerpoint_X, recognizedCards[j].centerpoint_Y)):
+                        flagIsInCircle = True
+                        recognizedCards[j] = ListOfCards[i]  # then replace that card with the newly found one
+                        # which is hopefully the same card but slightly moved
+                if flagIsInCircle == False:
+                    ListOfCards[i].contour = ListOfCardContours[i]
+                    recognizedCards.append(ListOfCards[i])  # otherwise add a new cardspot for it
+                    readRanks.append([])
+                    readSuits.append([])
                 # Debugging
                 cv.imshow("Rank", imgRanksList[i])
                 cv.imshow("Suit", imgSuitsList[i])
 
                 cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
-                pV.commentImage(Image, rank, suit, cX, cY) # TODO: Reinschreiben nach der Auswertung
+
 
             # Segment image
             # Board RoI
@@ -147,19 +146,20 @@ while WebCam.isOpened():
             # Hori = np.concatenate((ListOfCards[0].suit_img, ListOfCards[0].rank_img), axis=1) # they dont have the same dimensions
             # cv.imshow("RANK / SUIT", Hori)
 
-            # test for adding the cards etc
-            for i in range(0,len(ListOfCards)):
-                flagIsInCircle = False
-                for j in range(0,len(recognizedCards)):
-                    # is the centrepoint of any of the found cards close to the centrepoint of one of the old ones?
-                    if (pointInCircle(ListOfCards[i].centerpoint_X, ListOfCards[i].centerpoint_Y,SAME_CARD_RADIUS, recognizedCards[j].centerpoint_X, recognizedCards[j].centerpoint_Y)):
-                        flagIsInCircle = True
-                        recognizedCards[j]= ListOfCards[i] # then replace that card with the newly found one
-                        # which is hopefully the same card but slightly moved
-                if flagIsInCircle == False:
-                    recognizedCards.append(ListOfCards[i]) # otherwise add a new cardspot for it
-                    readRanks.append([])
-                    readSuits.append([])
+            # moved to upper for loop
+            # for i in range(0,len(ListOfCards)):
+            #     flagIsInCircle = False
+            #     for j in range(0, len(recognizedCards)):
+            #         # is the centrepoint of any of the found cards close to the centrepoint of one of the old ones?
+            #         if (pointInCircle(ListOfCards[i].centerpoint_X, ListOfCards[i].centerpoint_Y, SAME_CARD_RADIUS,
+            #                           recognizedCards[j].centerpoint_X, recognizedCards[j].centerpoint_Y)):
+            #             flagIsInCircle = True
+            #             recognizedCards[j] = ListOfCards[i]  # then replace that card with the newly found one
+            #             # which is hopefully the same card but slightly moved
+            #     if flagIsInCircle == False:
+            #         recognizedCards.append(ListOfCards[i])  # otherwise add a new cardspot for it
+            #         readRanks.append([])
+            #         readSuits.append([])
 
             for i in range(0, len(ListOfCards)):
                 if ListOfCards[i].cycle_age > MAX_AGE: # card has not been found in a while so it will be removed
@@ -171,6 +171,12 @@ while WebCam.isOpened():
                     readRanks[i].append(ListOfCards[i].rank_name) # the ranks and suits are stored with the values
                     readSuits[i].append(ListOfCards[i].suit_name) # that have been found on previous iterations
                                                                   # so that the result can be averaged out
+            for i in range(len(recognizedCards)):
+                avgSuit, AvgRank = averageValuesforCard(i)
+                cX = recognizedCards[i].centerpoint_X
+                cY = recognizedCards[i].centerpoint_Y
+                #ListOfCardContours.append(recognizedCards[i].contour)
+                pV.commentImage(Image, AvgRank, avgSuit, cX, cY)  # TODO: Reinschreiben nach der Auswertung
 
 
             # # Just temp
@@ -191,7 +197,7 @@ while WebCam.isOpened():
 
 
         # Draw box on Live video
-        #cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 2)
+        cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 2)
         cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
 
         # read out enttime

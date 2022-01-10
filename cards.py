@@ -34,6 +34,7 @@ class CardProperties:
         self.suit_name = "Unknown"  # Name of the suit of the card. Has to be determined
         self.card_name = " "    # Value of the Card for Odds
         self.cycle_age = 0  # cycles since the card has been last recognized
+        self.contour = []
 
     def __init__(self, img = [], img_rank = [], img_suit = [], cX = 0, cY = 0, rank = "Unknown", suit = "Unknown"):
         self.img = img   # Image of the full card
@@ -47,6 +48,7 @@ class CardProperties:
         self.suit_name = suit  # Name of the suit of the card. Has to be determined
         self.card_name = convertCardName(rank, suit)  # Value of the Card for Odds
         self.cycle_age = 0  # cycles since the card has been last recognized
+        self.contour = []
 
 
 def convertCardName(rank, suit):

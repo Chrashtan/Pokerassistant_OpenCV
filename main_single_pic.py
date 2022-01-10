@@ -14,15 +14,15 @@ import processVideo as pV
 import probabilites as odd
 
 # Constants
-CARD_MIN_AREA = 59072
-CARD_MAX_AREA = 72200
+CARD_MIN_AREA = 66784
+CARD_MAX_AREA = 81624
 
 RESIZE_FACTOR = 1
 
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
 
-# Constans for playing cards
+# Constants for playing cards
 BOARD = []
 VILLAN_HAND = Combo('9c8s')
 HERO_HAND = Combo('KcKh')
