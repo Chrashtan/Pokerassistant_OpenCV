@@ -234,10 +234,54 @@ def commentImage(image, rankName, suitName, x, y):
     cv.putText(image, suitName,(x-60,y+25), font, fontScale,(0,0,0), 3, cv.LINE_AA)
     cv.putText(image, suitName,(x-60,y+25), font, fontScale,(50,200,200), 2, cv.LINE_AA)
 
+
 def segmentImage(image, img_width, img_height, size_board_RoI):
     """Segments the image in 3 Images. Needs the image, the width, the height
     and a size of the RoI (in percent). Returns 3 Images"""
-    RoI_Board_midline = img_height/2
+    RoI_Board_midline = int(img_height/2)
+
+    # coordinates with index1: corner top left
+    # coordinates with index2: corner bottom right
+
+    #Board
+    x1_b = 0
+    y1_b = int(RoI_Board_midline * (1-size_board_RoI))
+    x2_b = img_width
+    y2_b = int(RoI_Board_midline * (size_board_RoI+1.05))
+    #Player1
+    x1_1 = 0
+    y1_1 = int(RoI_Board_midline * (size_board_RoI+1))
+    x2_1 = img_width
+    y2_1 = img_height
+    # Player2
+    x1_2 = 0
+    y1_2 = 0
+    x2_2 = img_width
+    y2_2 = int(RoI_Board_midline * (1-size_board_RoI))
+
+    # Draw board areas
+    cv.rectangle(image, (x1_b, y1_b), (x2_b, y2_b), (0, 255, 0), 2)
+    # Draw the area name
+    font = cv.FONT_HERSHEY_SIMPLEX  # font
+    fontScale = 1  # fontScale
+    board_named = cv.putText(image, "Board", (10, RoI_Board_midline), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 3, cv.LINE_AA)
+    board_named = cv.putText(image, "Player2", (10, int(y2_2/2)), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 3, cv.LINE_AA)
+    board_named = cv.putText(image, "Player1", (10, int((img_height-y2_b)/2)+y2_b), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 3, cv.LINE_AA)
+
+
+    RoI_Board = image[y1_b:y2_b, x1_b:x2_b]
+    RoI_Player1 = image[y1_1:y2_1, x1_1:x2_1]
+    RoI_Player2 = image[y1_2:y2_2, x1_2:x2_2]
+
+    return RoI_Board, RoI_Player1, RoI_Player2, board_named
+
+
+
+
+
+
+#draw.box fkt.
+
 
 
     

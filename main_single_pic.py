@@ -14,8 +14,9 @@ import processVideo as pV
 import probabilites as odd
 
 # Constants
-CARD_MIN_AREA = 66784
-CARD_MAX_AREA = 81624
+CARD_MIN_AREA = 59243
+CARD_MAX_AREA = 72409
+
 
 RESIZE_FACTOR = 1
 
@@ -63,6 +64,7 @@ print(strWinner)
 ImageOriginal = cv.imread("PicturesOfCards/opencv_frame_2.png")     # Works best for a darker background
 ImageOriginalResized = cv.resize(ImageOriginal, dsize=(0, 0), fy=RESIZE_FACTOR, fx=RESIZE_FACTOR)
 
+
 ListOfCardContours = []
 ListOfCards = []
 
@@ -91,6 +93,12 @@ if CardFound:
     #    cv.imshow("Card %i" %i, ListOfCards[i].img)
     #    cv.imshow("Suit %i" %i, ListOfCards[i].suit_img)
     #    cv.imshow("Rank %i" %i, ListOfCards[i].rank_img)
+
+RoI_board, RoI_player1, RoI_player2, board_named = pV.segmentImage(ImageOriginalResized,1920,1080,0.31)
+cv.imshow("RoI Board",RoI_board)
+cv.imshow("RoI Player1",RoI_player1)
+cv.imshow("RoI Player2",RoI_player2)
+cv.imshow("Board named",board_named)
 
 
 # Show Image on Display
