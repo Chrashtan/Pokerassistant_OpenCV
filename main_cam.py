@@ -22,13 +22,16 @@ CARD_MAX_AREA = 0
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
 
-
 CAM_ID = 2
-
 
 MAX_AGE = 50
 SAME_CARD_RADIUS = 10
-NUMBER_TO_AVERAGE = 100
+NUMBER_TO_AVERAGE = 10
+
+# store cards and values of previous iterations
+recognizedCards = []
+readSuits = [[]]
+readRanks = [[]]
 
 
 # find if a point is inside a a given circle
@@ -42,10 +45,10 @@ def pointInCircle(centerX, centerY, radius, pointX, pointY):
 def averageValuesforCard(index):
     """Takes the most recognized value from the values in readSuits and readRanks"""
     while len(readRanks[index]) > NUMBER_TO_AVERAGE:
-        readRanks[index].remove(readRanks[index,0])
+        readRanks[index].remove(readRanks[index][0])
 
     while len(readSuits[index]) > NUMBER_TO_AVERAGE:
-        readSuits[index].remove(readSuits[index,0])
+        readSuits[index].remove(readSuits[index][0])
 
     rankFit = cards.RANK_REFS[0]
     rankCount = 0
@@ -54,16 +57,17 @@ def averageValuesforCard(index):
     suitCount = 0;
     suitMax = readSuits[index].count(cards.SUIT_REFS[0])
 
-    for i in range(1,len(cards.RANK_REFS)):
-        rankCount = readRanks[index].count(cards.RANK_REFS[i])
-        if rankCount > rankMax:
-            rankMax = rankCount
-            rankFit = i
     for i in range(1,len(cards.SUIT_REFS)):
         suitCount = readSuits[index].count(cards.SUIT_REFS[i])
         if suitCount > suitMax:
             suitMax = suitCount
-            suitFit = i
+            suitFit = cards.SUIT_REFS[i]
+    for i in range(1,len(cards.RANK_REFS)):
+        rankCount = readRanks[index].count(cards.RANK_REFS[i])
+        if rankCount > rankMax:
+            rankMax = rankCount
+            rankFit = cards.RANK_REFS[i]
+
     if suitMax < (NUMBER_TO_AVERAGE * 0.7):
         suitFit = "UNKNOWN"
 
@@ -84,10 +88,7 @@ WebCam.set(cv.CAP_PROP_FRAME_WIDTH, FRAME_WIDTH)
 WebCam.set(cv.CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT)
 WebCam.set(cv.CAP_PROP_FPS,30)
 
-# store cards and values of previous iterations
-recognizedCards = []
-readSuits = [[]]
-readRanks = [[]]
+
 
 # repeat the following lines as long as the Webcam is accessibley
 while WebCam.isOpened():
@@ -171,12 +172,12 @@ while WebCam.isOpened():
                     readRanks[i].append(ListOfCards[i].rank_name) # the ranks and suits are stored with the values
                     readSuits[i].append(ListOfCards[i].suit_name) # that have been found on previous iterations
                                                                   # so that the result can be averaged out
-            for i in range(len(recognizedCards)):
-                avgSuit, AvgRank = averageValuesforCard(i)
+            for i in range(0,len(recognizedCards)):
+                avgSuit, avgRank = averageValuesforCard(i)
                 cX = recognizedCards[i].centerpoint_X
                 cY = recognizedCards[i].centerpoint_Y
                 #ListOfCardContours.append(recognizedCards[i].contour)
-                pV.commentImage(Image, AvgRank, avgSuit, cX, cY)  # TODO: Reinschreiben nach der Auswertung
+                pV.commentImage(Image, str(avgRank), str(avgSuit), cX, cY)  # TODO: Reinschreiben nach der Auswertung
 
 
             # # Just temp
@@ -192,12 +193,10 @@ while WebCam.isOpened():
             #     cv.destroyWindow("Suit 0")
             #     cv.destroyWindow("Rank 0")
 
-            #
-
 
 
         # Draw box on Live video
-        cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 2)
+        #cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 2)
         cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
 
         # read out enttime
@@ -210,7 +209,7 @@ while WebCam.isOpened():
 
         # Show live Video
         cv.imshow("My Video", Image)
-        cv.imshow("Pre", PreProcessedPicture)
+        # cv.imshow("Pre", PreProcessedPicture)
 
 
         key = cv.waitKey(50)
@@ -219,9 +218,6 @@ while WebCam.isOpened():
             CARD_MIN_AREA, CARD_MAX_AREA = pV.calibrateCam(Image)
         elif key == ord('q'):
             break
-
-
-
 
 # Close all windows
 cv.destroyAllWindows()
