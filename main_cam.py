@@ -21,6 +21,7 @@ CARD_MAX_AREA = 0
 
 COLOR_GREEN = (69, 200, 43)
 COLOR_BLUE = (255, 0, 0)
+COLOR_BLACK = (0, 0, 0)
 
 CAM_ID = 2
 
@@ -121,78 +122,24 @@ while WebCam.isOpened():
                 suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
                 ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i],
                                                         cX, cY, rank, suit))
-                flagIsInCircle = False
-                for j in range(0, len(recognizedCards)):
-                    # is the centrepoint of any of the found cards close to the centrepoint of one of the old ones?
-                    if (pointInCircle(ListOfCards[i].centerpoint_X, ListOfCards[i].centerpoint_Y, SAME_CARD_RADIUS,
-                                      recognizedCards[j].centerpoint_X, recognizedCards[j].centerpoint_Y)):
-                        flagIsInCircle = True
-                        recognizedCards[j] = ListOfCards[i]  # then replace that card with the newly found one
-                        # which is hopefully the same card but slightly moved
-                if flagIsInCircle == False:
-                    ListOfCards[i].contour = ListOfCardContours[i]
-                    recognizedCards.append(ListOfCards[i])  # otherwise add a new cardspot for it
-                    readRanks.append([])
-                    readSuits.append([])
-                # Debugging
-                cv.imshow("Rank", imgRanksList[i])
-                cv.imshow("Suit", imgSuitsList[i])
-
+                pV.commentImage(Image, rank, suit, cX, cY)
                 cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
 
+                # Debugging
+                # cv.imshow("Rank", imgRanksList[i])
+                # cv.imshow("Suit", imgSuitsList[i])
 
+
+
+            # Board, Player1, Player2, BoardName = pV.segmentImage(Image,FRAME_WIDTH,FRAME_HEIGHT, 0.5)
+
+            #cv.imshow("Board", Board)
+            #cv.imshow("Player1", Player1)
+            #cv.imshow("Player2", Player2)
+            #cv.imshow("BoardName", BoardName)
             # Segment image
             # Board RoI
             # Show SUIT and RANK in the same Window
-            # Hori = np.concatenate((ListOfCards[0].suit_img, ListOfCards[0].rank_img), axis=1) # they dont have the same dimensions
-            # cv.imshow("RANK / SUIT", Hori)
-
-            # moved to upper for loop
-            # for i in range(0,len(ListOfCards)):
-            #     flagIsInCircle = False
-            #     for j in range(0, len(recognizedCards)):
-            #         # is the centrepoint of any of the found cards close to the centrepoint of one of the old ones?
-            #         if (pointInCircle(ListOfCards[i].centerpoint_X, ListOfCards[i].centerpoint_Y, SAME_CARD_RADIUS,
-            #                           recognizedCards[j].centerpoint_X, recognizedCards[j].centerpoint_Y)):
-            #             flagIsInCircle = True
-            #             recognizedCards[j] = ListOfCards[i]  # then replace that card with the newly found one
-            #             # which is hopefully the same card but slightly moved
-            #     if flagIsInCircle == False:
-            #         recognizedCards.append(ListOfCards[i])  # otherwise add a new cardspot for it
-            #         readRanks.append([])
-            #         readSuits.append([])
-
-            for i in range(0, len(ListOfCards)):
-                if ListOfCards[i].cycle_age > MAX_AGE: # card has not been found in a while so it will be removed
-                    ListOfCards.remove(ListOfCards[i])
-                    readRanks.remove(readRanks[i])
-                    readSuits.remove(readSuits[i])
-                else:
-                    ListOfCards[i].cycle_age = ListOfCards[i].cycle_age + 1
-                    readRanks[i].append(ListOfCards[i].rank_name) # the ranks and suits are stored with the values
-                    readSuits[i].append(ListOfCards[i].suit_name) # that have been found on previous iterations
-                                                                  # so that the result can be averaged out
-            for i in range(0,len(recognizedCards)):
-                avgSuit, avgRank = averageValuesforCard(i)
-                cX = recognizedCards[i].centerpoint_X
-                cY = recognizedCards[i].centerpoint_Y
-                #ListOfCardContours.append(recognizedCards[i].contour)
-                pV.commentImage(Image, str(avgRank), str(avgSuit), cX, cY)  # TODO: Reinschreiben nach der Auswertung
-
-
-            # # Just temp
-            # if len(ListOfCards) > 0:
-            #     print(pV.identifyImage(ListOfCards[0].rank_img, True))
-            #     # print(pV.identifyImage(ListOfCards[0].suit_img, False))
-            #
-            #     cv.imshow("Card 0", ListOfCards[i].img)
-            #     cv.imshow("Suit 0", ListOfCards[i].suit_img)
-            #     cv.imshow("Rank 0", ListOfCards[i].rank_img)
-            # else:
-            #     cv.destroyWindow("Card 0")
-            #     cv.destroyWindow("Suit 0")
-            #     cv.destroyWindow("Rank 0")
-
 
 
         # Draw box on Live video
@@ -204,8 +151,8 @@ while WebCam.isOpened():
         timeDiff = endtime-startTime
         framerate = 1.0 / timeDiff
 
-        cv.putText(Image, "FPS: " + str(int(framerate)), (100, 200), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
-        cv.putText(Image, "FPS: " + str(int(framerate)), (100, 200), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_GREEN, 2, cv.LINE_AA)
+        cv.putText(Image, "FPS: " + str(int(framerate)), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_BLACK, 3, cv.LINE_AA)
+        cv.putText(Image, "FPS: " + str(int(framerate)), (50, 50), cv.FONT_HERSHEY_SIMPLEX, 1, COLOR_GREEN, 2, cv.LINE_AA)
 
         # Show live Video
         cv.imshow("My Video", Image)
