@@ -101,50 +101,12 @@ while WebCam.isOpened():
         # Start time for fps Counter
         startTime = time.time()
 
-        # Use Filter on Image
-        PreProcessedPicture = pV.preProcessPicture(Image)
-        # Find all contures in the Picture and draw them into the picture
-        ListOfContours = pV.findContours(PreProcessedPicture)
-        # Find cards
-        CardFound, ListOfCardContours = pV.findCards(PreProcessedPicture, CARD_MIN_AREA, CARD_MAX_AREA)  # Picture, min area / max area
-        # Commit
+        # Segment Image
+        Board, Player1, Player2, BoardName = pV.segmentImage(Image, FRAME_WIDTH, FRAME_HEIGHT, 0.3)
 
-        # When Card is found draw box around Cards
-        if CardFound:
-            # Create empty list
-            ListOfCards = []
-
-            imgList, imgRanksList, imgSuitsList = pV.searchRanksSuits(Image, ListOfCardContours)
-
-            # Write Values to instances of Cards
-            for i in range(len(ListOfCardContours)):
-                cX, cY = pV.findCenterpoints(ListOfCardContours[i])
-                suit, rank = pV.identifyCard(imgSuitsList[i], imgRanksList[i])
-                ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i],
-                                                        cX, cY, rank, suit))
-                pV.commentImage(Image, rank, suit, cX, cY)
-                cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
-
-                # Debugging
-                # cv.imshow("Rank", imgRanksList[i])
-                # cv.imshow("Suit", imgSuitsList[i])
-
-
-
-            # Board, Player1, Player2, BoardName = pV.segmentImage(Image,FRAME_WIDTH,FRAME_HEIGHT, 0.5)
-
-            #cv.imshow("Board", Board)
-            #cv.imshow("Player1", Player1)
-            #cv.imshow("Player2", Player2)
-            #cv.imshow("BoardName", BoardName)
-            # Segment image
-            # Board RoI
-            # Show SUIT and RANK in the same Window
-
-
-        # Draw box on Live video
-        #cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 2)
-        cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
+        ListOfCardsBoard = pV.createCardList(Board, CARD_MIN_AREA, CARD_MAX_AREA)
+        ListOfCardsPlayer1 = pV.createCardList(Player1, CARD_MIN_AREA, CARD_MAX_AREA)
+        ListOfCardsPlayer2 = pV.createCardList(Player2, CARD_MIN_AREA, CARD_MAX_AREA)
 
         # read out enttime
         endtime = time.time()

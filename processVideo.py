@@ -6,6 +6,9 @@ import cards
 
 # Constants
 BKG_THRESHOLD = 60
+COLOR_GREEN = (69, 200, 43)
+COLOR_BLUE = (255, 0, 0)
+COLOR_BLACK = (0, 0, 0)
 
 def preProcessPicture(image):
     # Process Image
@@ -223,7 +226,6 @@ def commentImage(image, rankName, suitName, x, y):
     """"Draw a comment in a picture"""
     font = cv.FONT_HERSHEY_SIMPLEX  # font
     fontScale = 1  # fontScale
-    color = (255, 0, 0)  # Blue color in BGR
     thickness = 2  # Line thickness of 2 px
     # position = (50, 50) # position
     # Using cv2.putText() method
@@ -276,12 +278,38 @@ def segmentImage(image, img_width, img_height, size_board_RoI):
     return RoI_Board, RoI_Player1, RoI_Player2, board_named
 
 
+def createCardList(Image, card_min_area, card_max_area):
+    # Create Empty List
+    ListOfCards = []
+    # Use Filter on Image
+    PreProcessedPicture = preProcessPicture(Image)
+    # Find all contures in the Picture and draw them into the picture
+    ListOfContours = findContours(PreProcessedPicture)
+
+    # Find cards
+    CardFound, ListOfCardContours = findCards(PreProcessedPicture, card_min_area,
+                                              card_max_area)  # Picture, min area / max area
+
+    # When Card is found draw box around Cards
+    if CardFound:
+        # Create empty list
 
 
+        imgList, imgRanksList, imgSuitsList = searchRanksSuits(Image, ListOfCardContours)
 
+        # Write Values to instances of Cards
+        for i in range(len(ListOfCardContours)):
+            cX, cY = findCenterpoints(ListOfCardContours[i])
+            suit, rank = identifyCard(imgSuitsList[i], imgRanksList[i])
+            ListOfCards.append(cards.CardProperties(imgList[i], imgRanksList[i], imgSuitsList[i],
+                                                    cX, cY, rank, suit))
+            commentImage(Image, rank, suit, cX, cY)
+            cv.drawMarker(Image, (cX, cY), COLOR_BLUE)
 
-#draw.box fkt.
-
+    # Draw box on Live video
+    # cv.drawContours(Image, ListOfContours, -1, COLOR_GREEN, 2)
+    cv.drawContours(Image, ListOfCardContours, -1, COLOR_BLUE, 3)
+    return ListOfCards
 
 
     
