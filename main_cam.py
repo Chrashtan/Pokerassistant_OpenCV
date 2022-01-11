@@ -36,8 +36,7 @@ recognizedCards = []
 readSuits = [[]]
 readRanks = [[]]
 
-
-# find if a point is inside a a given circle
+# Is not used in this Version
 def pointInCircle(centerX, centerY, radius, pointX, pointY):
     """finds if a point is inside a a given circle"""
     if (((pointX - centerX) * (pointX - centerX)) + ((pointY - centerY) * (pointY - centerY))) < (radius * radius):
@@ -138,12 +137,14 @@ while WebCam.isOpened():
             # play cards
             # Create Input in console
             print("\nSearch for Hero Cards")
-            hero = []
+            heroL = []
             for i in range(0, len(ListOfCardsHero)):
-                hero.append(ListOfCardsHero[i].card_name)
+                heroL.append(ListOfCardsHero[i].card_name)
                 print(f'Hero Cards {i+1}: {ListOfCardsHero[i].card_name}')
 
-            hero = Combo(str(ListOfCardsHero[0].card_name + ListOfCardsHero[1].card_name))
+            print(f'Hero Cards : {heroL[0]+ heroL[1]}')
+
+            hero = Combo(heroL[0]+ heroL[1])
 
         elif key == ord('f'):
             print("\nCalculate Flop")
@@ -183,25 +184,29 @@ while WebCam.isOpened():
         elif key == ord('W'):
             print("\nSearch Winner")
             board = []
-            villan = []
+            heroL = []
+            villanL = []
             for i in range(0, len(ListOfCardsBoard)):
                 board.append(ListOfCardsBoard[i].card_name)
                 print(f'Board {i}: {ListOfCardsBoard[i].card_name}')
 
             for i in range(0, len(ListOfCardsVillan)):
-                villan.append(ListOfCardsVillan[i].card_name)
-                print(f'Villian {i}: {ListOfCardsVillan[i].card_name}')
+                villanL.append(ListOfCardsVillan[i].card_name)
 
-            villan = Combo(str(ListOfCardsVillan[0].card_name + ListOfCardsVillan[1].card_name))
+            for i in range(0, len(ListOfCardsHero)):
+                heroL.append(ListOfCardsHero[i].card_name)
 
-            strOdds, strHand = odd.probabilityFLOP(board, hero, villan)
-            print('Your Win/Lose odds:')
-            print(strOdds)
-            print(strHand)
-            if(odd.odds[0]['win'] == 100):
+            print(f'Hero Cards : {heroL[0] + heroL[1]}')
+            print(f'Villian: {villanL[0] + villanL[1]}')
+            villan = Combo(villanL[0] + villanL[1])
+            hero = Combo(heroL[0] + heroL[1])
+
+            winnerString = odd.findWINNER(board, hero, villan)
+
+            if(winnerString == "Hero wins"):
                 board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH/2), int(FRAME_HEIGHT*0.75)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
                 board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH/2), int(FRAME_HEIGHT*0.75)), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
-            elif((odd.odds[0]['lose'] == 100)):
+            elif(winnerString == "Villan wins"):
                 board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.25)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
                 board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.25)), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
             else:

@@ -109,11 +109,11 @@ def findWINNER(board, hero_hand, villan_hand):
                                  verbose, print_elapsed_time = False)
     hero_odds.append(odds[0]['win'])
     if(odds[0]['win']>99):
-        return "You win"
+        return "Hero wins"
     elif(odds[0]["tie"]>49):
-        return "Splitt pot"
+        return "Tie"
     else:
-        return "You lose"
+        return "Villan wins"
 
 
 
