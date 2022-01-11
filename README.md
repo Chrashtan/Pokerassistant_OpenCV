@@ -11,7 +11,16 @@ Wahrscheinlichkeiten: https://programmerwiki.com/article/31412060275/
      
 # Installation
 Ins Terminal eingeben:\
-$ pip install poker\
-$ conda install pandas\
-$ pip install ipython\
+$ **pip install poker**\
+$ **conda install pandas**\
+$ **pip install ipython**\
+
+# Benutzung 
+c -> Kalibrierung 
+h -> Eigene Karten Manuell eingeben (Hero)
+H -> Eigene Karten erkennen lassen (Hero)
+f -> Wahrscheinlichkeiten für den FLOP berechnen lassen
+t -> Wahrscheinlichkeiten für den TURN berechnen lassen
+r -> Wahrscheinlichkeiten für den RIVER berechnen lassen
+w -> Gewinner ermitteln
 

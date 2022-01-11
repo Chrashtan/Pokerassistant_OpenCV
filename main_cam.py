@@ -8,8 +8,11 @@
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
+import PySimpleGUI as sg    # Part 1 - The import
 import cards
 import processVideo as pV
+import probabilites as odd
+from poker.hand import Combo
 import time
 
 # Constants
@@ -120,11 +123,50 @@ while WebCam.isOpened():
         cv.imshow("My Video", Image)
         # cv.imshow("Pre", PreProcessedPicture)
 
-
         key = cv.waitKey(50)
         # First ask for calibration
         if  key == ord('c'):
             CARD_MIN_AREA, CARD_MAX_AREA = pV.calibrateCam(Image)
+
+        elif key == ord('h'):
+            # play cards
+            # Create Input in console
+            CardsPlayer1 = input("Please Enter your cards like this (Nine Hearts & King Diamonds = 9hKd):\n")
+            print(f'YourCards: {CardsPlayer1}\n\n')
+            CardsPlayer1 = Combo(CardsPlayer1)
+
+        elif key == ord('f'):
+            flop = []
+            for i in range(0, len(ListOfCardsBoard)):
+                flop.append(ListOfCardsBoard[i].card_name)
+                print(f'Card {i}: {ListOfCardsBoard[i].card_name}')
+            strOdds, strHand = odd.probabilityFLOP(flop, CardsPlayer1, None)
+            print('Your Win/Lose odds:')
+            print(strOdds)
+            print(strHand)
+
+        elif key == ord('t'):
+            turn = []
+            for i in range(0, len(ListOfCardsBoard)):
+                turn.append(ListOfCardsBoard[i].card_name)
+                print(f'Card {i}: {ListOfCardsBoard[i].card_name}')
+
+            strOdds, strHand = odd.probabilityFLOP(turn, CardsPlayer1, None)
+            print('Your Win/Lose odds:')
+            print(strOdds)
+            print(strHand)
+
+        elif key == ord('r'):
+            river = []
+            for i in range(0, len(ListOfCardsBoard)):
+                river.append(ListOfCardsBoard[i].card_name)
+                print(f'Card {i}: {ListOfCardsBoard[i].card_name}')
+
+            strOdds, strHand = odd.probabilityFLOP(river, CardsPlayer1, None)
+            print('Your Win/Lose odds:')
+            print(strOdds)
+            print(strHand)
+
         elif key == ord('q'):
             break
 
