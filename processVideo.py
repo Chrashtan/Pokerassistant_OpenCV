@@ -268,10 +268,10 @@ def segmentImage(image, img_width, img_height, size_board_RoI):
     fontScale = 1  # fontScale
     board_named = cv.putText(image, "Board", (10, RoI_Board_midline), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3,cv.LINE_AA)
     board_named = cv.putText(image, "Board", (10, RoI_Board_midline), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 2, cv.LINE_AA)
-    board_named = cv.putText(image, "Player2", (10, int(y2_2/2)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
-    board_named = cv.putText(image, "Player2", (10, int(y2_2/2)), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 2, cv.LINE_AA)
-    board_named = cv.putText(image, "Player1", (10, int((img_height-y2_b)/2)+y2_b), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
-    board_named = cv.putText(image, "Player1", (10, int((img_height-y2_b)/2)+y2_b), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 2, cv.LINE_AA)
+    board_named = cv.putText(image, "Villan", (10, int(y2_2/2)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
+    board_named = cv.putText(image, "Villan", (10, int(y2_2/2)), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 2, cv.LINE_AA)
+    board_named = cv.putText(image, "Hero", (10, int((img_height-y2_b)/2)+y2_b), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
+    board_named = cv.putText(image, "Hero", (10, int((img_height-y2_b)/2)+y2_b), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 2, cv.LINE_AA)
 
 
     RoI_Board = image[y1_b:y2_b, x1_b:x2_b]
