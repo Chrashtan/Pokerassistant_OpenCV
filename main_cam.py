@@ -198,6 +198,15 @@ while WebCam.isOpened():
             print('Your Win/Lose odds:')
             print(strOdds)
             print(strHand)
+            if(odd.odds[0]['win'] == 100):
+                board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH/2), int(FRAME_HEIGHT*0.75)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
+                board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH/2), int(FRAME_HEIGHT*0.75)), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
+            elif((odd.odds[0]['lose'] == 100)):
+                board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.25)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
+                board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.25)), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
+            else:
+                board_named = cv.putText(Image, "TIE", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.5)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
+                board_named = cv.putText(Image, "TIE", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.5)), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
 
         elif key == ord('q'):
             break
