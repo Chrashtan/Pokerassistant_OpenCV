@@ -28,7 +28,7 @@ def probabilityFLOP(board, hero_hand, villan_hand):
     # Fix constants
     exact_calculation = False  # True = exact calculation; False = Monte Carlo simulation
     verbose = True  # This is a boolean which is True if you want Holdem Calculator to return the odds of the villan making a certain poker hand, e.g., quads, set, straight. It only supports heads-up scenario.
-    num_sims = 5  # number of iterations run in the Monte Carlo simulation. Note that this parameter is ignored if Exact is set to True
+    num_sims = 10  # number of iterations run in the Monte Carlo simulation. Note that this parameter is ignored if Exact is set to True
     read_from_file = None
 
     odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
@@ -52,7 +52,7 @@ def probabilityTURN(board, hero_hand, villan_hand):
     # Fix constants
     exact_calculation = False  # True = exact calculation; False = Monte Carlo simulation
     verbose = True  # This is a boolean which is True if you want Holdem Calculator to return the odds of the villan making a certain poker hand, e.g., quads, set, straight. It only supports heads-up scenario.
-    num_sims = 5  # number of iterations run in the Monte Carlo simulation. Note that this parameter is ignored if Exact is set to True
+    num_sims = 10  # number of iterations run in the Monte Carlo simulation. Note that this parameter is ignored if Exact is set to True
     read_from_file = None
 
     odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
@@ -75,7 +75,7 @@ def probabilityRIVER(board, hero_hand, villan_hand):
     # Fix constants
     exact_calculation = False  # True = exact calculation; False = Monte Carlo simulation
     verbose = True  # This is a boolean which is True if you want Holdem Calculator to return the odds of the villan making a certain poker hand, e.g., quads, set, straight. It only supports heads-up scenario.
-    num_sims = 5  # number of iterations run in the Monte Carlo simulation. Note that this parameter is ignored if Exact is set to True
+    num_sims = 10  # number of iterations run in the Monte Carlo simulation. Note that this parameter is ignored if Exact is set to True
     read_from_file = None
 
     odds = holdem_calc.calculate_odds_villan(board, exact_calculation,
@@ -100,7 +100,7 @@ def findWINNER(board, hero_hand, villan_hand):
     # Fix constants
     exact_calculation = False  # True = exact calculation; False = Monte Carlo simulation
     verbose = True  # This is a boolean which is True if you want Holdem Calculator to return the odds of the villan making a certain poker hand, e.g., quads, set, straight. It only supports heads-up scenario.
-    num_sims = 5  # number of iterations run in the Monte Carlo simulation. Note that this parameter is ignored if Exact is set to True
+    num_sims = 10  # number of iterations run in the Monte Carlo simulation. Note that this parameter is ignored if Exact is set to True
     read_from_file = None
 
     odds = holdem_calc.calculate_odds_villan(board, exact_calculation,

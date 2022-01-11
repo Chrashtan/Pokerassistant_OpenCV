@@ -24,3 +24,4 @@ t -> Wahrscheinlichkeiten für den TURN berechnen lassen
 r -> Wahrscheinlichkeiten für den RIVER berechnen lassen
 w -> Gewinner ermitteln
 
+

@@ -214,8 +214,8 @@ def calibrateCam(frame):
 
     # Uses the Card Area to calculate min and max Area for a Card
     cardArea = round(cv.contourArea(RoIcnt[0]))  # Card is biggest contour so at pos 0
-    minArea = round(cardArea - (0.1 * cardArea))  # subract 10%
-    maxArea = round(cardArea + (0.1 * cardArea))  # add 10%
+    minArea = round(cardArea - (0.2 * cardArea))  # subract 10%
+    maxArea = round(cardArea + (0.2 * cardArea))  # add 10%
     print("Contour Area: ", cardArea)
     print("Card min Area: ", minArea)
     print("Card max Area: ", maxArea)
@@ -266,9 +266,12 @@ def segmentImage(image, img_width, img_height, size_board_RoI):
     # Draw the area name
     font = cv.FONT_HERSHEY_SIMPLEX  # font
     fontScale = 1  # fontScale
-    board_named = cv.putText(image, "Board", (10, RoI_Board_midline), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 3, cv.LINE_AA)
-    board_named = cv.putText(image, "Player2", (10, int(y2_2/2)), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 3, cv.LINE_AA)
-    board_named = cv.putText(image, "Player1", (10, int((img_height-y2_b)/2)+y2_b), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 3, cv.LINE_AA)
+    board_named = cv.putText(image, "Board", (10, RoI_Board_midline), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3,cv.LINE_AA)
+    board_named = cv.putText(image, "Board", (10, RoI_Board_midline), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 2, cv.LINE_AA)
+    board_named = cv.putText(image, "Player2", (10, int(y2_2/2)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
+    board_named = cv.putText(image, "Player2", (10, int(y2_2/2)), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 2, cv.LINE_AA)
+    board_named = cv.putText(image, "Player1", (10, int((img_height-y2_b)/2)+y2_b), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
+    board_named = cv.putText(image, "Player1", (10, int((img_height-y2_b)/2)+y2_b), cv.FONT_HERSHEY_SIMPLEX, 1, (69, 200, 43), 2, cv.LINE_AA)
 
 
     RoI_Board = image[y1_b:y2_b, x1_b:x2_b]

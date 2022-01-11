@@ -8,7 +8,6 @@
 import cv2 as cv
 import numpy as np
 from matplotlib import pyplot as plt
-import PySimpleGUI as sg    # Part 1 - The import
 import cards
 import processVideo as pV
 import probabilites as odd
@@ -108,8 +107,8 @@ while WebCam.isOpened():
         Board, Player1, Player2, BoardName = pV.segmentImage(Image, FRAME_WIDTH, FRAME_HEIGHT, 0.3)
 
         ListOfCardsBoard = pV.createCardList(Board, CARD_MIN_AREA, CARD_MAX_AREA)
-        ListOfCardsPlayer1 = pV.createCardList(Player1, CARD_MIN_AREA, CARD_MAX_AREA)
-        ListOfCardsPlayer2 = pV.createCardList(Player2, CARD_MIN_AREA, CARD_MAX_AREA)
+        ListOfCardsHero = pV.createCardList(Player1, CARD_MIN_AREA, CARD_MAX_AREA)
+        ListOfCardsVillan = pV.createCardList(Player2, CARD_MIN_AREA, CARD_MAX_AREA)
 
         # read out enttime
         endtime = time.time()
@@ -131,38 +130,71 @@ while WebCam.isOpened():
         elif key == ord('h'):
             # play cards
             # Create Input in console
-            CardsPlayer1 = input("Please Enter your cards like this (Nine Hearts & King Diamonds = 9hKd):\n")
-            print(f'YourCards: {CardsPlayer1}\n\n')
-            CardsPlayer1 = Combo(CardsPlayer1)
+            hero = input("Please Enter your cards like this (Nine Hearts & King Diamonds = 9hKd):\n")
+            print(f'YourCards: {hero}\n\n')
+            hero = Combo(hero)
+
+        elif key == ord('H'):
+            # play cards
+            # Create Input in console
+            print("\nSearch for Hero Cards")
+            hero = []
+            for i in range(0, len(ListOfCardsHero)):
+                hero.append(ListOfCardsHero[i].card_name)
+                print(f'Hero Cards {i+1}: {ListOfCardsHero[i].card_name}')
+
+            hero = Combo(str(ListOfCardsHero[0].card_name + ListOfCardsHero[1].card_name))
 
         elif key == ord('f'):
+            print("\nCalculate Flop")
             flop = []
             for i in range(0, len(ListOfCardsBoard)):
                 flop.append(ListOfCardsBoard[i].card_name)
                 print(f'Card {i}: {ListOfCardsBoard[i].card_name}')
-            strOdds, strHand = odd.probabilityFLOP(flop, CardsPlayer1, None)
+            strOdds, strHand = odd.probabilityFLOP(flop, hero, None)
             print('Your Win/Lose odds:')
             print(strOdds)
             print(strHand)
 
         elif key == ord('t'):
+            print("\nCalculate Turn")
             turn = []
             for i in range(0, len(ListOfCardsBoard)):
                 turn.append(ListOfCardsBoard[i].card_name)
                 print(f'Card {i}: {ListOfCardsBoard[i].card_name}')
 
-            strOdds, strHand = odd.probabilityFLOP(turn, CardsPlayer1, None)
+            strOdds, strHand = odd.probabilityFLOP(turn, hero, None)
             print('Your Win/Lose odds:')
             print(strOdds)
             print(strHand)
 
         elif key == ord('r'):
+            print("\nCalculate River")
             river = []
             for i in range(0, len(ListOfCardsBoard)):
                 river.append(ListOfCardsBoard[i].card_name)
                 print(f'Card {i}: {ListOfCardsBoard[i].card_name}')
 
-            strOdds, strHand = odd.probabilityFLOP(river, CardsPlayer1, None)
+            strOdds, strHand = odd.probabilityFLOP(river, hero, None)
+            print('Your Win/Lose odds:')
+            print(strOdds)
+            print(strHand)
+
+        elif key == ord('W'):
+            print("\nSearch Winner")
+            board = []
+            villan = []
+            for i in range(0, len(ListOfCardsBoard)):
+                board.append(ListOfCardsBoard[i].card_name)
+                print(f'Board {i}: {ListOfCardsBoard[i].card_name}')
+
+            for i in range(0, len(ListOfCardsVillan)):
+                villan.append(ListOfCardsVillan[i].card_name)
+                print(f'Villian {i}: {ListOfCardsVillan[i].card_name}')
+
+            villan = Combo(str(ListOfCardsVillan[0].card_name + ListOfCardsVillan[1].card_name))
+
+            strOdds, strHand = odd.probabilityFLOP(board, hero, villan)
             print('Your Win/Lose odds:')
             print(strOdds)
             print(strHand)
