@@ -183,8 +183,8 @@ def identifyImage(img, isRank):
 
 
     # just for checking the result
-    cv.imshow("cut", imgCut)
-    cv.imshow("in", imgPre)
+    #cv.imshow("cut", imgCut)
+    #cv.imshow("in", imgPre)
     #imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
     #imgSolved = cv.resize(imgSolved, (width, height))
     #cv.imshow("Best Fit", imgSolved)
