@@ -201,18 +201,10 @@ while WebCam.isOpened():
             villan = Combo(villanL[0] + villanL[1])
             hero = Combo(heroL[0] + heroL[1])
 
-            winnerString = odd.findWINNER(board, hero, villan)
-
-            if(winnerString == "Hero wins"):
-                board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH/2), int(FRAME_HEIGHT*0.75)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
-                board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH/2), int(FRAME_HEIGHT*0.75)), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
-            elif(winnerString == "Villan wins"):
-                board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.25)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
-                board_named = cv.putText(Image, "WINNER", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.25)), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
-            else:
-                board_named = cv.putText(Image, "TIE", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.5)), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 3, cv.LINE_AA)
-                board_named = cv.putText(Image, "TIE", (int(FRAME_WIDTH / 2), int(FRAME_HEIGHT * 0.5)), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2, cv.LINE_AA)
-
+            winnerString, HeroHand, VillanHand = odd.findWINNER(board, hero, villan)
+            print(winnerString)
+            print(HeroHand)
+            print(VillanHand)
         elif key == ord('q'):
             break
 

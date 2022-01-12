@@ -107,13 +107,30 @@ def findWINNER(board, hero_hand, villan_hand):
                                  num_sims, read_from_file ,
                                  hero_hand, villan_hand,
                                  verbose, print_elapsed_time = False)
-    hero_odds.append(odds[0]['win'])
+    # Calculate Hand for Hero
+    max_valueH = None
+    for num in odds[1][0].values():
+        if (max_valueH is None or num > max_valueH):
+            max_valueH = num
+    for key, value in odds[1][0].items():
+        if max_valueH == value:
+            HeroHand = "Hero Hand: " + str(key) + " " + str(round(max_valueH * 100, 2)) + "%"
+
+    # Calculate Hand for Villan
+    max_valueV = None
+    for num in odds[1][1].values():
+        if (max_valueV is None or num > max_valueV):
+            max_valueV = num
+    for key, value in odds[1][1].items():
+        if max_valueV == value:
+            VillanHand = "Villan Hand: " + str(key) + " " + str(round(max_valueV * 100, 2)) + "%"
+
     if(odds[0]['win']>99):
-        return "Hero wins"
+        return "Hero wins", HeroHand, VillanHand
     elif(odds[0]["tie"]>49):
-        return "Tie"
+        return "Tie", OddsString, HeroHand, VillanHand
     else:
-        return "Villan wins"
+        return "Villan wins", HeroHand, VillanHand
 
 
 
