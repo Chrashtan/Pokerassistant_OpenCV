@@ -39,4 +39,10 @@ After all ist set up you can play Cards with the following keybindings.
 **r** -> Calculates odds for the RIVER \
 **w** -> Find winner
 
+# References
+Binary Images of the Cards (Modifided) from: https://github.com/EdjeElectronics/OpenCV-Playing-Card-Detector \
+OpenCV: https://opencv.org/ \
+Poker Odds: https://github.com/souzatharsis/holdem_calc \
+
+
 
