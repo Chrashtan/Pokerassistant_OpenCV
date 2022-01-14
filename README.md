@@ -1,12 +1,6 @@
 # Poker Assistant with OpenCV
 This script assist the player by playing poker. This only works for 2 Players, a webcam ist required. 
-
-
-#Links:
-Contour Features in OpenCV: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html
-
-Odds with Python: https://programmerwiki.com/article/31412060275/
-     
+    
 # Installation
 Works on Python 3.8 with OpenCV.\
 You need to install the following packages:\
@@ -42,6 +36,7 @@ After all ist set up you can play Cards with the following keybindings.
 # References
 Binary Images of the Cards (Modifided) from: https://github.com/EdjeElectronics/OpenCV-Playing-Card-Detector \
 OpenCV: https://opencv.org/ \
+Contour Features in OpenCV: https://docs.opencv.org/4.x/dd/d49/tutorial_py_contour_features.html \
 Poker Odds: https://github.com/souzatharsis/holdem_calc \
 
 
