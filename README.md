@@ -7,14 +7,14 @@ Contour Features in OpenCV: https://docs.opencv.org/4.x/dd/d49/tutorial_py_conto
 
 Odds with Python: https://programmerwiki.com/article/31412060275/
      
-#Installation
+# Installation
 Works on Python 3.8 with OpenCV.\
 You need to install the following packages:\
 $ **pip install poker**\
 $ **conda install pandas**\
 $ **pip install ipython** 
 
-#How to use it
+# How to use it
 You need a camera with a top view on the board. The Background should be dark with fewer contours.
 Works best for a plain black background. The lighting should be so that the cards don't reflect 
 the light of the lamp. 
@@ -29,7 +29,7 @@ to edit the binary images of the cards with MC paint to match get better matches
 After all ist set up you can play Cards with the following keybindings. 
 
 
-#Keybindings 
+# Keybindings 
 
 **c** -> Calibration \
 **h** -> Type in cards for the Hero \
