@@ -177,17 +177,18 @@ def identifyImage(img, isRank):
         imgDiff = cv.subtract(imgSample, imgCut)  # are not supposed to be there
         currentFit = currentFit + np.sum(imgDiff == 255)
 
+
         if currentFit<bestFit:
             bestFit = currentFit
             result = ref
 
 
     # just for checking the result
-    #cv.imshow("cut", imgCut)
-    #cv.imshow("in", imgPre)
-    #imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
-    #imgSolved = cv.resize(imgSolved, (width, height))
-    #cv.imshow("Best Fit", imgSolved)
+    # cv.imshow("cut", imgCut)
+    # cv.imshow("in", imgPre)
+    # imgSolved = cv.imread("Card_Imgs/"+result+".jpg")
+    # imgSolved = cv.resize(imgSolved, (width, height))
+    # cv.imshow("Best Fit", imgSolved)
     return result
 
 def calibrateCam(frame):

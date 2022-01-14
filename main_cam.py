@@ -119,7 +119,6 @@ while WebCam.isOpened():
 
         # Show live Video
         cv.imshow("My Video", Image)
-        # cv.imshow("Pre", PreProcessedPicture)
 
         key = cv.waitKey(50)
         # First ask for calibration
